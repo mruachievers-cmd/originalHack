@@ -15,8 +15,19 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden">
+    <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden">
+      {/* SaaS Style Background Illustration */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/60 to-background z-10" />
+        <img 
+          src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2000&auto=format&fit=crop" 
+          className="w-full h-full object-cover opacity-20 grayscale brightness-50"
+          alt="Smart City AI Background"
+          loading="lazy"
+        />
+      </div>
+
+      <div className="container mx-auto px-4 md:px-8 relative z-20">
         <motion.img 
           src={heroBg} 
           alt="Smart city security" 

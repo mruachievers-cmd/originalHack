@@ -473,15 +473,20 @@ const AIScannerSection = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="card-premium p-12 text-center flex flex-col items-center justify-center border-dashed border-white/10 h-full"
+                  className="card-premium p-12 text-center flex flex-col items-center justify-center border-dashed border-white/10 h-full relative overflow-hidden"
                 >
-                  <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center text-white/20 mb-6">
-                    <Fingerprint size={40} />
+                  <img src="https://images.unsplash.com/photo-1695902173528-0b15104c4554?q=80&w=2000&auto=format&fit=crop" className="absolute inset-0 w-full h-full object-cover opacity-20" alt="Scanning UI" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+                  
+                  <div className="relative z-10">
+                    <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-primary/40 mb-6 mx-auto border border-primary/20">
+                      <ScanFace size={40} className="animate-pulse" />
+                    </div>
+                    <h3 className="text-xl font-black uppercase tracking-widest mb-4">Awaiting Input</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed max-w-sm mx-auto">
+                      Position the subject within the camera frame and initiate the scan for biometric identification.
+                    </p>
                   </div>
-                  <h3 className="text-xl font-black uppercase tracking-widest mb-4">Awaiting Input</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed max-w-sm mx-auto">
-                    Position the subject within the camera frame and initiate the scan for biometric identification.
-                  </p>
                 </motion.div>
               )}
 

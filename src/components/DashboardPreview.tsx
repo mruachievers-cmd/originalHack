@@ -95,6 +95,23 @@ const DashboardPreview = () => (
           ))}
         </div>
 
+        {/* Tactical Operational Mockup Image */}
+        <div className="mb-12 relative rounded-[2rem] overflow-hidden border border-white/10 aspect-[21/9] group shadow-2xl">
+            <img 
+              src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2000&auto=format&fit=crop" 
+              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+              alt="Police Command Center" 
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent flex flex-col justify-end p-8">
+                <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 border border-primary/40 text-primary text-[10px] font-black uppercase tracking-widest">
+                        <Activity size={12} className="animate-pulse" /> Live Terminal 04
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {/* Main Dashboard Body */}
         <div className="grid lg:grid-cols-3 gap-8 relative z-10">
           {/* Notifications feed */}

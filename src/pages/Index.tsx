@@ -67,6 +67,9 @@ const Index = () => (
     <ChatbotSection />
     <SilentGestureSOS />
     <ThemeToggle />
+    <div id="tech">
+      <TechStackSection />
+    </div>
     <FooterSection />
   </div>
 );

@@ -2,18 +2,18 @@ import { motion } from "framer-motion";
 import { Code2, Database, Brain, Map, Camera, Layout, Shield, Globe, Cpu, Zap, Radio, Lock } from "lucide-react";
 
 const techStack = [
-  { icon: Layout, label: "React / Next.js", category: "Architecture", color: "text-sky-400" },
-  { icon: Code2, label: "Tailwind CSS", category: "Styling", color: "text-cyan-400" },
-  { icon: Database, label: "Appwrite / Firebase", category: "Backend", color: "text-rose-400" },
-  { icon: Brain, label: "Python / PyTorch", category: "Intelligence", color: "text-indigo-400" },
-  { icon: Map, label: "Google Maps SDK", category: "Spatial", color: "text-emerald-400" },
-  { icon: Camera, label: "OpenCV / Vision", category: "Processing", color: "text-amber-400" },
-  { icon: Shield, label: "Auth.js / JWT", category: "Security", color: "text-violet-400" },
-  { icon: Globe, label: "Socket.io", category: "Real-time", color: "text-blue-400" },
-  { icon: Cpu, label: "Edge Computing", category: "Infrastructure", color: "text-orange-400" },
-  { icon: Zap, label: "Framer Motion", category: "Animation", color: "text-fuchsia-400" },
-  { icon: Radio, label: "Twilio / SMS", category: "Comms", color: "text-red-400" },
-  { icon: Lock, label: "AES-256 / RSA", category: "Encryption", color: "text-slate-400" },
+  { logo: "https://cdn.simpleicons.org/react/61DAFB", label: "React / Next.js", category: "Architecture", color: "text-sky-400" },
+  { logo: "https://cdn.simpleicons.org/tailwindcss/06B6D4", label: "Tailwind CSS", category: "Styling", color: "text-cyan-400" },
+  { logo: "https://cdn.simpleicons.org/mongodb/47A033", label: "MongoDB / Atlas", category: "Database", color: "text-emerald-400" },
+  { logo: "https://cdn.simpleicons.org/nodedotjs/339933", label: "Node.js / Express", category: "Backend", color: "text-green-400" },
+  { logo: "https://cdn.simpleicons.org/googlemaps/4285F4", label: "Google Maps SDK", category: "Spatial", color: "text-emerald-400" },
+  { logo: "https://cdn.simpleicons.org/openai/412991", label: "AI / ML Vision", category: "Intelligence", color: "text-indigo-400" },
+  { logo: "https://cdn.simpleicons.org/auth0/EB5424", label: "Auth.js / JWT", category: "Security", color: "text-violet-400" },
+  { logo: "https://cdn.simpleicons.org/socketdotio/010101", label: "Socket.io", category: "Real-time", color: "text-blue-400" },
+  { logo: "https://cdn.simpleicons.org/framer/0055FF", label: "Framer Motion", category: "Animation", color: "text-fuchsia-400" },
+  { logo: "https://cdn.simpleicons.org/twilio/F22F46", label: "Twilio / SMS", category: "Comms", color: "text-red-400" },
+  { logo: "https://cdn.simpleicons.org/typescript/3178C6", label: "TypeScript", category: "Language", color: "text-blue-500" },
+  { logo: "https://cdn.simpleicons.org/git/F05032", label: "Git / Versioning", category: "Control", color: "text-orange-500" },
 ];
 
 const TechStackSection = () => (
@@ -48,8 +48,8 @@ const TechStackSection = () => (
             transition={{ delay: i * 0.05 }}
             className="group card-premium p-6 hover:border-white/20 transition-all flex items-center gap-5 cursor-default"
           >
-            <div className={`w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-white/10 transition-all duration-300 ${t.color}`}>
-              <t.icon size={26} />
+            <div className={`w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-white/10 transition-all duration-300`}>
+              <img src={t.logo} className="w-6 h-6 object-contain" alt={t.label} />
             </div>
             <div>
               <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-50">{t.category}</div>

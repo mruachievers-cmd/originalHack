@@ -20,7 +20,15 @@ const iconMap = {
 
 const SafetyMapSection = () => (
   <section id="map" className="section-padding relative">
-    <div className="absolute top-0 left-0 w-full h-full bg-primary/[0.02] -z-10"></div>
+    <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 bg-background/80 z-10" />
+      <img 
+        src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=2000&auto=format&fit=crop" 
+        className="w-full h-full object-cover opacity-20 contrast-125"
+        alt="Tactical City Grid"
+        loading="lazy"
+      />
+    </div>
     
     <div className="container mx-auto px-4 md:px-8">
       <motion.div

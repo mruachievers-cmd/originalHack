@@ -6,11 +6,36 @@ import { submitSOS } from "../lib/api";
 import { toast } from "sonner";
 
 const features = [
-  { icon: MapPin, title: "Precision GPS", desc: "Live location propagation across 12 nodes" },
-  { icon: Mic, title: "Acoustic Trigger", desc: 'Neural voice recognition for instant activation' },
-  { icon: Video, title: "Ghost Record", desc: "Stealth cloud synchronization of evidence" },
-  { icon: Phone, title: "Rapid Response", desc: "E-dispatch to the 3 nearest police units" },
-  { icon: Users, title: "Sentinel Network", desc: "Emergency broadcast to verified circles" },
+  { 
+    icon: MapPin, 
+    title: "Precision GPS", 
+    desc: "Live location propagation across 12 nodes",
+    illustration: "https://images.unsplash.com/photo-1548345166-89689886ed41?q=80&w=600&auto=format&fit=crop"
+  },
+  { 
+    icon: Mic, 
+    title: "Acoustic Trigger", 
+    desc: 'Neural voice recognition for instant activation',
+    illustration: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=600&auto=format&fit=crop"
+  },
+  { 
+    icon: Video, 
+    title: "Ghost Record", 
+    desc: "Stealth cloud synchronization of evidence",
+    illustration: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?q=80&w=600&auto=format&fit=crop"
+  },
+  { 
+    icon: Phone, 
+    title: "Rapid Response", 
+    desc: "E-dispatch to the 3 nearest police units",
+    illustration: "https://images.unsplash.com/photo-1637016887843-c6d136c06d74?q=80&w=600&auto=format&fit=crop"
+  },
+  { 
+    icon: Users, 
+    title: "Sentinel Network", 
+    desc: "Emergency broadcast to verified circles",
+    illustration: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=600&auto=format&fit=crop"
+  },
 ];
 
 const WomenSafetySection = () => {
@@ -170,17 +195,23 @@ const WomenSafetySection = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="card-premium p-6 flex items-start gap-6 group hover:border-rose-500/20 transition-all cursor-default"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-rose-500/5 border border-rose-500/10 flex items-center justify-center shrink-0 group-hover:bg-rose-500/10 group-hover:scale-110 transition-all duration-300">
-                    <f.icon className="w-6 h-6 text-rose-500" />
-                  </div>
-                  <div>
-                    <h4 className="font-black text-sm uppercase tracking-widest mb-1 group-hover:text-rose-500 transition-colors">{f.title}</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
-                    {/* Progress indicator mini */}
-                    <div className="mt-3 h-1 w-24 bg-white/5 rounded-full overflow-hidden">
-                       <div className="h-full bg-rose-500 w-1/3 group-hover:w-full transition-all duration-700"></div>
+                  <div className="card-premium p-6 flex items-start gap-6 group hover:border-rose-500/20 transition-all cursor-default relative overflow-hidden">
+                    {/* Background Illustration Subtle */}
+                    <div className="absolute top-0 right-0 w-32 h-full opacity-[0.03] group-hover:opacity-10 transition-opacity">
+                       <img src={f.illustration} className="w-full h-full object-cover" alt="" />
+                    </div>
+
+                    <div className="w-14 h-14 rounded-2xl bg-rose-500/5 border border-rose-500/10 flex items-center justify-center shrink-0 group-hover:bg-rose-500/10 group-hover:scale-110 transition-all duration-300 relative z-10">
+                      <f.icon className="w-6 h-6 text-rose-500" />
+                    </div>
+                    <div className="relative z-10">
+                      <h4 className="font-black text-sm uppercase tracking-widest mb-1 group-hover:text-rose-500 transition-colors">{f.title}</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
+                      {/* Progress indicator mini */}
+                      <div className="mt-3 h-1 w-24 bg-white/5 rounded-full overflow-hidden">
+                         <div className="h-full bg-rose-500 w-1/3 group-hover:w-full transition-all duration-700"></div>
+                      </div>
                     </div>
                   </div>
                 </motion.div>

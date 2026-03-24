@@ -7,28 +7,32 @@ const problems = [
     title: "Crime Reporting Delays",
     desc: "Traditional reporting methods cause critical delays in emergency response times, costing precious seconds.",
     color: "from-blue-500/20 to-cyan-500/20",
-    iconColor: "text-blue-400"
+    iconColor: "text-blue-400",
+    illustration: "https://images.unsplash.com/photo-1501139083538-0139583c060f?q=80&w=600&auto=format&fit=crop"
   },
   {
     icon: Radio,
     title: "Poor Communication",
     desc: "Lack of real-time communication channels between citizens and police leads to information gaps.",
     color: "from-purple-500/20 to-blue-500/20",
-    iconColor: "text-purple-400"
+    iconColor: "text-purple-400",
+    illustration: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=600&auto=format&fit=crop"
   },
   {
     icon: FileText,
     title: "No Digital FIR System",
     desc: "Paper-based FIR systems lead to inefficiency, record loss, and slow legal processes.",
     color: "from-emerald-500/20 to-teal-500/20",
-    iconColor: "text-emerald-400"
+    iconColor: "text-emerald-400",
+    illustration: "https://images.unsplash.com/photo-1586769852044-692d6e3703a0?q=80&w=600&auto=format&fit=crop"
   },
   {
     icon: ShieldAlert,
     title: "Women Safety Emergencies",
     desc: "Insufficient tools for women to quickly and discreetly alert authorities in danger.",
     color: "from-rose-500/20 to-red-500/20",
-    iconColor: "text-rose-400"
+    iconColor: "text-rose-400",
+    illustration: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=600&auto=format&fit=crop"
   },
 ];
 
@@ -74,7 +78,12 @@ const ProblemSection = () => (
                 <p.icon size={80} />
               </div>
               
-              <div className={`w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 ${p.iconColor}`}>
+              <div className="mb-8 relative overflow-hidden rounded-xl h-24 w-full">
+                <img src={p.illustration} className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500" alt={p.title} />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+              </div>
+
+              <div className={`w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:rotate-6 transition-all duration-300 ${p.iconColor}`}>
                 <p.icon size={28} />
               </div>
               
