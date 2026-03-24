@@ -30,7 +30,11 @@ const PoliceDashboard = () => {
         getEvidence(),
         getTips()
       ]);
-      setFirs(firRes);
+      // Priority-based triage sorting
+      const priorityMap: Record<string, number> = { "High": 3, "Medium": 2, "Low": 1 };
+      const sortedFirs = [...firRes].sort((a, b) => (priorityMap[b.priority] || 0) - (priorityMap[a.priority] || 0));
+      
+      setFirs(sortedFirs);
       setSosAlerts(sosRes);
       setEvidence(evidenceRes);
       setTips(tipRes);
@@ -69,6 +73,22 @@ const PoliceDashboard = () => {
       return () => clearInterval(interval);
     }
   }, [navigate, prevSosCount]);
+
+  useEffect(() => {
+    // Constant notifications for unresolved High Priority FIRs
+    const checkHighPriority = () => {
+      const activeHigh = firs.filter(f => f.priority === 'High' && f.status === 'Active');
+      if (activeHigh.length > 0) {
+        toast.error(`🚨 ${activeHigh.length} HIGH-PRIORITY CASES UNATTENDED`, {
+          description: `Crucial incidents require immediate officer assignment. Please check the top of the FIR list.`,
+          duration: 5000,
+        });
+      }
+    };
+
+    const interval = setInterval(checkHighPriority, 15000); // Remind every 15 seconds
+    return () => clearInterval(interval);
+  }, [firs]);
 
   const handleLogout = () => {
     localStorage.removeItem("gn_auth");
@@ -174,19 +194,28 @@ const PoliceDashboard = () => {
                 <div className="text-center py-10 opacity-30 font-black uppercase tracking-widest text-xs text-muted-foreground">No FIRs logged in grid</div>
               ) : (
                 firs.map((fir) => (
-                  <div key={fir.id} className="p-5 rounded-2xl bg-secondary/10 border border-primary/5 hover:bg-white hover:shadow-md hover:border-primary/20 transition-all cursor-pointer group/item flex items-center justify-between">
+                  <div key={fir.id} className={`p-5 rounded-2xl border transition-all cursor-pointer group/item flex items-center justify-between ${
+                    fir.priority === 'High' && fir.status === 'Active' 
+                      ? 'bg-rose-50 border-rose-200 animate-pulse-subtle' 
+                      : 'bg-secondary/10 border-primary/5 hover:bg-white hover:shadow-md hover:border-primary/20'
+                  }`}>
                      <div>
                        <div className="flex items-center gap-2 mb-2">
                          <span className="text-xs font-black text-muted-foreground">{fir.id}</span>
                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider ${fir.status === 'Active' ? 'bg-rose-500/10 text-rose-500' : fir.status === 'Investigating' ? 'bg-amber-500/10 text-amber-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
                            {fir.status}
                          </span>
+                         {fir.priority === 'High' && (
+                           <span className="text-[10px] font-black px-2 py-0.5 rounded-sm bg-rose-500 text-white uppercase tracking-widest animate-pulse">
+                             High Priority
+                           </span>
+                         )}
                        </div>
                        <div className="font-bold text-sm tracking-wide mb-1 flex items-center gap-2 text-foreground">
                          {fir.type}
                        </div>
                        <div className="text-xs text-muted-foreground flex items-center gap-2">
-                         <MapPin size={12} className="text-cyan-600" /> {fir.location}
+                         <MapPin size={12} className={fir.priority === 'High' ? 'text-rose-500' : 'text-cyan-600'} /> {fir.location}
                        </div>
                      </div>
                      <div className="text-right">

@@ -65,8 +65,30 @@ initDB();
 app.post('/api/firs', (req, res) => {
   const { type, location, reporter, description, phone } = req.body;
   const db = getDB();
+  
+  // Dynamic Priority Triage
+  let priority = "Medium";
+  const highPriorityKeywords = ["assault", "robbery", "weapon", "danger", "urgent", "critical", "violence", "threat", "murder", "emergency", "missing"];
+  const lowPriorityKeywords = ["theft", "property", "parking", "noise"];
+  
+  const content = (type + " " + description).toLowerCase();
+  
+  if (highPriorityKeywords.some(kw => content.includes(kw))) priority = "High";
+  else if (lowPriorityKeywords.some(kw => content.includes(kw))) priority = "Low";
+
   const id = `FIR-${Date.now().toString().slice(-4)}`;
-  const newFIR = { id, type, location, reporter, description, phone, status: "Active", created_at: new Date() };
+  const newFIR = { 
+    id, 
+    type, 
+    location, 
+    reporter, 
+    description, 
+    phone, 
+    priority, 
+    status: "Active", 
+    created_at: new Date() 
+  };
+  
   db.firs.push(newFIR);
   saveDB(db);
   res.json({ success: true, fir: newFIR });
