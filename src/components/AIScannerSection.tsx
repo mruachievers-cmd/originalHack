@@ -16,6 +16,23 @@ const AIScannerSection = () => {
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [suspects, setSuspects] = useState<faceapi.LabeledFaceDescriptors[]>([]);
   
+  // Check for existing session
+  useEffect(() => {
+    const savedAuth = localStorage.getItem("guardian_net_auth");
+    if (savedAuth === "true") setIsAuthorized(true);
+  }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (badgeId === "GN-1234-5678" && stationId === "CENTRAL PRECINCT 01") {
+      setIsAuthorized(true);
+      localStorage.setItem("guardian_net_auth", "true");
+      toast.success("Security Clearance Granted. Welcome, Officer.");
+    } else {
+      toast.error("Invalid Credentials. Access Denied.");
+    }
+  };
+  
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
