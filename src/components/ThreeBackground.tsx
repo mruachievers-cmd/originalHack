@@ -4,10 +4,10 @@ import { Float, MeshDistortMaterial, Sphere, PerspectiveCamera, Points, PointMat
 import * as THREE from 'three';
 
 const NeuralParticles = () => {
-    const count = 2000;
+    const count = 5000;
     const positions = useMemo(() => {
         const pos = new Float32Array(count * 3);
-        const radius = 25;
+        const radius = 30;
         for (let i = 0; i < count; i++) {
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos((Math.random() * 2) - 1);
@@ -23,8 +23,8 @@ const NeuralParticles = () => {
     useFrame((state) => {
         if (!pointsRef.current) return;
         const time = state.clock.getElapsedTime();
-        pointsRef.current.rotation.y = time * 0.05;
-        pointsRef.current.rotation.x = time * 0.02;
+        pointsRef.current.rotation.y = time * 0.02;
+        pointsRef.current.rotation.x = time * 0.01;
     });
 
     return (
@@ -32,11 +32,11 @@ const NeuralParticles = () => {
             <PointMaterial
                 transparent
                 color="#0ea5e9"
-                size={0.07}
+                size={0.12}
                 sizeAttenuation={true}
                 depthWrite={false}
                 blending={THREE.AdditiveBlending}
-                opacity={0.15}
+                opacity={0.4}
             />
         </Points>
     );
@@ -48,30 +48,33 @@ const SubtleSphere = ({ position, color, distort, size }: { position: [number, n
     useFrame((state) => {
         if (!mesh.current) return;
         const time = state.clock.getElapsedTime();
-        const scroll = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+        // Updated scroll calculation for higher precision
+        const scroll = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight || 1);
         
-        // Combine scroll position with subtle auto-floating
-        mesh.current.position.y = position[1] - (scroll * 40) + Math.sin(time + position[0]) * 0.5;
-        mesh.current.rotation.x = time * 0.2;
-        mesh.current.rotation.y = time * 0.3;
+        // Vertical movement relative to scroll
+        mesh.current.position.y = position[1] - (scroll * 60) + Math.sin(time + position[0]) * 0.8;
+        mesh.current.rotation.x = time * 0.3;
+        mesh.current.rotation.z = time * 0.2;
         
-        // Subtle pulsing scale
-        const scale = 1 + Math.sin(time * 0.5) * 0.05;
-        mesh.current.scale.set(scale, scale, scale);
+        // Breathing scale pulse
+        const pulse = 1 + Math.sin(time * 0.4) * 0.08;
+        mesh.current.scale.set(pulse, pulse, pulse);
     });
 
     return (
-        <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
+        <Float speed={3} rotationIntensity={0.5} floatIntensity={1.5}>
             <Sphere ref={mesh} args={[size, 64, 64]} position={position}>
                 <MeshDistortMaterial
                     color={color}
                     attach="material"
                     distort={distort}
-                    speed={2}
-                    roughness={0.2}
-                    metalness={0.8}
+                    speed={3}
+                    roughness={0}
+                    metalness={1}
+                    emissive={color}
+                    emissiveIntensity={2}
                     transparent
-                    opacity={0.08}
+                    opacity={0.25}
                 />
             </Sphere>
         </Float>
@@ -80,31 +83,34 @@ const SubtleSphere = ({ position, color, distort, size }: { position: [number, n
 
 const ThreeBackground = () => {
     return (
-        <div className="fixed inset-0 -z-50 pointer-events-none overflow-hidden bg-transparent">
-            {/* Overlay Gradient to blend with existing CSS linear gradients */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-transparent to-[#020617] opacity-60 pointer-events-none z-10"></div>
+        <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden bg-[#020617]">
+            {/* Dark radial glow for center visibility */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#020617_70%)] opacity-80 z-[5]"></div>
             
-            <Canvas dpr={[1, 2]}>
-                <PerspectiveCamera makeDefault position={[0, 0, 15]} />
-                <ambientLight intensity={0.4} />
-                <pointLight position={[10, 10, 10]} intensity={0.8} color="#0ea5e9" />
-                <pointLight position={[-10, -10, -10]} intensity={0.5} color="#FF4A6B" />
+            <Canvas dpr={[1, 2]} camera={{ fov: 60, position: [0, 0, 20] }}>
+                <ambientLight intensity={1.5} />
+                <pointLight position={[10, 10, 10]} intensity={2} color="#0ea5e9" />
+                <pointLight position={[-10, -10, -10]} intensity={1.5} color="#FF4A6B" />
+                <spotLight position={[0, 10, 0]} intensity={1} color="#0ea5e9" />
                 
                 <NeuralParticles />
                 
-                <SubtleSphere position={[-12, 10, -5]} color="#0ea5e9" distort={0.4} size={2} />
-                <SubtleSphere position={[15, -5, -8]} color="#FF4A6B" distort={0.5} size={3} />
-                <SubtleSphere position={[-10, -25, -2]} color="#0ea5e9" distort={0.3} size={2.5} />
-                <SubtleSphere position={[12, -45, -6]} color="#FF4A6B" distort={0.4} size={4} />
+                <SubtleSphere position={[-15, 15, -5]} color="#0ea5e9" distort={0.4} size={3} />
+                <SubtleSphere position={[18, 0, -10]} color="#FF4A6B" distort={0.5} size={4} />
+                <SubtleSphere position={[-12, -30, -5]} color="#0ea5e9" distort={0.3} size={3.5} />
+                <SubtleSphere position={[15, -60, -12]} color="#FF4A6B" distort={0.6} size={5} />
+                <SubtleSphere position={[-5, -100, -2]} color="#10b981" distort={0.2} size={2.5} />
 
-                {/* Subtle Neural Grid */}
-                <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -2, 0]}>
-                    <planeGeometry args={[150, 150, 40, 40]} />
+                {/* Enhanced Neural Grid */}
+                <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -5, 0]}>
+                    <planeGeometry args={[200, 200, 40, 40]} />
                     <meshStandardMaterial
                         color="#0ea5e9"
                         wireframe
                         transparent
-                        opacity={0.02}
+                        opacity={0.06}
+                        emissive="#0ea5e9"
+                        emissiveIntensity={0.5}
                     />
                 </mesh>
             </Canvas>

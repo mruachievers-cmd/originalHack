@@ -19,7 +19,7 @@ import ThreeBackground from "@/components/ThreeBackground";
 
 
 const Index = () => (
-  <div className="min-h-screen bg-background text-foreground scroll-smooth relative overflow-x-hidden">
+  <div className="min-h-screen bg-transparent text-foreground scroll-smooth relative overflow-x-hidden">
     <ThreeBackground />
     <Navbar />
     <div id="home">
