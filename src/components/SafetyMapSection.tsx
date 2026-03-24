@@ -83,42 +83,34 @@ const SafetyMapSection = () => (
         {/* Map Simulation */}
         <div className="relative aspect-[21/9] rounded-[2rem] bg-secondary/10 overflow-hidden border border-primary/20 shadow-inner group">
           
+          {/* Map info overlay */}
+          <div className="absolute top-6 left-6 flex flex-col gap-2 z-30">
+             <div className="px-4 py-2 rounded-xl bg-white/95 backdrop-blur-md border-2 border-primary text-[10px] font-black uppercase tracking-widest flex items-center gap-2 text-primary shadow-xl">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                LIVE FEED ACTIVE: HYDERABAD COMMAND
+             </div>
+             <div className="px-4 py-2 rounded-xl bg-white/95 backdrop-blur-md border-2 border-primary/20 text-[10px] font-mono text-slate-800 shadow-xl font-bold">
+                COORD: 17.3850° N, 78.4867° E
+             </div>
+          </div>
+
           {/* Actual Geographic Map Background */}
-          <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-60">
+          <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
             <iframe 
-              width="120%" 
-              height="120%" 
+              width="130%" 
+              height="130%" 
               frameBorder="0" 
-              src="https://www.openstreetmap.org/export/embed.html?bbox=78.35,17.30,78.60,17.45&layer=mapnik" 
+              src="https://www.openstreetmap.org/export/embed.html?bbox=78.420,17.350,78.520,17.420&layer=mapnik" 
               style={{ 
                 position: 'absolute', 
-                top: '-10%', 
-                left: '-10%', 
-                filter: 'contrast(110%) brightness(105%) saturate(120%)' 
+                top: '-15%', 
+                left: '-15%', 
+                filter: 'contrast(1.2) brightness(1.1) saturate(1.2)' 
               }}
             ></iframe>
-            {/* Soft green tint for Leaf aesthetic */}
-            <div className="absolute inset-0 bg-primary/5 mix-blend-multiply"></div>
-            {/* Soft edge fading */}
-            <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-white/40"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-white/40"></div>
+            {/* Soft leaf tint */}
+            <div className="absolute inset-0 bg-primary/10 mix-blend-color"></div>
           </div>
-
-          {/* Sweep Animation Subtle */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] pointer-events-none opacity-5 z-10">
-             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent animate-[spin_15s_linear_infinite]" style={{ clipPath: 'conic-gradient(from 0deg at 50% 50%, #22c55e, transparent 90deg)' }}></div>
-          </div>
-
-          {/* Grid lines */}
-          <div className="absolute inset-0 opacity-[0.05] pointer-events-none z-10" style={{ backgroundImage: 'linear-gradient(#00A8E8 1px, transparent 1px), linear-gradient(90deg, #00A8E8 1px, transparent 1px)', backgroundSize: '4% 8%' }}></div>
-
-          {/* Road-like lines */}
-          <div className="absolute top-[40%] left-0 right-0 h-px bg-white/10" />
-          <div className="absolute left-[45%] top-0 bottom-0 w-px bg-white/10" />
-
-          {/* Heatmap zones */}
-          <div className="absolute w-48 h-48 rounded-full bg-rose-500/10 blur-[60px] animate-pulse" style={{ left: "20%", top: "60%" }} />
-          <div className="absolute w-40 h-40 rounded-full bg-rose-500/10 blur-[50px] animate-pulse" style={{ left: "65%", top: "65%" }} />
 
           {/* Markers */}
           {markers.map((m, i) => {
