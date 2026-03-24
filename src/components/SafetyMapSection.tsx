@@ -69,20 +69,36 @@ const SafetyMapSection = () => (
         </div>
 
         {/* Map Simulation */}
-        <div className="relative aspect-[21/9] rounded-[2rem] bg-black/40 overflow-hidden border border-white/5 shadow-inner group">
+        <div className="relative aspect-[21/9] rounded-[2rem] bg-[#020617] overflow-hidden border border-white/5 shadow-inner group">
+          
+          {/* Actual Geographic Map Background */}
+          <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-60">
+            <iframe 
+              width="120%" 
+              height="120%" 
+              frameBorder="0" 
+              src="https://www.openstreetmap.org/export/embed.html?bbox=77.5346%2C12.9316%2C77.6546%2C13.0116&layer=mapnik" 
+              style={{ 
+                position: 'absolute', 
+                top: '-10%', 
+                left: '-10%', 
+                filter: 'invert(100%) grayscale(100%) contrast(150%) brightness(70%)' 
+              }}
+            ></iframe>
+            {/* Color tint for tactical mode */}
+            <div className="absolute inset-0 bg-primary/30 mix-blend-color"></div>
+            {/* Edge fading gradients */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-[#020617]"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-transparent to-[#020617]"></div>
+          </div>
+
           {/* Radar Sweep Animation */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] pointer-events-none opacity-20">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] pointer-events-none opacity-20 z-10">
              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent animate-[spin_10s_linear_infinite]" style={{ clipPath: 'conic-gradient(from 0deg at 50% 50%, #00A8E8, transparent 90deg)' }}></div>
           </div>
 
           {/* Grid lines */}
-          <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{ backgroundImage: 'linear-gradient(#00A8E8 1px, transparent 1px), linear-gradient(90deg, #00A8E8 1px, transparent 1px)', backgroundSize: '4% 8%' }}></div>
-          
-          {/* Topographic lines simulation */}
-          <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none">
-             <path d="M0,50 Q100,20 200,80 T400,30 T600,60 T800,10" fill="none" stroke="currentColor" strokeWidth="1" />
-             <path d="M0,150 Q150,120 300,180 T600,130 T900,160" fill="none" stroke="currentColor" strokeWidth="1" />
-          </svg>
+          <div className="absolute inset-0 opacity-[0.05] pointer-events-none z-10" style={{ backgroundImage: 'linear-gradient(#00A8E8 1px, transparent 1px), linear-gradient(90deg, #00A8E8 1px, transparent 1px)', backgroundSize: '4% 8%' }}></div>
 
           {/* Road-like lines */}
           <div className="absolute top-[40%] left-0 right-0 h-px bg-white/10" />
