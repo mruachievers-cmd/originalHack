@@ -163,3 +163,41 @@
   text-shadow: 0 0 15px rgba(16,185,129,0.5);
 }
 
+.light-mode {
+  --background: 0 0% 100%;
+  --foreground: 216 60% 7%;
+  --card: 0 0% 98%;
+  --card-foreground: 216 60% 7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 216 60% 7%;
+  --primary: 197 100% 40%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 20% 95%;
+  --secondary-foreground: 216 60% 10%;
+  --muted: 210 20% 95%;
+  --muted-foreground: 210 10% 40%;
+  --accent: 197 100% 40%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 20% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 197 100% 40%;
+  --glass-bg: 0 0% 100% / 0.8;
+  --glass-border: 0 0% 0% / 0.1;
+}
+
+.light-mode footer, 
+.light-mode header,
+.light-mode .glass-card {
+  @apply bg-white/80 border-slate-200;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+}
+
+.light-mode .text-white {
+  @apply text-slate-900;
+}
+
+.light-mode .text-muted-foreground {
+  @apply text-slate-500;
+}

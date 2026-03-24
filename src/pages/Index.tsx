@@ -17,6 +17,7 @@ import { FeatureSphere } from "@/components/FeatureSphere";
 import AnonymousTip from "@/components/AnonymousTip";
 import DeadManSwitch from "@/components/DeadManSwitch";
 import SilentGestureSOS from "@/components/SilentGestureSOS";
+import ThemeToggle from "@/components/ThemeToggle";
 
 
 const Index = () => (
@@ -62,6 +63,7 @@ const Index = () => (
     <EscortMode />
     <ChatbotSection />
     <SilentGestureSOS />
+    <ThemeToggle />
     <FooterSection />
   </div>
 );
