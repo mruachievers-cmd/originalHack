@@ -104,46 +104,65 @@ const DeadManSwitch = () => {
   };
 
   return (
-    <section className="py-12 relative overflow-hidden">
+    <section className="py-20 relative overflow-hidden z-20">
       <div className="container mx-auto px-4 md:px-8">
-        <div className="glass-card p-8 rounded-[2rem] border border-white/10 relative group overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-700">
-            <Timer size={120} className="text-primary" />
+        <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="glass-card p-10 rounded-[3rem] border border-primary/40 relative group overflow-hidden shadow-[0_0_50px_rgba(14,165,233,0.15)] bg-gradient-to-br from-primary/5 to-transparent"
+        >
+          <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:scale-125 transition-transform duration-1000">
+            <Shield size={160} className="text-primary animate-pulse" />
           </div>
 
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
-            <div className="space-y-4 max-w-xl text-center md:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
-                <Shield size={12} />
-                Dead-Man Switch
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10">
+            <div className="space-y-6 max-w-2xl text-center lg:text-left">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 border border-primary/40 text-primary text-xs font-black uppercase tracking-widest shadow-[0_0_15px_rgba(14,165,233,0.2)]">
+                  <Shield size={14} />
+                  Tactical Safety Unit 07
+                </div>
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-black uppercase tracking-widest">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></div>
+                  Neural Grid Online
+                </div>
               </div>
-              <h2 className="text-3xl md:text-4xl font-black italic uppercase tracking-tight">
-                Fun <span className="text-gradient">Check Mode</span>
+
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black italic uppercase tracking-tighter leading-none">
+                Guardian <span className="text-primary">Dead-Man</span> <br/> 
+                <span className="text-white">Fun Check Mode</span>
               </h2>
-              <p className="text-muted-foreground text-sm uppercase font-black tracking-widest leading-relaxed">
-                 Monitor your safety via casual polls without alerting attackers.
+              
+              <p className="text-muted-foreground text-base lg:text-lg uppercase font-black tracking-[0.2em] leading-relaxed max-w-xl">
+                 Our advanced silent monitoring system that checks on you via casual polls, keeping your status hidden from any physical threat.
               </p>
             </div>
 
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-6 p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md">
                 <button 
                   onClick={() => isActive ? stopMonitoring() : startMonitoring()}
-                  className={`relative w-24 h-12 rounded-full transition-all duration-500 shadow-2xl ${
-                    isActive ? 'bg-emerald-500 shadow-emerald-500/20' : 'bg-white/10'
+                  className={`relative w-28 h-14 rounded-full transition-all duration-700 shadow-2xl scale-110 ${
+                    isActive ? 'bg-primary shadow-primary/30' : 'bg-white/10'
                   }`}
                 >
-                  <div className={`absolute top-1 w-10 h-10 rounded-full bg-white transition-all duration-500 flex items-center justify-center ${
-                    isActive ? 'left-13 right-1' : 'left-1'
+                  <div className={`absolute top-1.5 w-11 h-11 rounded-full bg-white transition-all duration-700 flex items-center justify-center shadow-lg ${
+                    isActive ? 'left-15 right-1.5' : 'left-1.5'
                   }`}>
-                    {isActive ? <CheckCircle2 className="text-emerald-500" size={20} /> : <X className="text-muted-foreground" size={20} />}
+                    {isActive ? <Shield className="text-primary" size={24} /> : <X className="text-muted-foreground" size={24} />}
                   </div>
                 </button>
-                <div className="text-[10px] font-black uppercase tracking-[0.2em]">
-                   {isActive ? 'Safety Switch: ENGAGED' : 'Safety Switch: DISARMED'}
+                <div className="flex flex-col items-center">
+                    <span className={`text-[11px] font-black uppercase tracking-[0.3em] ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>
+                        {isActive ? 'SYSTEM ENGAGED' : 'SYSTEM DISARMED'}
+                    </span>
+                    <span className="text-[9px] text-white/30 font-black uppercase tracking-widest mt-1">
+                        Manual Neural Override Available
+                    </span>
                 </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Check-In Modal */}
         <AnimatePresence>

@@ -24,6 +24,9 @@ const Index = () => (
     <div id="home">
       <HeroSection />
     </div>
+    <div className="relative z-20">
+      <DeadManSwitch />
+    </div>
     <div id="problem">
       <ProblemSection />
     </div>
@@ -46,7 +49,6 @@ const Index = () => (
     </div>
     <div id="safety">
       <WomenSafetySection />
-      <DeadManSwitch />
     </div>
     <div id="witness">
       <AnonymousTip />
