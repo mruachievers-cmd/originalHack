@@ -20,19 +20,42 @@ const DeadManSwitch = () => {
   const [showCheckIn, setShowCheckIn] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [response, setResponse] = useState("");
-  const [countdown, setCountdown] = useState(10); // Simulation countdown
+  const [nextCheckIn, setNextCheckIn] = useState(120); // 2 minutes in seconds
+  const [countdown, setCountdown] = useState(30); 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const startMonitoring = () => {
     setIsActive(true);
-    toast.success("Guardian Dead-Man Switch Activated", {
-      description: "Casual check-ins will begin shortly. Stay safe!",
+    setNextCheckIn(120);
+    toast.success("Guardian Safety Mode Activated", {
+      description: "Tactical check-ins will trigger every 2 minutes.",
     });
-    // For demo: trigger first check after 10 seconds
+    
+    startNextCycle();
+  };
+
+  const startNextCycle = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+
+    setNextCheckIn(120);
+    
+    // Progress countdown for UI
+    progressIntervalRef.current = setInterval(() => {
+        setNextCheckIn((prev) => {
+            if (prev <= 1) {
+                if(progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+                return 0;
+            }
+            return prev - 1;
+        });
+    }, 1000);
+
     timerRef.current = setTimeout(() => {
       triggerCheckIn();
-    }, 10000);
+    }, 120000); // 2 minutes
   };
 
   const stopMonitoring = () => {
@@ -40,6 +63,7 @@ const DeadManSwitch = () => {
     setShowCheckIn(false);
     if (timerRef.current) clearTimeout(timerRef.current);
     if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
     toast.info("Dead-Man Switch Deactivated");
   };
 
@@ -48,7 +72,7 @@ const DeadManSwitch = () => {
     setCurrentQuestion(QUESTIONS[randomIdx]);
     setShowCheckIn(true);
     setResponse("");
-    setCountdown(10); // User has 10 seconds to reply (Simulated)
+    setCountdown(30); // 30 seconds to reply
 
     countdownIntervalRef.current = setInterval(() => {
         setCountdown((prev) => {
@@ -71,19 +95,18 @@ const DeadManSwitch = () => {
         handleDistressDetected(`Keyword detected: ${response}`);
     } else {
         setShowCheckIn(false);
-        toast.success("Check-in confirmed. Safe travels!");
-        // Schedule next check in 20 seconds for demo
-        timerRef.current = setTimeout(() => {
-            triggerCheckIn();
-        }, 20000);
+        toast.success("Identity Verified. Current Sector Safe.");
+        startNextCycle();
     }
   };
 
   const handleDistressDetected = async (reason: string) => {
     setShowCheckIn(false);
     setIsActive(false);
-    toast.warning("Silent Distress Detected", {
-      description: "Triggering emergency protocols immediately.",
+    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    
+    toast.warning("Neural Link Broken: Silent Distress Detected", {
+      description: "Emergency units are being dispatched to your sector.",
     });
 
     try {
@@ -95,11 +118,8 @@ const DeadManSwitch = () => {
           last_response: response || reason,
           status: "Critical"
         });
-        toast.error("SOS Emergency Alert Dispatched to Central Command", {
-            duration: 10000
-        });
     } catch (err) {
-        toast.error("Bridge Connection Lost - Local SOS broadcast only.");
+        toast.error("Bridge Error: Local beacon triggered.");
     }
   };
 
@@ -137,6 +157,23 @@ const DeadManSwitch = () => {
               <p className="text-muted-foreground text-base lg:text-lg uppercase font-black tracking-[0.2em] leading-relaxed max-w-xl">
                  Our advanced silent monitoring system that checks on you via casual polls, keeping your status hidden from any physical threat.
               </p>
+
+              {isActive && (
+                <div className="space-y-3 pt-4 max-w-md">
+                   <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-primary">
+                      <span>Neural Heartbeat Sync</span>
+                      <span>{Math.floor(nextCheckIn / 60)}:{(nextCheckIn % 60).toString().padStart(2, '0')}</span>
+                   </div>
+                   <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden border border-white/10">
+                      <motion.div 
+                        initial={{ width: "100%" }}
+                        animate={{ width: `${(nextCheckIn / 120) * 100}%` }}
+                        transition={{ duration: 1, ease: "linear" }}
+                        className="h-full bg-primary shadow-[0_0_10px_rgba(14,165,233,0.5)]"
+                      />
+                   </div>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col items-center gap-6 p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md">

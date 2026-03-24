@@ -141,6 +141,13 @@
       },
       "status": "Critical",
       "created_at": "2026-03-24T13:28:48.771Z"
+    },
+    {
+      "id": "SOS-9479",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "status": "Critical",
+      "created_at": "2026-03-24T16:43:39.481Z"
     }
   ],
   "evidence": [
