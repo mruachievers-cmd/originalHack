@@ -259,7 +259,7 @@ app.post('/api/login/officer', (req, res) => {
   }
 });
 
-const PORT = 5001;
+const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`✅ Guardian Net Neural Backend running on http://localhost:${PORT}`);
   console.log(`📂 JSON Database located at: ${DB_PATH}`);

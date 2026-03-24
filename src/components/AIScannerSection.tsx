@@ -88,12 +88,26 @@ const AIScannerSection = () => {
 
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
-      setStream(stream);
+      const constraints = { 
+        video: { 
+          width: { ideal: 640 }, 
+          height: { ideal: 480 },
+          facingMode: "user"
+        } 
+      };
+      const localStream = await navigator.mediaDevices.getUserMedia(constraints);
+      setStream(localStream);
       setIsCameraActive(true);
+      
+      // Explicitly attach to ref if available immediately
+      if (videoRef.current) {
+        videoRef.current.srcObject = localStream;
+      }
+      
+      toast.success("Neural Optical Grid Online");
     } catch (err) {
       console.error("Camera error:", err);
-      toast.error("Camera access denied or device not found.");
+      toast.error("Camera access failed. Check hardware or browser permissions.");
     }
   };
 
@@ -118,7 +132,8 @@ const AIScannerSection = () => {
     faceapi.matchDimensions(canvas, displaySize);
 
     const processFrame = async () => {
-      if (!isCameraActive || !videoRef.current || video.paused || video.ended) return;
+      // Use component-level ref for stream status check instead of captured closure
+      if (!videoRef.current || video.paused || video.ended) return;
 
       try {
         if (video.readyState >= 2) {
@@ -161,9 +176,7 @@ const AIScannerSection = () => {
         console.error("Frame processing error:", err);
       }
       
-      if (isCameraActive) {
-        requestAnimationFrame(processFrame);
-      }
+      requestAnimationFrame(processFrame);
     };
 
     processFrame();
