@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, Lock, Upload, Camera, Video, Mic, CheckCircle2, AlertCircle, Clock, Users, Share2 } from "lucide-react";
 import { toast } from "sonner";
+import { submitEvidence } from "../lib/api";
 
 interface EvidenceItem {
   id: string;
@@ -26,7 +27,7 @@ const EvidenceCollection = () => {
     });
   };
 
-  const handleUpload = (type: EvidenceItem["type"]) => {
+  const handleUpload = async (type: EvidenceItem["type"]) => {
     if (!isAlertActive) {
       toast.error("No active incident requests nearby.");
       return;
@@ -37,24 +38,39 @@ const EvidenceCollection = () => {
       setUploadProgress((prev) => {
         if (prev === null || prev >= 100) {
           clearInterval(interval);
-          const newItem: EvidenceItem = {
-            id: Math.random().toString(36).substr(2, 9),
-            type,
-            user: "Anonymous Witness",
-            time: "Just now",
-            status: "verified",
-            preview: type === "photo" ? "Image preview..." : type === "video" ? "Video snippet..." : "Audio wave...",
-          };
-          setEvidenceList([newItem, ...evidenceList]);
-          setUploadProgress(null);
-          toast.success(`${type.toUpperCase()} Evidence Uploaded Securely`, {
-            description: "Your data is encrypted and your identity remains anonymous.",
-          });
-          return null;
+          return 100;
         }
         return prev + 10;
       });
-    }, 200);
+    }, 100);
+
+    try {
+        const newItem: EvidenceItem = {
+          id: Math.random().toString(36).substr(2, 9),
+          type,
+          user: "Anonymous Witness",
+          time: "Just now",
+          status: "verified",
+          preview: type === "photo" ? "Image preview..." : type === "video" ? "Video snippet..." : "Audio wave...",
+        };
+        
+        await submitEvidence({
+            type,
+            activityType: isSusconfirmed ? "Suspicious" : "Observer",
+            location: "Sector 4",
+            userId: "anonymous",
+            evidenceUrl: "simulated_upload_url"
+        });
+
+        setEvidenceList([newItem, ...evidenceList]);
+        setUploadProgress(null);
+        toast.success(`${type.toUpperCase()} Evidence Uploaded Securely`, {
+          description: "Your data is encrypted and your identity remains anonymous.",
+        });
+    } catch (err) {
+        toast.error("Upload failed. Database connection error.");
+        setUploadProgress(null);
+    }
   };
 
   return (

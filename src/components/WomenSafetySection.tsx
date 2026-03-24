@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShieldAlert, MapPin, Mic, Video, Phone, Users, Zap, Heart, Activity } from "lucide-react";
 import { TiltCard } from "./TiltCard";
+import { submitSOS } from "../lib/api";
+import { toast } from "sonner";
 
 const features = [
   { icon: MapPin, title: "Precision GPS", desc: "Live location propagation across 12 nodes" },
@@ -20,22 +22,17 @@ const WomenSafetySection = () => {
     
     if (newState) {
       try {
-        // Trigger n8n webhook (using GET to match your current n8n node configuration)
-        const params = new URLSearchParams({
-          event: "SOS_ACTIVATED",
-          timestamp: new Date().toISOString(),
-          source: "WomenSafetyModule"
-        }).toString();
-
-        await fetch(`https://uninstructed-sharan-uncorpulent.ngrok-free.dev/webhook-test/e036c541-c252-4eda-af88-6eeca706a184?${params}`, { 
-          method: 'GET',
-          headers: { 
-            'ngrok-skip-browser-warning': 'true'
-          }
+        await submitSOS({
+          user: "Citizen Account",
+          location: "Sector 4, Street 12",
+          coordinates: { lat: 12.9716, lng: 77.5946 }
         });
-        console.log('SOS webhook triggered successfully');
+        toast.error("SOS ALERT BROADCASTED", {
+          description: "Police units have been dispatched to your current coordinates.",
+          duration: 5000,
+        });
       } catch (error) {
-        console.error('Failed to trigger SOS webhook:', error);
+        console.error('Failed to trigger SOS:', error);
       }
     }
   };

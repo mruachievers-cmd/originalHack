@@ -277,7 +277,7 @@ const AIScannerSection = () => {
     }
   };
 
-  if (userType !== "police") {
+  if (userType !== "police" && userType !== "officer") {
     return null;
   }
 

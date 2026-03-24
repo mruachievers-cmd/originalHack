@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api";
+const API_URL = "http://localhost:5001/api";
 
 export const signupCitizen = async (formData: any) => {
   const response = await fetch(`${API_URL}/signup`, {
@@ -37,4 +37,48 @@ export const loginOfficer = async (credentials: any) => {
     throw new Error(error.error || "Login failed");
   }
   return response.json();
+};
+
+// --- DATA METHODS ---
+
+export const getFIRs = async () => {
+    const response = await fetch(`${API_URL}/firs`);
+    return response.json();
+};
+
+export const submitFIR = async (data: any) => {
+    const response = await fetch(`${API_URL}/firs`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+    return response.json();
+};
+
+export const getSOSAlerts = async () => {
+    const response = await fetch(`${API_URL}/sos`);
+    return response.json();
+};
+
+export const submitSOS = async (data: any) => {
+    const response = await fetch(`${API_URL}/sos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+    return response.json();
+};
+
+export const getEvidence = async () => {
+    const response = await fetch(`${API_URL}/evidence`);
+    return response.json();
+};
+
+export const submitEvidence = async (data: any) => {
+    const response = await fetch(`${API_URL}/evidence`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+    return response.json();
 };

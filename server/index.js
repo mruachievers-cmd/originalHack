@@ -25,7 +25,10 @@ const initDB = () => {
             citizens: [],
             officers: [
                 { badge_id: "GN-1234-5678", station: "CENTRAL PRECINCT 01" }
-            ]
+            ],
+            firs: [],
+            sos_alerts: [],
+            evidence: []
         };
         fs.writeFileSync(DB_PATH, JSON.stringify(initialState, null, 2));
     }
@@ -36,7 +39,56 @@ const saveDB = (data) => fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2)
 
 initDB();
 
-// Citizen Signup
+// --- NEW DATA ROUTES ---
+
+// Submit FIR
+app.post('/api/firs', (req, res) => {
+  const { type, location, reporter, description, phone } = req.body;
+  const db = getDB();
+  const id = `FIR-${Date.now().toString().slice(-4)}`;
+  const newFIR = { id, type, location, reporter, description, phone, status: "Active", created_at: new Date() };
+  db.firs.push(newFIR);
+  saveDB(db);
+  res.json({ success: true, fir: newFIR });
+});
+
+// Get all FIRs
+app.get('/api/firs', (req, res) => {
+  res.json(getDB().firs || []);
+});
+
+// Submit SOS
+app.post('/api/sos', (req, res) => {
+  const { user, location, coordinates } = req.body;
+  const db = getDB();
+  const id = `SOS-${Date.now().toString().slice(-4)}`;
+  const newSOS = { id, user, location, coordinates, status: "Critical", created_at: new Date() };
+  db.sos_alerts.push(newSOS);
+  saveDB(db);
+  res.json({ success: true, sos: newSOS });
+});
+
+// Get SOS alerts
+app.get('/api/sos', (req, res) => {
+  res.json(getDB().sos_alerts || []);
+});
+
+// Submit Evidence
+app.post('/api/evidence', (req, res) => {
+  const { type, activityType, location, coordinates, userId, evidenceUrl } = req.body;
+  const db = getDB();
+  const newEvidence = { id: Date.now(), type, activityType, location, coordinates, userId, evidenceUrl, timestamp: new Date() };
+  db.evidence.push(newEvidence);
+  saveDB(db);
+  res.json({ success: true, evidence: newEvidence });
+});
+
+// Get Evidence
+app.get('/api/evidence', (req, res) => {
+  res.json(getDB().evidence || []);
+});
+
+// --- EXISTING AUTH ROUTES ---
 app.post('/api/signup', (req, res) => {
   const { name, email, unit, password } = req.body;
   const db = getDB();
@@ -77,8 +129,8 @@ app.post('/api/login/officer', (req, res) => {
   }
 });
 
-const PORT = 5000;
+const PORT = 5001;
 app.listen(PORT, () => {
-  console.log(`✅ Guardian Net Neural Server (Portable Mode) running on http://localhost:${PORT}`);
+  console.log(`✅ Guardian Net Neural Backend running on http://localhost:${PORT}`);
   console.log(`📂 JSON Database located at: ${DB_PATH}`);
 });

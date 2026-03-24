@@ -2,26 +2,48 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogOut, Shield, MapPin, Search, AlertTriangle, FileText, Activity, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
 import DashboardPreview from "../components/DashboardPreview";
 import AIScannerSection from "../components/AIScannerSection";
 import SafetyMapSection from "../components/SafetyMapSection";
+import { getFIRs, getSOSAlerts, getEvidence } from "../lib/api";
 import { toast } from "sonner";
-
-const mockFIRs = [
-  { id: "FIR-2026-001", type: "Theft", location: "Downtown Central", status: "Active", time: "10 mins ago", reporter: "Rajesh Kumar", description: "Reporting a stolen vehicle (Black Honda City MH-01-AB-1234) parked outside the Central Mall. Suspects were seen fleeing towards the highway." },
-  { id: "FIR-2026-002", type: "Assault", location: "Sector 4 Market", status: "Investigating", time: "1 hr ago", reporter: "Anonymous", description: "Physical altercation between two shop owners over territorial dispute. Both sustained minor injuries. Crowd gathered, requesting backup." },
-  { id: "FIR-2026-003", type: "Vandalism", location: "North Station", status: "Resolved", time: "3 hrs ago", reporter: "Station Manager", description: "Graffiti painted on the northbound train. Perpetrators were caught on CCTV and identified. Authorities have been notified for cleanup." },
-];
-
-const mockSOS = [
-  { id: "SOS-091", user: "Priya M.", location: "Park Avenue, Lane 3", distance: "0.8 km", time: "2 mins ago" },
-  { id: "SOS-092", user: "Neha S.", location: "Metro Station Exit B", distance: "1.2 km", time: "15 mins ago" },
-];
 
 const PoliceDashboard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [selectedFIR, setSelectedFIR] = useState<any>(null);
+  const [selectedEvidence, setSelectedEvidence] = useState<any>(null);
+  
+  const [firs, setFirs] = useState<any[]>([]);
+  const [sosAlerts, setSosAlerts] = useState<any[]>([]);
+  const [evidence, setEvidence] = useState<any[]>([]);
+  const [prevSosCount, setPrevSosCount] = useState(0);
+
+  const fetchData = async () => {
+    try {
+      const [firRes, sosRes, evidenceRes] = await Promise.all([
+        getFIRs(),
+        getSOSAlerts(),
+        getEvidence()
+      ]);
+      setFirs(firRes);
+      setSosAlerts(sosRes);
+      setEvidence(evidenceRes);
+
+      // Notification for new SOS
+      if (sosRes.length > prevSosCount) {
+        const latest = sosRes[sosRes.length - 1];
+        toast.error("🚨 CRITICAL SOS ALERT", {
+          description: `Emergency reported at ${latest.location}. Dispatch units immediately!`,
+          duration: 10000,
+        });
+        setPrevSosCount(sosRes.length);
+      }
+    } catch (err) {
+      console.error("Data fetch error:", err);
+    }
+  };
 
   useEffect(() => {
     // Check if user is officer
@@ -31,8 +53,11 @@ const PoliceDashboard = () => {
       navigate("/");
     } else {
       setLoading(false);
+      fetchData();
+      const interval = setInterval(fetchData, 5000); // Poll every 5 seconds
+      return () => clearInterval(interval);
     }
-  }, [navigate]);
+  }, [navigate, prevSosCount]);
 
   const handleLogout = () => {
     localStorage.removeItem("gn_auth");
@@ -41,10 +66,10 @@ const PoliceDashboard = () => {
     navigate("/login");
   };
 
-  if (loading) return <div className="min-h-screen bg-[#020617] text-white flex items-center justify-center">Loading Command Center...</div>;
+  if (loading) return <div className="min-h-screen bg-[#020617] text-white flex items-center justify-center font-black tracking-widest uppercase italic">Loading Command Center...</div>;
 
   return (
-    <div className="min-h-screen bg-[#020617] text-white overflow-hidden relative selection:bg-primary/30">
+    <div className="min-h-screen bg-[#020617] text-white overflow-x-hidden relative selection:bg-primary/30 pb-20">
       {/* Background glow effects */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-blue-500 to-cyan-400 z-50"></div>
       <div className="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-primary/10 blur-[150px] rounded-full pointer-events-none"></div>
@@ -57,7 +82,7 @@ const PoliceDashboard = () => {
               <Shield className="text-primary w-5 h-5" />
             </div>
             <div>
-              <h1 className="font-black text-lg tracking-tight uppercase italic">Guardian <span className="text-primary">Command</span></h1>
+              <h1 className="font-black text-lg tracking-tight uppercase italic">Police <span className="text-primary">Headquarters</span></h1>
               <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">Officer Terminal Active</p>
             </div>
           </div>
@@ -73,25 +98,22 @@ const PoliceDashboard = () => {
       {/* Main Dashboard Elements */}
       <main className="container mx-auto px-4 py-10 space-y-16 relative z-10">
         
-        {/* The beautiful Dashboard Preview section matching the requested image */}
+        {/* Real-time Stats & Feed Header */}
         <div className="relative">
            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[120%] bg-blue-600/5 blur-[100px] -z-10 pointer-events-none"></div>
            <DashboardPreview />
         </div>
 
-        {/* AI Criminal Identification Scanner & Tactical Map */}
-        <div className="grid lg:grid-cols-2 gap-8">
-          <div className="rounded-[2.5rem] overflow-hidden border border-white/10 glass-strong shadow-2xl relative">
-             <div className="absolute top-0 right-0 p-8 opacity-5">
-                <Search size={150} />
-             </div>
-             <AIScannerSection />
-          </div>
-          
-          <div className="rounded-[2.5rem] overflow-hidden border border-white/10 glass-strong shadow-2xl relative p-8">
-             <SafetyMapSection />
-          </div>
+        {/* AI Bio-Scanner Terminal */}
+        <div className="rounded-[2.5rem] overflow-hidden border border-white/10 glass-strong shadow-2xl relative bg-black/20 p-8">
+           <div className="absolute top-0 right-0 p-8 opacity-5">
+              <Search size={150} />
+           </div>
+           <AIScannerSection />
         </div>
+
+        
+
 
         {/* Live FIRs & SOS Action Grids */}
         <div className="grid lg:grid-cols-2 gap-8 mt-12">
@@ -100,7 +122,6 @@ const PoliceDashboard = () => {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
             className="glass-strong rounded-3xl p-8 border border-white/10 relative overflow-hidden group"
           >
             <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-700">
@@ -114,37 +135,41 @@ const PoliceDashboard = () => {
                 </div>
                 <h3 className="text-xl font-black uppercase tracking-widest">Logged <span className="text-cyan-400">FIRs</span></h3>
               </div>
-              <span className="text-xs font-bold text-muted-foreground bg-white/5 py-1 px-3 rounded-full border border-white/10">3 ACTIVE</span>
+              <span className="text-xs font-bold text-muted-foreground bg-white/5 py-1 px-3 rounded-full border border-white/10">{firs.length} ACTIVE</span>
             </div>
 
-            <div className="space-y-4 relative z-10">
-              {mockFIRs.map((fir, i) => (
-                <div key={fir.id} className="p-5 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all cursor-pointer group/item flex items-center justify-between">
-                   <div>
-                     <div className="flex items-center gap-2 mb-2">
-                       <span className="text-xs font-black text-white/50">{fir.id}</span>
-                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider ${fir.status === 'Active' ? 'bg-rose-500/20 text-rose-400' : fir.status === 'Investigating' ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
-                         {fir.status}
-                       </span>
+            <div className="space-y-4 relative z-10 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+              {firs.length === 0 ? (
+                <div className="text-center py-10 opacity-30 font-black uppercase tracking-widest text-xs">No FIRs logged in grid</div>
+              ) : (
+                firs.map((fir) => (
+                  <div key={fir.id} className="p-5 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all cursor-pointer group/item flex items-center justify-between">
+                     <div>
+                       <div className="flex items-center gap-2 mb-2">
+                         <span className="text-xs font-black text-white/50">{fir.id}</span>
+                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider ${fir.status === 'Active' ? 'bg-rose-500/20 text-rose-400' : fir.status === 'Investigating' ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
+                           {fir.status}
+                         </span>
+                       </div>
+                       <div className="font-bold text-sm tracking-wide mb-1 flex items-center gap-2">
+                         {fir.type}
+                       </div>
+                       <div className="text-xs text-muted-foreground flex items-center gap-2">
+                         <MapPin size={12} className="text-cyan-400" /> {fir.location}
+                       </div>
                      </div>
-                     <div className="font-bold text-sm tracking-wide mb-1 flex items-center gap-2">
-                       {fir.type}
+                     <div className="text-right">
+                       <div className="text-xs text-white/40 mb-2">{new Date(fir.created_at).toLocaleTimeString()}</div>
+                       <button 
+                         onClick={() => setSelectedFIR(fir)}
+                         className="text-[10px] text-cyan-400 font-bold uppercase hover:underline opacity-0 group-hover/item:opacity-100 transition-opacity flex items-center gap-1 justify-end"
+                       >
+                         <Search size={12} /> View Details
+                       </button>
                      </div>
-                     <div className="text-xs text-muted-foreground flex items-center gap-2">
-                       <MapPin size={12} className="text-cyan-400" /> {fir.location}
-                     </div>
-                   </div>
-                   <div className="text-right">
-                     <div className="text-xs text-white/40 mb-2">{fir.time}</div>
-                     <button 
-                       onClick={() => setSelectedFIR(fir)}
-                       className="text-[10px] text-cyan-400 font-bold uppercase hover:underline opacity-0 group-hover/item:opacity-100 transition-opacity flex items-center gap-1 justify-end"
-                     >
-                       <Search size={12} /> View Details
-                     </button>
-                   </div>
-                </div>
-              ))}
+                  </div>
+                ))
+              )}
             </div>
           </motion.div>
 
@@ -152,7 +177,6 @@ const PoliceDashboard = () => {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
             className="glass-strong rounded-3xl p-8 border border-white/10 relative overflow-hidden group"
           >
             <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-700">
@@ -162,55 +186,163 @@ const PoliceDashboard = () => {
             <div className="flex items-center justify-between mb-8 relative z-10">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-rose-500/20 text-rose-500 rounded-xl relative">
-                  <div className="absolute inset-0 border border-rose-500/50 rounded-xl animate-ping"></div>
+                  <div className="absolute inset-0 border border-rose-500/50 rounded-xl animate-ping text-rose-500 opacity-20"></div>
                   <AlertTriangle size={20} className="animate-pulse" />
                 </div>
                 <h3 className="text-xl font-black uppercase tracking-widest">Nearby <span className="text-rose-400">SOS Alerts</span></h3>
               </div>
               <span className="flex items-center gap-2 text-xs font-bold text-rose-400 bg-rose-500/10 py-1 px-3 rounded-full border border-rose-500/20">
                 <div className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping"></div>
-                2 CRITICAL
+                {sosAlerts.length} ACTIVE
               </span>
             </div>
 
-            <div className="space-y-4 relative z-10">
-              {mockSOS.map((sos) => (
-                <div key={sos.id} className="p-5 rounded-2xl bg-gradient-to-r from-rose-500/10 to-transparent border border-rose-500/20 hover:border-rose-500/40 transition-all cursor-pointer group/item flex items-center justify-between">
-                   <div>
-                     <div className="flex items-center gap-2 mb-2">
-                       <span className="text-xs font-black text-rose-400">{sos.id}</span>
-                       <span className="text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider bg-rose-500 text-white animate-pulse">
-                         Immediate Action Required
-                       </span>
-                     </div>
-                     <div className="font-bold text-sm tracking-wide mb-1 flex items-center gap-2 text-white">
-                       Victim: {sos.user}
-                     </div>
-                     <div className="flex flex-col gap-1 mt-2">
-                       <div className="text-xs text-rose-200/70 flex items-center gap-2">
-                         <MapPin size={12} className="text-rose-400" /> Location: {sos.location}
+            <div className="space-y-4 relative z-10 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+              {sosAlerts.length === 0 ? (
+                <div className="text-center py-10 opacity-30 font-black uppercase tracking-widest text-xs">No active SOS alerts</div>
+              ) : (
+                sosAlerts.map((sos) => (
+                  <div key={sos.id} className="p-5 rounded-2xl bg-gradient-to-r from-rose-500/10 to-transparent border border-rose-500/20 hover:border-rose-500/40 transition-all cursor-pointer group/item flex items-center justify-between">
+                     <div>
+                       <div className="flex items-center gap-2 mb-2">
+                         <span className="text-xs font-black text-rose-400">{sos.id}</span>
+                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider bg-rose-500 text-white animate-pulse">
+                           Immediate Action Required
+                         </span>
                        </div>
-                       <div className="text-xs text-rose-200/70 flex items-center gap-2">
-                          <Activity size={12} className="text-rose-400" /> Distance: {sos.distance} (ETA ~ 3 mins)
+                       <div className="font-bold text-sm tracking-wide mb-1 flex items-center gap-2 text-white">
+                         Victim: {sos.user}
+                       </div>
+                       <div className="flex flex-col gap-1 mt-2">
+                         <div className="text-xs text-rose-200/70 flex items-center gap-2">
+                           <MapPin size={12} className="text-rose-400" /> Location: {sos.location}
+                         </div>
                        </div>
                      </div>
-                   </div>
-                   <div className="flex flex-col items-end gap-3 text-right">
-                     <div className="text-[10px] font-black tracking-widest text-rose-400/80">{sos.time}</div>
-                     <button 
-                       onClick={() => toast.success(`Alert: Unit dispatched to ${sos.location}. Target ETA: 3 minutes.`)}
-                       className="bg-[#FF4A6B] hover:bg-[#ff3055] text-white font-black uppercase tracking-widest text-[10px] px-6 py-2.5 rounded-full border-2 border-white/80 shadow-[0_0_15px_rgba(255,74,107,0.4)] transition-all active:scale-95"
-                     >
-                       Dispatch Unit
-                     </button>
-                   </div>
-                </div>
-              ))}
+                     <div className="flex flex-col items-end gap-3 text-right">
+                       <div className="text-[10px] font-black tracking-widest text-rose-400/80">{new Date(sos.created_at).toLocaleTimeString()}</div>
+                       <button 
+                         onClick={() => toast.success(`Alert: Unit dispatched to ${sos.location}. Target ETA: 3 minutes.`)}
+                         className="bg-[#FF4A6B] hover:bg-[#ff3055] text-white font-black uppercase tracking-widest text-[10px] px-6 py-2.5 rounded-full border-2 border-white/80 shadow-[0_0_15px_rgba(255,74,107,0.4)] transition-all active:scale-95"
+                       >
+                         Dispatch Unit
+                       </button>
+                     </div>
+                  </div>
+                ))
+              )}
             </div>
           </motion.div>
-
         </div>
+
+        {/* Anonymous Evidence Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-strong rounded-3xl p-8 border border-white/10 relative overflow-hidden group mt-12"
+        >
+          <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-700">
+             <Shield size={100} className="text-emerald-500" />
+          </div>
+          
+          <div className="flex items-center justify-between mb-8 relative z-10">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-emerald-500/20 text-emerald-500 rounded-xl">
+                <Shield size={20} />
+              </div>
+              <h3 className="text-xl font-black uppercase tracking-widest">Verified <span className="text-emerald-400">Evidence</span></h3>
+            </div>
+            <span className="text-xs font-bold text-muted-foreground bg-white/5 py-1 px-3 rounded-full border border-white/10">{evidence.length} COLLECTED</span>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+            {evidence.length === 0 ? (
+               <div className="col-span-full text-center py-10 opacity-30 font-black uppercase tracking-widest text-xs">No digital evidence collected</div>
+            ) : (
+              evidence.map((ev) => (
+                <div key={ev.id} className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all cursor-pointer group/ev" onClick={() => setSelectedEvidence(ev)}>
+                   <div className="flex items-center justify-between mb-4">
+                      <div className={`p-2 rounded-lg bg-emerald-500/20 text-emerald-500`}>
+                        {ev.type === 'photo' ? <Activity size={16} /> : <FileText size={16} />}
+                      </div>
+                      <span className="text-[10px] font-black text-muted-foreground">{new Date(ev.timestamp).toLocaleTimeString()}</span>
+                   </div>
+                   <div className="font-bold text-sm mb-1 uppercase tracking-tight">{ev.activityType} Activity</div>
+                   <div className="text-[10px] text-muted-foreground flex items-center gap-2 mb-4">
+                     <MapPin size={10} /> {ev.location}
+                   </div>
+                   <div className="text-[10px] font-black text-emerald-400 uppercase tracking-widest group-hover/ev:underline cursor-pointer">View Encrypted Asset →</div>
+                </div>
+              ))
+            )}
+          </div>
+        </motion.div>
       </main>
+
+      {/* Evidence Details Modal */}
+      <AnimatePresence>
+        {selectedEvidence && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-[#0f172a] border border-emerald-500/30 rounded-3xl p-8 max-w-xl w-full relative shadow-[0_0_50px_rgba(16,185,129,0.15)]"
+            >
+              <button 
+                onClick={() => setSelectedEvidence(null)}
+                className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors"
+              >
+                <X size={24} />
+              </button>
+
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-emerald-500/20 text-emerald-500 rounded-xl">
+                  <Shield size={24} />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black uppercase tracking-widest text-white">Evidence Asset</h3>
+                  <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest">ID: {selectedEvidence.id}</p>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="aspect-video bg-black/50 rounded-2xl flex items-center justify-center border border-white/5 overflow-hidden">
+                   <div className="text-center">
+                     <div className="w-12 h-12 rounded-full border-4 border-emerald-500/30 border-t-emerald-500 animate-spin mx-auto mb-4"></div>
+                     <p className="text-[10px] text-emerald-500 font-black tracking-widest uppercase italic">Decrypting AES-256 Protocol...</p>
+                   </div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
+                    <p className="text-[10px] text-white/50 font-black uppercase tracking-widest mb-1">Type</p>
+                    <p className="text-sm font-bold text-white uppercase">{selectedEvidence.type}</p>
+                  </div>
+                   <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
+                    <p className="text-[10px] text-white/50 font-black uppercase tracking-widest mb-1">Activity</p>
+                    <p className="text-sm font-bold text-emerald-400 uppercase">{selectedEvidence.activityType}</p>
+                  </div>
+                </div>
+
+                <div className="bg-emerald-500/10 p-5 rounded-2xl border border-emerald-500/20">
+                   <p className="text-[10px] text-white/50 font-black uppercase tracking-widest mb-2">Location Data</p>
+                   <p className="text-white text-sm font-medium">{selectedEvidence.location}</p>
+                </div>
+
+                <button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black uppercase tracking-widest py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] text-xs">
+                  Download Encrypted Package
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* FIR Details Modal */}
       <AnimatePresence>
@@ -254,7 +386,7 @@ const PoliceDashboard = () => {
                   </div>
                   <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
                     <p className="text-[10px] text-white/50 font-black uppercase tracking-widest mb-1">Time Reported</p>
-                    <p className="text-sm font-bold text-white">{selectedFIR.time}</p>
+                    <p className="text-sm font-bold text-white">{new Date(selectedFIR.created_at).toLocaleString()}</p>
                   </div>
                   <div className="bg-white/5 p-4 rounded-2xl border border-white/10 col-span-2">
                     <p className="text-[10px] text-white/50 font-black uppercase tracking-widest mb-1 flex items-center gap-2">

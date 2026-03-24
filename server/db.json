@@ -31,12 +31,59 @@
       "unit": "sddsffdgfd",
       "password": "randompassword123",
       "created_at": "2026-03-24T09:24:26.549Z"
+    },
+    {
+      "id": 1774353420677,
+      "name": "Test Officer",
+      "email": "test@guardian.gov",
+      "unit": "CENTRAL PRECINCT 01",
+      "password": "randompassword123password123",
+      "created_at": "2026-03-24T11:57:00.677Z"
     }
   ],
   "officers": [
     {
       "badge_id": "GN-1234-5678",
       "station": "CENTRAL PRECINCT 01"
+    }
+  ],
+  "firs": [
+    {
+      "id": "FIR-1024",
+      "type": "Theft",
+      "location": "Central Plaza Mall",
+      "reporter": "Officer Smith",
+      "description": "Reported theft of electronics from a retail store.",
+      "status": "Investigating",
+      "created_at": "2026-03-24T12:00:00.000Z"
+    }
+  ],
+  "sos_alerts": [
+    {
+      "id": "SOS-8821",
+      "user": "Ayesha Khan",
+      "location": "Outer Ring Road, Sector 5",
+      "coordinates": { "lat": 12.9716, "lng": 77.5946 },
+      "status": "Critical",
+      "created_at": "2026-03-24T12:15:00.000Z"
+    },
+    {
+      "id": "SOS-4492",
+      "user": "Priya Sharma",
+      "location": "Near City Library",
+      "coordinates": { "lat": 12.9816, "lng": 77.6046 },
+      "status": "Critical",
+      "created_at": "2026-03-24T12:18:00.000Z"
+    }
+  ],
+  "evidence": [
+    {
+      "id": 1774356148000,
+      "type": "photo",
+      "activityType": "Suspicious",
+      "location": "Dark Alley, East Side",
+      "userId": "anonymous",
+      "timestamp": "2026-03-24T12:10:00.000Z"
     }
   ]
 }
