@@ -183,8 +183,8 @@ const DeadManSwitch = () => {
             viewport={{ once: true }}
             className="glass-card p-10 rounded-[3rem] border border-primary/40 relative group overflow-hidden shadow-[0_0_50px_rgba(14,165,233,0.15)] bg-gradient-to-br from-primary/5 to-transparent"
         >
-          <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:scale-125 transition-transform duration-1000">
-            <Shield size={160} className="text-primary animate-pulse" />
+          <div className="absolute top-0 right-0 p-10 opacity-30 group-hover:scale-105 transition-transform duration-1000 origin-center">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop" className="w-[400px] h-[400px] object-cover rounded-full mix-blend-multiply filter blur-[2px]" alt="Dead man switch watch" />
           </div>
 
           <div className="flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10">
@@ -202,9 +202,9 @@ const DeadManSwitch = () => {
                 )}
               </div>
 
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black italic uppercase tracking-tighter leading-none font-tactical text-glow">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black italic uppercase tracking-tighter leading-none font-tactical text-glow-emerald">
                 Guardian <span className="text-primary">Dead-Man</span> <br/> 
-                <span className="text-white">Safety Mode</span>
+                <span className="text-foreground">Safety Mode</span>
               </h2>
               
               <p className="text-muted-foreground text-base lg:text-lg uppercase font-black tracking-[0.2em] leading-relaxed max-w-xl font-neural">
@@ -251,13 +251,13 @@ const DeadManSwitch = () => {
                     <>
                         <button 
                         onClick={startOnboarding}
-                        className="relative w-28 h-14 rounded-full transition-all duration-500 scale-110 bg-white/10 hover:bg-white/20"
+                        className="relative w-28 h-14 rounded-full transition-all duration-500 scale-110 bg-primary/20 hover:bg-primary/30 border border-primary/30 shadow-sm"
                         >
-                        <div className="absolute top-1.5 left-1.5 w-11 h-11 rounded-full bg-white flex items-center justify-center">
-                            <X className="text-muted-foreground" size={24} />
+                        <div className="absolute top-1.5 left-1.5 w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-md">
+                            <X className="text-primary" size={24} />
                         </div>
                         </button>
-                        <span className="text-[11px] font-black uppercase tracking-[0.3em] text-muted-foreground italic">START MISSION</span>
+                        <span className="text-[11px] font-black uppercase tracking-[0.3em] text-primary italic pt-2">START MISSION</span>
                     </>
                 )}
 
@@ -270,7 +270,7 @@ const DeadManSwitch = () => {
                             value={destination}
                             onChange={(e) => setDestination(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && handleSetDestination()}
-                            className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-center text-sm font-bold focus:border-primary/50 transition-all outline-none"
+                            className="w-full bg-white/50 border border-primary/20 p-4 rounded-xl text-center text-sm font-bold focus:border-primary/50 transition-all outline-none text-foreground shadow-sm"
                         />
                         <button onClick={handleSetDestination} className="w-full bg-primary py-3 rounded-xl font-black uppercase tracking-widest text-[10px]">Verify Route</button>
                     </div>
@@ -285,7 +285,7 @@ const DeadManSwitch = () => {
                             value={journeyDuration}
                             onChange={(e) => setJourneyDuration(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && handleSetTime()}
-                            className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-center text-sm font-bold focus:border-primary/50 transition-all outline-none"
+                            className="w-full bg-white/50 border border-primary/20 p-4 rounded-xl text-center text-sm font-bold focus:border-primary/50 transition-all outline-none text-foreground shadow-sm"
                         />
                         <button onClick={handleSetTime} className="w-full bg-emerald-500 py-3 rounded-xl font-black uppercase tracking-widest text-[10px]">Secure Link</button>
                     </div>

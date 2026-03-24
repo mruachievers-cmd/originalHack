@@ -30,7 +30,7 @@ const HeroSection = () => {
             ease: "easeInOut"
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/40 to-white/90 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/85 to-white/95 z-10" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 text-center">

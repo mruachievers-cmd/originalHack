@@ -33,8 +33,8 @@ const FeatureIcon = ({ feature, index, total, onSelect, activeIndex }: any) => {
       <mesh>
         <sphereGeometry args={[0.5, 32, 32]} />
         <meshStandardMaterial 
-          color={activeIndex === index ? "#00d7ff" : "#0A1F44"} 
-          emissive={activeIndex === index ? "#00d7ff" : "#000000"}
+          color={activeIndex === index ? "#22c55e" : "#e2e8f0"} 
+          emissive={activeIndex === index ? "#22c55e" : "#000000"}
           emissiveIntensity={0.5}
           metalness={0.9}
           roughness={0.1}
@@ -43,7 +43,7 @@ const FeatureIcon = ({ feature, index, total, onSelect, activeIndex }: any) => {
         />
       </mesh>
       <Html center transform distanceFactor={10}>
-        <div className={`p-4 rounded-full transition-all duration-300 pointer-events-none ${activeIndex === index ? 'bg-cyan-500/20 text-cyan-400 shadow-[0_0_20px_rgba(0,215,255,0.4)] border border-cyan-400/50' : 'bg-slate-900/50 text-slate-400 border border-slate-700'}`}>
+        <div className={`p-4 rounded-full transition-all duration-300 pointer-events-none ${activeIndex === index ? 'bg-primary/20 text-primary shadow-[0_0_20px_rgba(34,197,94,0.4)] border border-primary/50' : 'bg-white/80 text-muted-foreground border border-slate-200 shadow-sm'}`}>
           {feature.icon}
         </div>
       </Html>
@@ -84,8 +84,8 @@ const SphereCore = () => {
       <mesh>
         <sphereGeometry args={[1.5, 64, 64]} />
         <meshStandardMaterial 
-          color="#00A8E8" 
-          emissive="#00d7ff" 
+          color="#22c55e" 
+          emissive="#22c55e" 
           emissiveIntensity={0.2}
           wireframe
           transparent
@@ -100,12 +100,12 @@ export const FeatureSphere = () => {
     const [activeIndex, setActiveIndex] = useState(0);
 
     return (
-        <div className="relative w-full min-h-[600px] flex flex-col lg:flex-row items-center justify-center bg-[#050B18]/50 rounded-[3rem] overflow-hidden border border-slate-800 backdrop-blur-sm group p-4 lg:p-12 gap-8">
+        <div className="relative w-full min-h-[600px] flex flex-col lg:flex-row items-center justify-center bg-slate-50 rounded-[3rem] overflow-hidden border border-primary/20 group p-4 lg:p-12 gap-8 shadow-sm">
             <div className="w-full lg:w-1/2 h-[400px] lg:h-[600px] relative z-0">
                 <Canvas camera={{ position: [0, 2, 12], fov: 40 }}>
                     <ambientLight intensity={0.5} />
-                    <pointLight position={[10, 10, 10]} intensity={1.5} color="#00d7ff" />
-                    <pointLight position={[-10, -10, -10]} intensity={1} color="#ff0080" />
+                    <pointLight position={[10, 10, 10]} intensity={1.5} color="#22c55e" />
+                    <pointLight position={[-10, -10, -10]} intensity={1} color="#a855f7" />
                     
                     <PresentationControls 
                         global 
@@ -116,7 +116,7 @@ export const FeatureSphere = () => {
                     >
                         <SphereCore />
                     </PresentationControls>
-                    <ContactShadows resolution={512} scale={30} position={[0, -5, 0]} blur={2} opacity={0.2} color="#00d7ff" />
+                    <ContactShadows resolution={512} scale={30} position={[0, -5, 0]} blur={2} opacity={0.2} color="#22c55e" />
                 </Canvas>
             </div>
 
@@ -129,20 +129,20 @@ export const FeatureSphere = () => {
                         animate={{ opacity: 1, x: 0, scale: 1 }}
                         exit={{ opacity: 0, x: -50, scale: 0.9 }}
                         transition={{ type: 'spring', damping: 20, stiffness: 100 }}
-                        className="bg-slate-900/60 backdrop-blur-xl border border-cyan-500/20 p-10 rounded-[2.5rem] shadow-[0_0_50px_rgba(0,168,232,0.1)] flex flex-col items-center lg:items-start text-center lg:text-left max-w-lg"
+                        className="bg-white/90 backdrop-blur-xl border border-primary/20 p-10 rounded-[2.5rem] shadow-[0_0_50px_rgba(34,197,94,0.1)] flex flex-col items-center lg:items-start text-center lg:text-left max-w-lg"
                     >
-                        <div className="p-5 rounded-3xl bg-cyan-500/10 text-cyan-400 mb-8 border border-cyan-500/20">
+                        <div className="p-5 rounded-3xl bg-primary/10 text-primary mb-8 border border-primary/20 shadow-sm">
                             {features[activeIndex].icon}
                         </div>
-                        <h3 className="text-3xl font-black text-white mb-4 tracking-tight uppercase italic">
+                        <h3 className="text-3xl font-black text-foreground mb-4 tracking-tight uppercase italic">
                             {features[activeIndex].title}
                         </h3>
-                        <p className="text-slate-400 leading-relaxed text-xl font-medium">
+                        <p className="text-muted-foreground leading-relaxed text-xl font-medium">
                             {features[activeIndex].description}
                         </p>
                         
-                        <div className="mt-8 flex items-center gap-3 text-cyan-500/60 text-xs font-bold uppercase tracking-widest">
-                           <div className="w-12 h-[1px] bg-cyan-500/30"></div>
+                        <div className="mt-8 flex items-center gap-3 text-primary/80 text-xs font-bold uppercase tracking-widest">
+                           <div className="w-12 h-[1px] bg-primary/30"></div>
                            Active Feature
                         </div>
                     </motion.div>
@@ -150,7 +150,7 @@ export const FeatureSphere = () => {
             </div>
             
             {/* Guide Text */}
-            <div className="absolute top-12 left-1/2 -translate-x-1/2 text-slate-500 text-[10px] font-black tracking-[0.4em] uppercase pointer-events-none group-hover:text-cyan-400 transition-all duration-500">
+            <div className="absolute top-12 left-1/2 -translate-x-1/2 text-muted-foreground text-[10px] font-black tracking-[0.4em] uppercase pointer-events-none group-hover:text-primary transition-all duration-500">
                Interactive Neural Core
             </div>
         </div>

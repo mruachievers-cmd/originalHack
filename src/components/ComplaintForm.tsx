@@ -96,7 +96,7 @@ const ComplaintForm = () => {
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
-              className="grid lg:grid-cols-5 gap-8 bg-white/5 border border-white/10 rounded-[2.5rem] p-4 md:p-8"
+              className="grid lg:grid-cols-5 gap-8 bg-slate-50 border border-primary/20 rounded-[2.5rem] p-4 md:p-8 shadow-xl"
             >
               <div className="lg:col-span-3 space-y-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -109,7 +109,7 @@ const ComplaintForm = () => {
                           required
                           value={form.name}
                           onChange={(e) => setForm({ ...form, name: e.target.value })}
-                          className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/5 border border-white/10 text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
+                          className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border border-primary/20 text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all shadow-sm"
                           placeholder="Ex: Kavya Sri"
                         />
                       </div>
@@ -156,13 +156,13 @@ const ComplaintForm = () => {
                         rows={4}
                         value={form.description}
                         onChange={(e) => setForm({ ...form, description: e.target.value })}
-                        className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/5 border border-white/10 text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none resize-none transition-all"
+                        className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border border-primary/20 text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none resize-none transition-all shadow-sm"
                         placeholder="Please provide specific details about the event..."
                       />
                     </div>
                   </div>
 
-                  <div className="p-6 rounded-2xl border border-dashed border-white/10 bg-white/5 flex flex-col items-center justify-center gap-4 text-center group hover:bg-white/[0.08] transition-all cursor-pointer"
+                  <div className="p-6 rounded-2xl border border-dashed border-primary/30 bg-primary/5 flex flex-col items-center justify-center gap-4 text-center group hover:bg-primary/10 transition-all cursor-pointer shadow-sm"
                     onClick={() => fileInputRef.current?.click()}>
                     <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileUpload} />
                     <div className={`p-4 rounded-full bg-primary/10 text-primary ${isUploading ? 'animate-bounce' : 'group-hover:scale-110 transition-transform'}`}>
