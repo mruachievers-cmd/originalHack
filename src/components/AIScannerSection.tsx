@@ -429,7 +429,7 @@ const AIScannerSection = () => {
                 )}
 
                 {/* Status bar */}
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full glass border-white/10 flex items-center gap-4 min-w-[200px] justify-center z-30">
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-slate-900/80 backdrop-blur-md border border-white/10 flex items-center gap-4 min-w-[200px] justify-center z-30">
                   <div className={`w-2 h-2 rounded-full ${scanning ? 'bg-primary' : (isCameraActive ? 'bg-green-500' : 'bg-white/20')} animate-pulse`}></div>
                   <span className="text-[10px] font-black tracking-widest uppercase text-white">
                     {scanning ? "SYSTEM ANALYZING DATA..." : (isCameraActive ? "SECURE FEED ACTIVE" : "STATIONARY")}
@@ -451,12 +451,12 @@ const AIScannerSection = () => {
                   <button
                     onClick={handleRegister}
                     disabled={scanning || !isCameraActive}
-                    className="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="flex-1 py-3 rounded-xl bg-slate-100 border border-primary/10 text-slate-900 text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                   >
-                    <UserPlus size={14} /> Live Register
+                    <UserPlus size={14} className="text-primary" /> Live Register
                   </button>
-                  <label className="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all cursor-pointer flex items-center justify-center gap-2">
-                    <UserPlus size={14} /> Upload Face
+                  <label className="flex-1 py-3 rounded-xl bg-slate-100 border border-primary/10 text-slate-900 text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all cursor-pointer flex items-center justify-center gap-2">
+                    <UserPlus size={14} className="text-primary" /> Upload Face
                     <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
                   </label>
                 </div>
@@ -544,49 +544,49 @@ const AIScannerSection = () => {
                   <div className="space-y-6">
                     <div className="flex items-center justify-between">
                        <div className="flex items-center gap-4">
-                         <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-primary">
+                         <div className="w-16 h-16 rounded-2xl bg-slate-100 border border-primary/10 flex items-center justify-center text-primary">
                            <User size={32} />
                          </div>
                          <div>
-                           <div className="text-[10px] font-black text-muted-foreground uppercase opacity-60">IDENTIFIED SUBJECT</div>
-                           <div className="text-2xl font-black italic tracking-tight">{result.name}</div>
+                           <div className="text-[10px] font-black text-slate-500 uppercase">IDENTIFIED SUBJECT</div>
+                           <div className="text-2xl font-black italic tracking-tight text-slate-900">{result.name}</div>
                          </div>
                        </div>
-                       <div className="p-4 rounded-full bg-white/5 flex flex-col items-center border border-white/5">
-                         <div className="text-[8px] font-black text-muted-foreground uppercase">MATCH</div>
+                       <div className="p-4 rounded-full bg-slate-50 flex flex-col items-center border border-primary/10">
+                         <div className="text-[8px] font-black text-slate-500 uppercase">MATCH</div>
                          <div className="text-lg font-black text-primary">{result.confidence}</div>
                        </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                       <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
-                          <div className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-1">STATUS</div>
-                          <div className={`text-xs font-bold uppercase ${result.isWanted ? 'text-rose-500' : 'text-green-500'}`}>{result.isWanted ? 'HIGH RISK' : 'CLEAN'}</div>
+                       <div className="bg-slate-50 p-4 rounded-2xl border border-primary/10">
+                          <div className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1">STATUS</div>
+                          <div className={`text-xs font-bold uppercase ${result.isWanted ? 'text-rose-500' : 'text-emerald-500'}`}>{result.isWanted ? 'HIGH RISK' : 'CLEAN'}</div>
                        </div>
-                       <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
-                          <div className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-1">RECORD SEARCH</div>
-                          <div className="text-xs font-bold text-white uppercase">{result.isWanted ? 'PNDG WARRANTS' : 'VERIFIED ID'}</div>
+                       <div className="bg-slate-50 p-4 rounded-2xl border border-primary/10">
+                          <div className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1">RECORD SEARCH</div>
+                          <div className="text-xs font-bold text-slate-900 uppercase">{result.isWanted ? 'PNDG WARRANTS' : 'VERIFIED ID'}</div>
                        </div>
                     </div>
 
-                    <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
-                       <div className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-2 flex items-center gap-2 text-muted-foreground">
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-primary/10">
+                       <div className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-2">
                          <FileWarning size={10} className="text-amber-500" /> SYSTEM REMINDER
                        </div>
-                       <div className="text-[10px] font-semibold text-white/70">
+                       <div className="text-[10px] font-semibold text-slate-700 leading-relaxed">
                          Verify with official identification documents before processing. Record timestamp: {result.timestamp}
                        </div>
                     </div>
 
                     {result.isWanted && (
-                      <button className="w-full py-4 rounded-xl bg-rose-500 text-white font-black uppercase tracking-widest hover:brightness-110 flex items-center justify-center gap-2">
+                      <button className="w-full py-4 rounded-xl bg-rose-500 text-white font-black uppercase tracking-widest hover:brightness-110 flex items-center justify-center gap-2 shadow-lg shadow-rose-100">
                         <Zap size={16} fill="currentColor" /> ALERT NEAREST STATION
                       </button>
                     )}
                     
                     <button 
                       onClick={() => setResult(null)}
-                      className="w-full py-3 text-[10px] font-black text-muted-foreground uppercase tracking-widest hover:text-white transition-colors mt-2"
+                      className="w-full py-3 text-[10px] font-black text-slate-500 uppercase tracking-widest hover:text-slate-900 transition-colors mt-2"
                     >
                       CLEAR SCAN DATA
                     </button>
