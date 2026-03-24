@@ -19,6 +19,7 @@ import AnonymousTip from "@/components/AnonymousTip";
 import DeadManSwitch from "@/components/DeadManSwitch";
 import SilentGestureSOS from "@/components/SilentGestureSOS";
 import ThemeToggle from "@/components/ThemeToggle";
+import BackgroundAmbience from "@/components/BackgroundAmbience";
 
 
 const Index = () => (
@@ -61,28 +62,7 @@ const Index = () => (
     <div id="map">
       <SafetyMapSection />
     </div>
-    <div className="container mx-auto px-4 md:px-8 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="group relative overflow-hidden rounded-[2rem] aspect-[4/3] border border-white/10">
-                <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Cyberpunk City" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-end p-6">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-primary mt-auto">Sector Alpha Surveillance</span>
-                </div>
-            </motion.div>
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="group relative overflow-hidden rounded-[2rem] aspect-[4/3] border border-white/10">
-                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Cyber Security" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-end p-6">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-primary mt-auto">Hardware Integrity Scan</span>
-                </div>
-            </motion.div>
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="group relative overflow-hidden rounded-[2rem] aspect-[4/3] border border-white/10 md:col-span-2 lg:col-span-1">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Data Analytics" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-end p-6">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-primary mt-auto">Real-time Data Stream</span>
-                </div>
-            </motion.div>
-        </div>
-    </div>
+    <BackgroundAmbience />
     <EscortMode />
     <ChatbotSection />
     <SilentGestureSOS />

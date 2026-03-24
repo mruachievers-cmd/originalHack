@@ -8,6 +8,7 @@ import AIScannerSection from "../components/AIScannerSection";
 import SafetyMapSection from "../components/SafetyMapSection";
 import { getFIRs, getSOSAlerts, getEvidence, getTips, updateTipStatus } from "../lib/api";
 import { toast } from "sonner";
+import BackgroundAmbience from "../components/BackgroundAmbience";
 
 const PoliceDashboard = () => {
   const navigate = useNavigate();
@@ -114,23 +115,11 @@ const PoliceDashboard = () => {
           </button>
         </div>
       </nav>
-
-      {/* Tactical Operation Center Visuals */}
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex flex-col md:flex-row gap-4 h-[250px] overflow-hidden rounded-[2.5rem] border border-white/10 opacity-60 hover:opacity-100 transition-opacity duration-1000">
-            <div className="flex-1 relative group overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700" alt="Control Center" />
-                <div className="absolute top-4 left-6 text-[10px] font-black uppercase tracking-[0.3em] font-tactical">Command Sector 01</div>
-            </div>
-            <div className="flex-1 relative group overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700" alt="Tactical Hub" />
-                <div className="absolute top-4 left-6 text-[10px] font-black uppercase tracking-[0.3em] font-tactical">Recon Sector 04</div>
-            </div>
-        </div>
-      </div>
+      
+      <BackgroundAmbience />
 
       {/* Main Dashboard Elements */}
-      <main className="container mx-auto px-4 py-10 space-y-16 relative z-10">
+      <main className="container mx-auto px-4 py-10 space-y-16 relative z-10 font-neural">
         
         {/* Real-time Stats & Feed Header */}
         <div className="relative">
