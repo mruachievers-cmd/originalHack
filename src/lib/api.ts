@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5001/api";
+const API_URL = "http://localhost:5000/api";
 
 export const signupCitizen = async (formData: any) => {
   const response = await fetch(`${API_URL}/signup`, {
