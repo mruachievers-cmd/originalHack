@@ -15,12 +15,10 @@ import EvidenceCollection from "@/components/EvidenceCollection";
 import EscortMode from "@/components/EscortMode";
 import { FeatureSphere } from "@/components/FeatureSphere";
 import AnonymousTip from "@/components/AnonymousTip";
-import ThreeBackground from "@/components/ThreeBackground";
 
 
 const Index = () => (
-  <div className="min-h-screen bg-transparent text-foreground scroll-smooth relative overflow-x-hidden">
-    <ThreeBackground />
+  <div className="min-h-screen bg-background text-foreground scroll-smooth relative overflow-x-hidden">
     <Navbar />
     <div id="home">
       <HeroSection />
