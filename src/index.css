@@ -8,57 +8,57 @@
 
 @layer base {
   :root {
-    --background: 216 60% 7%;
-    --foreground: 0 0% 100%;
+    --background: 0 0% 100%;
+    --foreground: 142 50% 10%;
 
-    --card: 216 55% 10%;
-    --card-foreground: 0 0% 100%;
+    --card: 0 0% 98%;
+    --card-foreground: 142 50% 10%;
 
-    --popover: 216 55% 10%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 142 50% 10%;
 
-    --primary: 197 100% 45%;
-    --primary-foreground: 216 60% 7%;
+    --primary: 142 71% 45%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 216 50% 15%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 142 20% 95%;
+    --secondary-foreground: 142 50% 10%;
 
-    --muted: 216 40% 14%;
-    --muted-foreground: 210 20% 60%;
+    --muted: 142 20% 90%;
+    --muted-foreground: 142 10% 40%;
 
-    --accent: 197 100% 45%;
+    --accent: 142 71% 45%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 216 40% 18%;
-    --input: 216 40% 18%;
-    --ring: 197 100% 45%;
+    --border: 142 20% 85%;
+    --input: 142 20% 85%;
+    --ring: 142 71% 45%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 216 55% 8%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 197 100% 45%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 142 50% 10%;
+    --sidebar-primary: 142 71% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 216 40% 14%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 216 40% 18%;
-    --sidebar-ring: 197 100% 45%;
+    --sidebar-accent: 142 20% 90%;
+    --sidebar-accent-foreground: 142 50% 10%;
+    --sidebar-border: 142 20% 85%;
+    --sidebar-ring: 142 71% 45%;
 
     /* Custom tokens */
-    --navy: 216 60% 7%;
-    --navy-light: 216 50% 15%;
-    --cyan: 197 100% 45%;
-    --cyan-glow: 197 100% 55%;
+    --navy: 142 50% 10%;
+    --navy-light: 142 20% 95%;
+    --cyan: 142 71% 45%;
+    --cyan-glow: 142 71% 55%;
     --danger: 0 72% 51%;
     --danger-glow: 0 80% 60%;
     --success: 142 71% 45%;
     --warning: 38 92% 50%;
 
-    --glass-bg: 216 55% 10% / 0.6;
-    --glass-border: 216 40% 25% / 0.3;
+    --glass-bg: 0 0% 100% / 0.8;
+    --glass-border: 0 0% 0% / 0.1;
   }
 }
 
@@ -70,7 +70,6 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', sans-serif;
-    background: radial-gradient(circle at 50% 0%, #0c2b53 0%, #0a1f44 100%);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -85,17 +84,21 @@
 
 @layer utilities {
   .glass {
-    @apply bg-card/40 backdrop-blur-xl border border-white/10;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    background-color: hsl(var(--card) / 0.6);
+    backdrop-filter: blur(24px);
+    border: 1px solid hsl(var(--foreground) / 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
   }
 
   .glass-strong {
-    @apply bg-card/70 backdrop-blur-2xl border border-white/20;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    background-color: hsl(var(--card) / 0.8);
+    backdrop-filter: blur(32px);
+    border: 1px solid hsl(var(--foreground) / 0.15);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-[#00A8E8] to-[#00d7ff];
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-green-800 via-primary to-green-400;
   }
 
   .glow-cyan {
@@ -143,8 +146,14 @@
 
 /* Custom card shadow */
 .card-premium {
-  @apply glass rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:bg-card/50;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  @apply transition-all duration-300 hover:scale-[1.02];
+  background-color: hsl(var(--card) / 0.5);
+  backdrop-filter: blur(24px);
+  border: 1px solid hsl(var(--foreground) / 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+}
+.card-premium:hover {
+  background-color: hsl(var(--card) / 0.8);
 }
 
 .font-tactical {
@@ -165,24 +174,24 @@
 
 .light-mode {
   --background: 0 0% 100%;
-  --foreground: 216 60% 7%;
+  --foreground: 142 50% 10%;
   --card: 0 0% 98%;
-  --card-foreground: 216 60% 7%;
+  --card-foreground: 142 50% 10%;
   --popover: 0 0% 100%;
-  --popover-foreground: 216 60% 7%;
-  --primary: 197 100% 40%;
+  --popover-foreground: 142 50% 10%;
+  --primary: 142 71% 45%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 210 20% 95%;
-  --secondary-foreground: 216 60% 10%;
-  --muted: 210 20% 95%;
-  --muted-foreground: 210 10% 40%;
-  --accent: 197 100% 40%;
+  --secondary: 142 20% 90%;
+  --secondary-foreground: 142 50% 10%;
+  --muted: 142 20% 90%;
+  --muted-foreground: 142 10% 40%;
+  --accent: 142 71% 45%;
   --accent-foreground: 0 0% 100%;
   --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 20% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 197 100% 40%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 142 20% 85%;
+  --input: 142 20% 85%;
+  --ring: 142 71% 45%;
   --glass-bg: 0 0% 100% / 0.8;
   --glass-border: 0 0% 0% / 0.1;
 }

@@ -15,29 +15,14 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden">
-      {/* SaaS Style Background Illustration */}
+    <section className="relative min-h-[100vh] flex items-center pt-20 overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/60 to-background z-10" />
-        <img 
-          src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2000&auto=format&fit=crop" 
-          className="w-full h-full object-cover opacity-20 grayscale brightness-50"
-          alt="Smart City AI Background"
-          loading="lazy"
-        />
-      </div>
-
-      <div className="container mx-auto px-4 md:px-8 relative z-20">
         <motion.img 
           src={heroBg} 
-          alt="Smart city security" 
-          className="w-full h-full object-cover scale-110" 
-          width={1920} 
-          height={1080}
+          className="w-full h-full object-cover"
+          alt="Full screen safety"
           animate={{
-            scale: [1.1, 1.25, 1.1],
-            x: [0, 20, -20, 0],
-            y: [0, -20, 20, 0]
+            scale: [1.05, 1.1, 1.05],
           }}
           transition={{
             duration: 20,
@@ -45,7 +30,7 @@ const HeroSection = () => {
             ease: "easeInOut"
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/40 to-white/90 z-10" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 text-center">
