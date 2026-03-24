@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogOut, Shield, MapPin, Search, AlertTriangle, FileText, Activity, X, EyeOff, CheckCircle, Info } from "lucide-react";
+import { LogOut, Shield, MapPin, Search, AlertTriangle, FileText, Activity, X, EyeOff, CheckCircle, Info, Fingerprint } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import DashboardPreview from "../components/DashboardPreview";
@@ -37,10 +37,14 @@ const PoliceDashboard = () => {
       // Notification for new SOS
       if (sosRes.length > prevSosCount) {
         const latest = sosRes[sosRes.length - 1];
-        const isSilent = latest.alert_type === 'silent_distress';
-        toast.error(isSilent ? "🚨 SILENT DISTRESS TRIGGERED" : "🚨 CRITICAL SOS ALERT", {
+        const isSilent = latest.alert_type === 'silent_distress' || latest.alert_type === 'silent_sos';
+        const isGesture = latest.trigger_source?.includes('gesture') || latest.trigger_source?.includes('device_tap');
+
+        toast.error(isSilent ? (isGesture ? "🚨 GESTURE SOS DETECTED" : "🚨 SILENT DISTRESS TRIGGERED") : "🚨 CRITICAL SOS ALERT", {
           description: isSilent 
-            ? `Silent signal detected from ${latest.user} via Dead-Man Switch. High suspicion at ${latest.location}.`
+            ? (isGesture 
+                ? `Hidden gesture trigger from ${latest.user} via ${latest.trigger_source}. Extreme caution at ${latest.location}.`
+                : `Silent signal detected from ${latest.user} via Dead-Man Switch. High suspicion at ${latest.location}.`)
             : `Emergency reported at ${latest.location}. Dispatch units immediately!`,
           duration: 10000,
         });
@@ -222,11 +226,17 @@ const PoliceDashboard = () => {
                      <div>
                       <div className="flex items-center gap-2 mb-2">
                          <span className="text-xs font-black text-rose-400">{sos.id}</span>
-                         {sos.alert_type === 'silent_distress' ? (
+                         {sos.alert_type === 'silent_distress' && (
                             <span className="text-[10px] font-black px-2 py-0.5 rounded-sm uppercase tracking-wider bg-amber-500 text-black flex items-center gap-1">
-                               <AlertTriangle size={10} /> Silent Distress Triggered
+                               <AlertTriangle size={10} /> Silent Distress
                             </span>
-                         ) : (
+                         )}
+                         {sos.alert_type === 'silent_sos' && (
+                            <span className="text-[10px] font-black px-2 py-0.5 rounded-sm uppercase tracking-wider bg-purple-600 text-white flex items-center gap-1">
+                               <Fingerprint size={10} /> Hidden Gesture
+                            </span>
+                         )}
+                         {!sos.alert_type?.startsWith('silent') && (
                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider bg-rose-500 text-white animate-pulse">
                               Immediate Action Required
                             </span>
@@ -244,6 +254,14 @@ const PoliceDashboard = () => {
                                <div>Source: Dead-Man Switch (Neural Grid)</div>
                                <div className="bg-black/40 p-2 rounded-lg border border-amber-500/20 italic text-white/70">
                                  " {sos.last_response} "
+                               </div>
+                            </div>
+                         )}
+                         {sos.alert_type === 'silent_sos' && (
+                            <div className="text-[10px] text-purple-400 font-bold uppercase tracking-widest mt-1 flex flex-col gap-1">
+                               <div>Source: Hidden Gesture Recon ({sos.trigger_source})</div>
+                               <div className="bg-purple-500/10 p-2 rounded-lg border border-purple-500/20 text-white/70">
+                                 Sensors detected specific {sos.trigger_source === 'gesture_double_tap' ? 'touch' : 'motion'} pattern.
                                </div>
                             </div>
                          )}

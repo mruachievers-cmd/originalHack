@@ -16,6 +16,7 @@ import EscortMode from "@/components/EscortMode";
 import { FeatureSphere } from "@/components/FeatureSphere";
 import AnonymousTip from "@/components/AnonymousTip";
 import DeadManSwitch from "@/components/DeadManSwitch";
+import SilentGestureSOS from "@/components/SilentGestureSOS";
 
 
 const Index = () => (
@@ -60,6 +61,7 @@ const Index = () => (
     </div>
     <EscortMode />
     <ChatbotSection />
+    <SilentGestureSOS />
     <FooterSection />
   </div>
 );
