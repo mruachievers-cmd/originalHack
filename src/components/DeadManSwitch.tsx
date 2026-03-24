@@ -202,21 +202,21 @@ const DeadManSwitch = () => {
                 )}
               </div>
 
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black italic uppercase tracking-tighter leading-none">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black italic uppercase tracking-tighter leading-none font-tactical text-glow">
                 Guardian <span className="text-primary">Dead-Man</span> <br/> 
                 <span className="text-white">Safety Mode</span>
               </h2>
               
-              <p className="text-muted-foreground text-base lg:text-lg uppercase font-black tracking-[0.2em] leading-relaxed max-w-xl">
+              <p className="text-muted-foreground text-base lg:text-lg uppercase font-black tracking-[0.2em] leading-relaxed max-w-xl font-neural">
                  Silent monitoring checks on you via casual polls, keeping your status hidden during your journey.
               </p>
 
               {isActive && (
                 <div className="grid md:grid-cols-2 gap-6 pt-4 max-w-xl">
                    <div className="space-y-3">
-                      <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-primary">
+                      <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-primary font-tactical">
                          <span>Next Safety Probe</span>
-                         <span>{Math.floor(nextCheckIn / 60)}:{(nextCheckIn % 60).toString().padStart(2, '0')}</span>
+                         <span className="font-neural">{Math.floor(nextCheckIn / 60)}:{(nextCheckIn % 60).toString().padStart(2, '0')}</span>
                       </div>
                       <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden border border-white/10">
                          <motion.div 
@@ -229,9 +229,9 @@ const DeadManSwitch = () => {
                    </div>
                    
                    <div className="space-y-3">
-                      <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-emerald-400">
+                      <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-emerald-400 font-tactical">
                          <span>Journey Progress</span>
-                         <span>{Math.floor(timeLeft / 60)}m left</span>
+                         <span className="font-neural">{Math.floor(timeLeft / 60)}m left</span>
                       </div>
                       <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden border border-white/10">
                          <motion.div 
