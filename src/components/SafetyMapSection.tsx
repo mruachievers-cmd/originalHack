@@ -25,7 +25,7 @@ const iconMap = {
 const SafetyMapSection = () => (
   <section id="map" className="section-padding relative">
     <div className="absolute inset-0 z-0">
-      <div className="absolute inset-0 bg-background/80 z-10" />
+      <div className="absolute inset-0 bg-white z-10" />
       <img 
         src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=2000&auto=format&fit=crop" 
         className="w-full h-full object-cover opacity-20 contrast-125"
@@ -42,14 +42,14 @@ const SafetyMapSection = () => (
         transition={{ duration: 0.8 }}
         className="text-center max-w-3xl mx-auto mb-16"
       >
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-white text-[10px] font-black uppercase tracking-widest mb-4 shadow-lg shadow-primary/20">
           <Navigation size={12} className="animate-pulse" />
           GEO-SPATIAL INTELLIGENCE
         </div>
-        <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight text-slate-900">
+        <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight text-slate-950">
           Tactical <span className="text-primary italic">Safety Grid</span>
         </h2>
-        <p className="text-slate-600 text-lg leading-relaxed font-medium">
+        <p className="text-slate-800 text-lg leading-relaxed font-bold">
           Proprietary visualization of metropolitan security assets, real-time crime hotspots, and optimized emergency response routing.
         </p>
       </motion.div>
