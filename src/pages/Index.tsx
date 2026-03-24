@@ -15,6 +15,7 @@ import EvidenceCollection from "@/components/EvidenceCollection";
 import EscortMode from "@/components/EscortMode";
 import { FeatureSphere } from "@/components/FeatureSphere";
 import AnonymousTip from "@/components/AnonymousTip";
+import DeadManSwitch from "@/components/DeadManSwitch";
 
 
 const Index = () => (
@@ -45,6 +46,7 @@ const Index = () => (
     </div>
     <div id="safety">
       <WomenSafetySection />
+      <DeadManSwitch />
     </div>
     <div id="witness">
       <AnonymousTip />

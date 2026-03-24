@@ -69,6 +69,15 @@ export const submitSOS = async (data: any) => {
     return response.json();
 };
 
+export const safetyCheck = async (data: any) => {
+    const response = await fetch(`${API_URL}/safety-check`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+    return response.json();
+};
+
 export const getEvidence = async () => {
     const response = await fetch(`${API_URL}/evidence`);
     return response.json();

@@ -75,13 +75,49 @@ app.get('/api/firs', (req, res) => {
 
 // Submit SOS
 app.post('/api/sos', (req, res) => {
-  const { user, location, coordinates } = req.body;
+  const { user, location, coordinates, alert_type, trigger_source, last_response } = req.body;
   const db = getDB();
   const id = `SOS-${Date.now().toString().slice(-4)}`;
-  const newSOS = { id, user, location, coordinates, status: "Critical", created_at: new Date() };
+  const newSOS = { 
+    id, 
+    user, 
+    location, 
+    coordinates, 
+    alert_type: alert_type || "Standard SOS", 
+    trigger_source: trigger_source || "Manual Trigger",
+    last_response,
+    status: "Critical", 
+    created_at: new Date() 
+  };
   db.sos_alerts.push(newSOS);
   saveDB(db);
   res.json({ success: true, sos: newSOS });
+});
+
+// Fun Check Mode Endpoint (Safety-Check)
+app.post('/api/safety-check', (req, res) => {
+  const { user, response, location, coordinates } = req.body;
+  
+  if (response && response.toUpperCase().startsWith('D')) {
+    const db = getDB();
+    const id = `SOS-${Date.now().toString().slice(-4)}`;
+    const newSOS = { 
+        id, 
+        user, 
+        location, 
+        coordinates, 
+        alert_type: "silent_distress", 
+        trigger_source: "dead_man_switch",
+        last_response: response,
+        status: "Critical", 
+        created_at: new Date() 
+    };
+    db.sos_alerts.push(newSOS);
+    saveDB(db);
+    return res.json({ success: true, distress_triggered: true, sos: newSOS });
+  }
+  
+  res.json({ success: true, distress_triggered: false });
 });
 
 // Get SOS alerts

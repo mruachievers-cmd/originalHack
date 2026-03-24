@@ -37,8 +37,11 @@ const PoliceDashboard = () => {
       // Notification for new SOS
       if (sosRes.length > prevSosCount) {
         const latest = sosRes[sosRes.length - 1];
-        toast.error("🚨 CRITICAL SOS ALERT", {
-          description: `Emergency reported at ${latest.location}. Dispatch units immediately!`,
+        const isSilent = latest.alert_type === 'silent_distress';
+        toast.error(isSilent ? "🚨 SILENT DISTRESS TRIGGERED" : "🚨 CRITICAL SOS ALERT", {
+          description: isSilent 
+            ? `Silent signal detected from ${latest.user} via Dead-Man Switch. High suspicion at ${latest.location}.`
+            : `Emergency reported at ${latest.location}. Dispatch units immediately!`,
           duration: 10000,
         });
         setPrevSosCount(sosRes.length);
@@ -217,12 +220,18 @@ const PoliceDashboard = () => {
                 sosAlerts.map((sos) => (
                   <div key={sos.id} className="p-5 rounded-2xl bg-gradient-to-r from-rose-500/10 to-transparent border border-rose-500/20 hover:border-rose-500/40 transition-all cursor-pointer group/item flex items-center justify-between">
                      <div>
-                       <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-2 mb-2">
                          <span className="text-xs font-black text-rose-400">{sos.id}</span>
-                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider bg-rose-500 text-white animate-pulse">
-                           Immediate Action Required
-                         </span>
-                       </div>
+                         {sos.alert_type === 'silent_distress' ? (
+                            <span className="text-[10px] font-black px-2 py-0.5 rounded-sm uppercase tracking-wider bg-amber-500 text-black flex items-center gap-1">
+                               <AlertTriangle size={10} /> Silent Distress Triggered
+                            </span>
+                         ) : (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider bg-rose-500 text-white animate-pulse">
+                              Immediate Action Required
+                            </span>
+                         )}
+                      </div>
                        <div className="font-bold text-sm tracking-wide mb-1 flex items-center gap-2 text-white">
                          Victim: {sos.user}
                        </div>
@@ -230,6 +239,14 @@ const PoliceDashboard = () => {
                          <div className="text-xs text-rose-200/70 flex items-center gap-2">
                            <MapPin size={12} className="text-rose-400" /> Location: {sos.location}
                          </div>
+                         {sos.trigger_source === 'dead_man_switch' && (
+                            <div className="text-[10px] text-amber-400 font-bold uppercase tracking-widest mt-1 flex flex-col gap-1">
+                               <div>Source: Dead-Man Switch (Neural Grid)</div>
+                               <div className="bg-black/40 p-2 rounded-lg border border-amber-500/20 italic text-white/70">
+                                 " {sos.last_response} "
+                               </div>
+                            </div>
+                         )}
                        </div>
                      </div>
                      <div className="flex flex-col items-end gap-3 text-right">
