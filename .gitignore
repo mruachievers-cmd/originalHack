@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Web Dialer Artifacts
+webdiler.zip
+webdiler_extracted/
+dialplan_debug.txt
+hello
