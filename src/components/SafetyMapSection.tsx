@@ -10,6 +10,10 @@ const markers = [
   { x: 28, y: 72, type: "hotspot", label: "Zone A - High Risk" },
   { x: 72, y: 78, type: "hotspot", label: "Zone B - Active Alert" },
   { x: 18, y: 56, type: "emergency", label: "Emergency Medical Center" },
+  { x: 45, y: 35, type: "hotspot", label: "Zone C - Reported Theft" },
+  { x: 15, y: 25, type: "hotspot", label: "Zone D - Suspicious Activity" },
+  { x: 85, y: 40, type: "hotspot", label: "Zone E - High Alert" },
+  { x: 65, y: 60, type: "emergency", label: "Fire Station Node" },
 ];
 
 const iconMap = {
@@ -38,20 +42,20 @@ const SafetyMapSection = () => (
         transition={{ duration: 0.8 }}
         className="text-center max-w-3xl mx-auto mb-16"
       >
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-primary text-[10px] font-black uppercase tracking-widest mb-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-4">
           <Navigation size={12} className="animate-pulse" />
           GEO-SPATIAL INTELLIGENCE
         </div>
-        <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight">
-          Tactical <span className="text-gradient">Safety Grid</span>
+        <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight text-slate-900">
+          Tactical <span className="text-primary italic">Safety Grid</span>
         </h2>
-        <p className="text-muted-foreground text-lg leading-relaxed">
+        <p className="text-slate-600 text-lg leading-relaxed font-medium">
           Proprietary visualization of metropolitan security assets, real-time crime hotspots, and optimized emergency response routing.
         </p>
       </motion.div>
 
       <TiltCard className="max-w-6xl mx-auto">
-        <div className="glass-strong rounded-[2.5rem] p-4 md:p-8 border border-white/10 overflow-hidden shadow-2xl relative">
+        <div className="bg-white rounded-[2.5rem] p-4 md:p-8 border border-primary/10 overflow-hidden shadow-2xl relative">
         {/* Map Header / Controls */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
            <div className="flex items-center gap-4 w-full md:w-auto">
@@ -59,25 +63,25 @@ const SafetyMapSection = () => (
                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                  <input 
                     placeholder="Search coordinates or sectors..." 
-                    className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-xs font-bold focus:border-primary/50 outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-3 rounded-2xl bg-secondary/10 border border-primary/10 text-xs font-bold focus:border-primary/50 outline-none transition-all text-foreground"
                  />
               </div>
-              <button className="p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all">
+              <button className="p-3 rounded-2xl bg-secondary/10 border border-primary/10 hover:bg-secondary/20 transition-all text-foreground">
                  <Filter size={18} />
               </button>
            </div>
            
-           <div className="flex items-center gap-3 bg-white/5 p-1.5 rounded-2xl border border-white/5">
-              <button className="px-4 py-2 rounded-xl bg-primary text-white text-[10px] font-black uppercase tracking-widest transition-all">SATELLITE</button>
-              <button className="px-4 py-2 rounded-xl hover:bg-white/5 text-muted-foreground text-[10px] font-black uppercase tracking-widest transition-all">TERRAIN</button>
-              <button className="px-4 py-2 rounded-xl hover:bg-white/5 text-muted-foreground text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2">
+           <div className="flex items-center gap-3 bg-secondary/20 p-1.5 rounded-2xl border border-primary/5">
+              <button className="px-4 py-2 rounded-xl bg-primary text-white text-[10px] font-black uppercase tracking-widest transition-all shadow-lg shadow-primary/20">SATELLITE</button>
+              <button className="px-4 py-2 rounded-xl hover:bg-secondary/30 text-muted-foreground text-[10px] font-black uppercase tracking-widest transition-all">TERRAIN</button>
+              <button className="px-4 py-2 rounded-xl hover:bg-secondary/30 text-muted-foreground text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2">
                  <Layers size={12} /> LAYERS
               </button>
            </div>
         </div>
 
         {/* Map Simulation */}
-        <div className="relative aspect-[21/9] rounded-[2rem] bg-[#020617] overflow-hidden border border-white/5 shadow-inner group">
+        <div className="relative aspect-[21/9] rounded-[2rem] bg-secondary/10 overflow-hidden border border-primary/20 shadow-inner group">
           
           {/* Actual Geographic Map Background */}
           <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-60">
@@ -85,24 +89,24 @@ const SafetyMapSection = () => (
               width="120%" 
               height="120%" 
               frameBorder="0" 
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-74.015,40.700,-73.990,40.715&layer=mapnik" 
+              src="https://www.openstreetmap.org/export/embed.html?bbox=78.35,17.30,78.60,17.45&layer=mapnik" 
               style={{ 
                 position: 'absolute', 
                 top: '-10%', 
                 left: '-10%', 
-                filter: 'invert(100%) grayscale(100%) contrast(150%) brightness(70%)' 
+                filter: 'contrast(110%) brightness(105%) saturate(120%)' 
               }}
             ></iframe>
-            {/* Color tint for tactical mode */}
-            <div className="absolute inset-0 bg-primary/30 mix-blend-color"></div>
-            {/* Edge fading gradients */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-[#020617]"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-transparent to-[#020617]"></div>
+            {/* Soft green tint for Leaf aesthetic */}
+            <div className="absolute inset-0 bg-primary/5 mix-blend-multiply"></div>
+            {/* Soft edge fading */}
+            <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-white/40"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-white/40"></div>
           </div>
 
-          {/* Radar Sweep Animation */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] pointer-events-none opacity-20 z-10">
-             <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent animate-[spin_10s_linear_infinite]" style={{ clipPath: 'conic-gradient(from 0deg at 50% 50%, #00A8E8, transparent 90deg)' }}></div>
+          {/* Sweep Animation Subtle */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] pointer-events-none opacity-5 z-10">
+             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent animate-[spin_15s_linear_infinite]" style={{ clipPath: 'conic-gradient(from 0deg at 50% 50%, #22c55e, transparent 90deg)' }}></div>
           </div>
 
           {/* Grid lines */}
@@ -162,16 +166,16 @@ const SafetyMapSection = () => (
 
           {/* Map info overlay */}
           <div className="absolute top-6 left-6 flex flex-col gap-2">
-             <div className="px-4 py-2 rounded-xl glass border border-white/10 text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
+             <div className="px-4 py-2 rounded-xl bg-white/90 backdrop-blur-md border border-primary/20 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 text-primary shadow-sm">
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
                 LIVE FEED ACTIVE: DOWNTOWN CORE
              </div>
-             <div className="px-4 py-2 rounded-xl glass border border-white/10 text-[10px] font-mono text-muted-foreground">
-                COORD: 12.9716° N, 77.5946° E
+             <div className="px-4 py-2 rounded-xl bg-white/90 backdrop-blur-md border border-primary/20 text-[10px] font-mono text-slate-600 shadow-sm">
+                COORD: 17.3850° N, 78.4867° E
              </div>
           </div>
           
-          <div className="absolute bottom-6 right-6 px-4 py-2 rounded-xl glass border border-white/10 text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+          <div className="absolute bottom-6 right-6 px-4 py-2 rounded-xl bg-white/90 backdrop-blur-md border border-primary/20 text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2 shadow-sm">
             <Navigation size={12} /> AUTONOMOUS RELAY ENGINE
           </div>
         </div>
@@ -183,12 +187,12 @@ const SafetyMapSection = () => (
             { icon: Siren, label: "EMERGENCY RESPONSE", color: "text-amber-500", desc: "Medical and fire support" },
             { icon: AlertTriangle, label: "CRITICAL ZONES", color: "text-rose-500", desc: "High probability areas" },
           ].map((l) => (
-            <div key={l.label} className="flex items-center gap-4 bg-white/5 p-4 rounded-3xl border border-white/5 group hover:bg-white/[0.08] transition-all">
-              <div className={`w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 ${l.color} group-hover:scale-110 transition-transform`}>
+            <div key={l.label} className="flex items-center gap-4 bg-secondary/10 p-4 rounded-3xl border border-primary/5 group hover:bg-white hover:shadow-xl transition-all">
+              <div className={`w-12 h-12 rounded-2xl bg-background flex items-center justify-center shrink-0 ${l.color} group-hover:scale-110 transition-transform shadow-md`}>
                 <l.icon size={24} />
               </div>
               <div>
-                <div className="text-[10px] font-black uppercase tracking-widest mb-0.5">{l.label}</div>
+                <div className="text-[10px] font-black uppercase tracking-widest mb-0.5 text-foreground">{l.label}</div>
                 <div className="text-[10px] text-muted-foreground font-medium">{l.desc}</div>
               </div>
             </div>

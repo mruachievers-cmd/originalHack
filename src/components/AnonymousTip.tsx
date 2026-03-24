@@ -69,7 +69,7 @@ const AnonymousTip = () => {
 
         <div className="max-w-4xl mx-auto grid lg:grid-cols-5 gap-12 items-start">
             <div className="lg:col-span-3">
-                <TiltCard className="card-premium p-8 border-white/10 relative overflow-hidden group">
+                <TiltCard className="bg-white p-8 border border-primary/10 rounded-[2.5rem] relative overflow-hidden group shadow-xl">
                     <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-700">
                         <Send size={150} />
                     </div>
@@ -79,11 +79,11 @@ const AnonymousTip = () => {
                             <div className="space-y-2">
                                 <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Tip Category</label>
                                 <select 
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm focus:border-primary/50 outline-none transition-all appearance-none"
+                                    className="w-full bg-secondary/10 border border-primary/20 rounded-xl py-3 px-4 text-sm focus:border-primary/50 outline-none transition-all appearance-none text-foreground"
                                     value={formData.category}
                                     onChange={(e) => setFormData({...formData, category: e.target.value})}
                                 >
-                                    {categories.map(c => <option key={c} value={c} className="bg-[#020617]">{c}</option>)}
+                                    {categories.map(c => <option key={c} value={c} className="bg-white text-foreground">{c}</option>)}
                                 </select>
                             </div>
                             <div className="space-y-2">
@@ -92,8 +92,8 @@ const AnonymousTip = () => {
                                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/50 w-4 h-4" />
                                     <input 
                                         type="text" 
-                                        placeholder="Address or Landmarks"
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm focus:border-primary/50 outline-none transition-all"
+                                        placeholder="Ex: Jubilee Hills, Hyderabad"
+                                        className="w-full bg-secondary/10 border border-primary/20 rounded-xl py-3 pl-10 pr-4 text-sm focus:border-primary/50 outline-none transition-all text-foreground placeholder:text-muted-foreground/50"
                                         value={formData.location}
                                         onChange={(e) => setFormData({...formData, location: e.target.value})}
                                         required
@@ -107,7 +107,7 @@ const AnonymousTip = () => {
                             <textarea 
                                 rows={4}
                                 placeholder="Please provide specific details: people involved, vehicle descriptions, time of day..."
-                                className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm focus:border-primary/50 outline-none transition-all resize-none"
+                                className="w-full bg-secondary/10 border border-primary/20 rounded-xl py-3 px-4 text-sm focus:border-primary/50 outline-none transition-all resize-none text-foreground placeholder:text-muted-foreground/50"
                                 value={formData.description}
                                 onChange={(e) => setFormData({...formData, description: e.target.value})}
                                 required
@@ -147,28 +147,28 @@ const AnonymousTip = () => {
                             "Note the frequency of the activity",
                             "Specify the exact location/corner"
                         ].map((item, i) => (
-                            <li key={i} className="flex gap-3 items-center text-xs font-bold text-white/80">
+                            <li key={i} className="flex gap-3 items-center text-xs font-bold text-foreground/80">
                                 <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
                                 {item}
                             </li>
                         ))}
-                    </ul>
-                </div>
-
-                <div className="p-8 rounded-3xl bg-secondary/10 border border-white/5 relative overflow-hidden group hover:border-primary/20 transition-colors">
-                    <div className="absolute -bottom-4 -right-4 opacity-5 group-hover:scale-110 transition-transform duration-700">
-                        <Info size={100} />
-                    </div>
-                    <h4 className="text-sm font-black uppercase tracking-widest mb-2">Neural Routing</h4>
-                    <p className="text-[11px] text-muted-foreground leading-normal">
-                        Your tip is encrypted into an AES-256 package before leaving your browser and is decrypted ONLY within the Police Command Center's secure environment.
-                    </p>
-                </div>
-            </div>
+            </ul>
         </div>
-      </div>
-    </section>
-  );
+
+        <div className="p-8 rounded-3xl bg-secondary/10 border border-primary/10 relative overflow-hidden group hover:border-primary/20 transition-colors">
+            <div className="absolute -bottom-4 -right-4 opacity-10 group-hover:scale-110 transition-transform duration-700">
+                <Info size={100} />
+            </div>
+            <h4 className="text-sm font-black uppercase tracking-widest mb-2 text-foreground">Neural Routing</h4>
+            <p className="text-[11px] text-muted-foreground leading-normal">
+                Your tip is encrypted into an AES-256 package before leaving your browser and is decrypted ONLY within the Police Command Center's secure environment.
+            </p>
+        </div>
+    </div>
+</div>
+</div>
+</section>
+);
 };
 
 export default AnonymousTip;

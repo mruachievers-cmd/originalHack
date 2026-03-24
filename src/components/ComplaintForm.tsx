@@ -165,7 +165,7 @@ const ComplaintForm = () => {
                           value={form.location}
                           onChange={(e) => setForm({ ...form, location: e.target.value })}
                           className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/5 border border-white/10 text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
-                          placeholder="Ex: MG Road, Bengaluru"
+                          placeholder="Ex: Banjara Hills, Hyderabad"
                         />
                       </div>
                     </div>
