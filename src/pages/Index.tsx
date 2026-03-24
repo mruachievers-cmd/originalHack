@@ -1,16 +1,37 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import ProblemSection from "@/components/ProblemSection";
+import AboutSection from "@/components/AboutSection";
+import ComplaintForm from "@/components/ComplaintForm";
+import AIScannerSection from "@/components/AIScannerSection";
+import WomenSafetySection from "@/components/WomenSafetySection";
+import SafetyMapSection from "@/components/SafetyMapSection";
+import ChatbotSection from "@/components/ChatbotSection";
+import DashboardPreview from "@/components/DashboardPreview";
+import TechStackSection from "@/components/TechStackSection";
+import FutureScopeSection from "@/components/FutureScopeSection";
+import FooterSection from "@/components/FooterSection";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
-  return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+const Index = () => (
+  <div className="min-h-screen bg-background text-foreground">
+    <Navbar />
+    <HeroSection />
+    <ProblemSection />
+    <AboutSection />
+    <DashboardPreview />
+    <ComplaintForm />
+    <div id="scanner">
+      <AIScannerSection />
     </div>
-  );
-};
-
-const Index = PlaceholderIndex;
+    <WomenSafetySection />
+    <div id="map">
+      <SafetyMapSection />
+    </div>
+    <ChatbotSection />
+    <TechStackSection />
+    <FutureScopeSection />
+    <FooterSection />
+  </div>
+);
 
 export default Index;
