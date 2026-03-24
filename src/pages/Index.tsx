@@ -8,30 +8,53 @@ import WomenSafetySection from "@/components/WomenSafetySection";
 import SafetyMapSection from "@/components/SafetyMapSection";
 import ChatbotSection from "@/components/ChatbotSection";
 import DashboardPreview from "@/components/DashboardPreview";
-import TechStackSection from "@/components/TechStackSection";
-import FutureScopeSection from "@/components/FutureScopeSection";
 import FooterSection from "@/components/FooterSection";
+import { FeatureSphere } from "@/components/FeatureSphere";
 
 const Index = () => (
-  <div className="min-h-screen bg-background text-foreground">
+  <div className="min-h-screen bg-background text-foreground scroll-smooth relative overflow-x-hidden">
     <Navbar />
-    <HeroSection />
-    <ProblemSection />
-    <AboutSection />
-    <DashboardPreview />
-    <ComplaintForm />
+    <div id="home">
+      <HeroSection />
+    </div>
+    <div id="problem">
+      <ProblemSection />
+    </div>
+    <div id="about">
+      <AboutSection />
+    </div>
+    <div className="container mx-auto px-4 md:px-8 section-padding" id="features">
+      <div className="text-center max-w-3xl mx-auto mb-16">
+        <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight">
+          Neural <span className="text-gradient">Feature Core</span>
+        </h2>
+        <p className="text-muted-foreground text-lg leading-relaxed">
+          The central intelligence engine that powers every tactical unit of the Guardian Net ecosystem.
+        </p>
+      </div>
+      <FeatureSphere />
+    </div>
+    <div id="dashboard">
+      <DashboardPreview />
+    </div>
+    <div id="complaint">
+      <ComplaintForm />
+    </div>
     <div id="scanner">
       <AIScannerSection />
     </div>
-    <WomenSafetySection />
+    <div id="safety">
+      <WomenSafetySection />
+    </div>
     <div id="map">
       <SafetyMapSection />
     </div>
-    <ChatbotSection />
-    <TechStackSection />
-    <FutureScopeSection />
+    <div id="support">
+      <ChatbotSection />
+    </div>
     <FooterSection />
   </div>
 );
 
 export default Index;
+

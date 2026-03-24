@@ -1,7 +1,14 @@
+<<<<<<< Updated upstream
 import { useState } from "react";
 import { Shield, Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import WebDialer from "./WebDialer";
+=======
+import { useState, useEffect } from "react";
+import { Shield, Menu, X, Phone, LogIn, UserPlus } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
+>>>>>>> Stashed changes
 
 const links = [
   { label: "Features", id: "features" },
@@ -12,27 +19,105 @@ const links = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+<<<<<<< Updated upstream
   const [dialerOpen, setDialerOpen] = useState(false);
+=======
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+>>>>>>> Stashed changes
 
   const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 80;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
     setOpen(false);
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-strong">
-      <div className="container mx-auto px-4 flex items-center justify-between h-16">
-        <div className="flex items-center gap-2">
-          <Shield className="w-6 h-6 text-primary" />
-          <span className="font-bold text-lg">Guardian<span className="text-gradient">Net</span></span>
+    <nav 
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
+        scrolled ? "py-3 bg-background/70 backdrop-blur-xl border-b border-white/10 shadow-lg" : "py-5 bg-transparent"
+      }`}
+    >
+      <div className="container mx-auto px-4 md:px-8 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-3 group cursor-pointer">
+          <div className="relative">
+            <Shield className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
+            <div className="absolute inset-0 bg-primary/20 blur-lg rounded-full animate-pulse"></div>
+          </div>
+          <span className="font-extrabold text-xl tracking-tight">
+            Guardian<span className="text-primary italic">Net</span>
+          </span>
+        </Link>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-8">
+          <div className="flex items-center gap-6">
+            {links.map((l) => (
+              <button 
+                key={l.id} 
+                onClick={() => scrollTo(l.id)} 
+                className="relative text-sm font-medium text-foreground/70 hover:text-white transition-colors group"
+              >
+                {l.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </button>
+            ))}
+          </div>
+          
+          <div className="h-4 w-px bg-white/10 mx-2"></div>
+
+          <div className="flex items-center gap-4">
+            <Link to="/login" className="text-sm font-bold text-foreground/70 hover:text-primary transition-colors flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-white/5 uppercase tracking-widest">
+                <LogIn size={16} /> Login
+            </Link>
+
+            <Link 
+              to="/signup" 
+              className="px-5 py-2.5 rounded-full bg-primary text-white text-sm font-black hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(0,168,232,0.3)] flex items-center gap-2 group"
+            >
+              <UserPlus size={16} className="group-hover:scale-110 transition-transform" />
+              REQUEST ACCESS
+            </Link>
+
+            <button 
+              onClick={() => scrollTo("complaint")} 
+              className="relative overflow-hidden group px-5 py-2.5 rounded-full bg-danger text-white text-sm font-bold shadow-lg shadow-danger/20 hover:shadow-danger/40 transition-all duration-300 active:scale-95 flex items-center gap-2"
+            >
+              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 linear"></div>
+              <Phone className="w-4 h-4 animate-bounce" />
+              EMERGENCY
+              <div className="absolute inset-0 rounded-full animate-pulse-red opacity-50"></div>
+            </button>
+          </div>
         </div>
 
-        {/* Desktop */}
-        <div className="hidden md:flex items-center gap-6">
-          {links.map((l) => (
-            <button key={l.id} onClick={() => scrollTo(l.id)} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              {l.label}
+        {/* Mobile Toggle */}
+        <div className="flex items-center gap-4 md:hidden">
+           <button 
+              onClick={() => scrollTo("complaint")} 
+              className="p-2 rounded-full bg-danger text-white animate-pulse"
+            >
+              <Phone className="w-5 h-5" />
             </button>
+<<<<<<< Updated upstream
           ))}
           {/* Call Support */}
           <button
@@ -44,35 +129,78 @@ const Navbar = () => {
           </button>
           <button onClick={() => scrollTo("complaint")} className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:brightness-110 transition-all">
             Emergency
+=======
+          <button className="p-2 rounded-lg bg-white/5 border border-white/10" onClick={() => setOpen(!open)}>
+            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+>>>>>>> Stashed changes
           </button>
         </div>
-
-        {/* Mobile toggle */}
-        <button className="md:hidden" onClick={() => setOpen(!open)}>
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
       </div>
 
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-border overflow-hidden"
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 100 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[110] md:hidden bg-[#020617]/98 backdrop-blur-2xl flex flex-col p-8 pt-24"
           >
-            <div className="p-4 space-y-3">
-              {links.map((l) => (
-                <button key={l.id} onClick={() => scrollTo(l.id)} className="block w-full text-left text-sm text-muted-foreground hover:text-foreground py-2">
+            <button className="absolute top-6 right-6 p-2 text-white/50 hover:text-white" onClick={() => setOpen(false)}>
+              <X className="w-8 h-8" />
+            </button>
+
+            <div className="flex flex-col gap-6">
+              {links.map((l, i) => (
+                <motion.button 
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  key={l.id} 
+                  onClick={() => scrollTo(l.id)} 
+                  className="text-2xl font-black text-left hover:text-primary transition-colors tracking-tight uppercase italic"
+                >
                   {l.label}
-                </button>
+                </motion.button>
               ))}
+<<<<<<< Updated upstream
               <button
                 onClick={() => { setDialerOpen((v) => !v); setOpen(false); }}
                 className="flex items-center gap-2 w-full text-sm text-green-400 hover:text-green-300 py-2"
               >
                 <Phone className="w-4 h-4" /> Call Support
               </button>
+=======
+              
+              <div className="h-px bg-white/10 my-4"></div>
+              
+              <Link 
+                to="/login"
+                onClick={() => setOpen(false)}
+                className="text-2xl font-black text-left hover:text-primary transition-colors flex items-center gap-4 tracking-tight uppercase italic"
+              >
+                <LogIn size={28} className="text-primary" /> LOGIN
+              </Link>
+              
+              <Link 
+                to="/signup"
+                onClick={() => setOpen(false)}
+                className="p-6 rounded-[2rem] bg-primary text-white font-black text-center flex items-center justify-center gap-3 text-lg shadow-[0_0_30px_rgba(0,168,232,0.2)]"
+              >
+                <UserPlus size={24} /> REQUEST ACCESS
+              </Link>
+
+              <motion.button 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                onClick={() => scrollTo("complaint")} 
+                className="mt-4 p-6 rounded-[2rem] bg-danger text-white font-black text-center flex items-center justify-center gap-3 text-lg animate-pulse-red shadow-[0_0_30px_rgba(255,0,0,0.2)]"
+              >
+                <Phone size={24} /> REPORT EMERGENCY
+              </motion.button>
+>>>>>>> Stashed changes
             </div>
           </motion.div>
         )}

@@ -16,8 +16,24 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0">
-        <img src={heroBg} alt="Smart city security" className="w-full h-full object-cover" width={1920} height={1080} />
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.img 
+          src={heroBg} 
+          alt="Smart city security" 
+          className="w-full h-full object-cover scale-110" 
+          width={1920} 
+          height={1080}
+          animate={{
+            scale: [1.1, 1.25, 1.1],
+            x: [0, 20, -20, 0],
+            y: [0, -20, 20, 0]
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
       </div>
 
