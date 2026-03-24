@@ -22,7 +22,7 @@ const AIScannerSection = () => {
 
   // Check for existing session
   useEffect(() => {
-    const savedAuth = localStorage.getItem("guardian_net_auth");
+    const savedAuth = localStorage.getItem("gn_auth");
     if (savedAuth === "true") setIsAuthorized(true);
   }, []);
 
@@ -30,7 +30,7 @@ const AIScannerSection = () => {
     e.preventDefault();
     if (badgeId === "GN-1234-5678" && stationId === "CENTRAL PRECINCT 01") {
       setIsAuthorized(true);
-      localStorage.setItem("guardian_net_auth", "true");
+      localStorage.setItem("gn_auth", "true");
       toast.success("Security Clearance Granted. Welcome, Officer.");
     } else {
       toast.error("Invalid Credentials. Access Denied.");
