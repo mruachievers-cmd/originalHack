@@ -7,6 +7,8 @@ import WebDialer from "./WebDialer";
 const links = [
   { label: "Features", id: "features" },
   { label: "Report", id: "complaint" },
+  { label: "Witness", id: "witness" },
+  { label: "Escort", id: "escort" },
   { label: "AI Scanner", id: "scanner" },
   { label: "Safety Map", id: "map" },
 ];

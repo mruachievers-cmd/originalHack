@@ -9,6 +9,8 @@ import SafetyMapSection from "@/components/SafetyMapSection";
 import ChatbotSection from "@/components/ChatbotSection";
 import DashboardPreview from "@/components/DashboardPreview";
 import FooterSection from "@/components/FooterSection";
+import EvidenceCollection from "@/components/EvidenceCollection";
+import EscortMode from "@/components/EscortMode";
 import { FeatureSphere } from "@/components/FeatureSphere";
 
 const Index = () => (
@@ -46,9 +48,11 @@ const Index = () => (
     <div id="safety">
       <WomenSafetySection />
     </div>
+    <EvidenceCollection />
     <div id="map">
       <SafetyMapSection />
     </div>
+    <EscortMode />
     <div id="support">
       <ChatbotSection />
     </div>
