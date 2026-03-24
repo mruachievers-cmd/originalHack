@@ -13,36 +13,37 @@ const SilentGestureSOS = () => {
   const cooldownTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // 1. Mobile Double Tap Detection
-    const handleTouch = (e: TouchEvent) => {
+    // 1. Screen Trigger (Touch and Mouse Click)
+    const handleAction = (e: TouchEvent | MouseEvent) => {
       if (!isArmed || cooldown) return;
       
       const now = Date.now();
       const diff = now - lastTapRef.current;
       
       if (diff < 500 && diff > 50) {
-        triggerSilentSOS("gesture_double_tap");
+        triggerSilentSOS(e.type === 'touchstart' ? "gesture_double_tap" : "mouse_double_click");
         lastTapRef.current = 0; // Reset
       } else {
         lastTapRef.current = now;
       }
     };
 
-    // 2. Body Tap Detection (Accelerometer)
+    // 2. Chassis / Motherboard Tap Detection (Accelerometer)
     const handleMotion = (e: DeviceMotionEvent) => {
       if (!isArmed || cooldown) return;
       
-      const acc = e.acceleration;
+      const acc = e.accelerationIncludingGravity || e.acceleration;
       if (!acc) return;
 
       const totalForce = Math.sqrt((acc.x || 0)**2 + (acc.y || 0)**2 + (acc.z || 0)**2);
       
-      if (totalForce > 18) { // Increased threshold for "motherboard" tap
+      // Significantly lower threshold for laptop chassis taps
+      if (totalForce > 12) { 
         const now = Date.now();
         const diff = now - lastTapRef.current;
         
         if (diff < 800 && diff > 100) {
-            triggerSilentSOS("device_tap_pattern");
+            triggerSilentSOS("chassis_vibration_trigger");
             lastTapRef.current = 0;
         } else {
             lastTapRef.current = now;
@@ -50,13 +51,16 @@ const SilentGestureSOS = () => {
       }
     };
 
-    window.addEventListener('touchstart', handleTouch);
+    window.addEventListener('touchstart', handleAction);
+    window.addEventListener('mousedown', handleAction);
+    
     if (window.DeviceMotionEvent) {
         window.addEventListener('devicemotion', handleMotion);
     }
 
     return () => {
-      window.removeEventListener('touchstart', handleTouch);
+      window.removeEventListener('touchstart', handleAction);
+      window.removeEventListener('mousedown', handleAction);
       window.removeEventListener('devicemotion', handleMotion);
     };
   }, [isArmed, cooldown]);
