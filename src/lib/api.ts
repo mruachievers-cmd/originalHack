@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5001/api";
+const API_URL = "http://localhost:5000/api";
 
 export const signupCitizen = async (formData: any) => {
   const response = await fetch(`${API_URL}/signup`, {
@@ -51,6 +51,20 @@ export const submitFIR = async (data: any) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
+    });
+    return response.json();
+};
+
+export const getFIRById = async (id: string) => {
+    const response = await fetch(`${API_URL}/firs/${id}`);
+    return response.json();
+};
+
+export const updateFIRStatus = async (id: string, status: string, remarks?: string) => {
+    const response = await fetch(`${API_URL}/firs/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status, remarks }),
     });
     return response.json();
 };

@@ -44,7 +44,11 @@ const initDB = () => {
             firs: [],
             sos_alerts: [],
             evidence: [],
-            tips: []
+            tips: [],
+            suspects: [
+                { id: "S-001", name: "Vikram Malhotra", descriptors: [], status: "Wanted", threat: "High" },
+                { id: "S-002", name: "Rajesh Kumar", descriptors: [], status: "Under Observation", threat: "Low" }
+            ]
         };
         fs.writeFileSync(DB_PATH, JSON.stringify(initialState, null, 2));
     }
@@ -71,6 +75,34 @@ app.post('/api/firs', (req, res) => {
 // Get all FIRs
 app.get('/api/firs', (req, res) => {
   res.json(getDB().firs || []);
+});
+
+// Update FIR Status
+app.patch('/api/firs/:id', (req, res) => {
+  const { id } = req.params;
+  const { status, remarks } = req.body;
+  const db = getDB();
+  const fir = db.firs.find(f => f.id === id);
+  if (fir) {
+    fir.status = status;
+    if (remarks) fir.remarks = remarks;
+    saveDB(db);
+    res.json({ success: true, fir });
+  } else {
+    res.status(404).json({ error: "FIR not found" });
+  }
+});
+
+// Get Single FIR (for tracking)
+app.get('/api/firs/:id', (req, res) => {
+  const { id } = req.params;
+  const db = getDB();
+  const fir = db.firs.find(f => f.id === id);
+  if (fir) {
+    res.json(fir);
+  } else {
+    res.status(404).json({ error: "FIR not found" });
+  }
 });
 
 // Submit SOS
@@ -190,6 +222,33 @@ app.patch('/api/tips/:id', (req, res) => {
   }
 });
 
+// --- SUSPECTS & AI SCANNER ---
+
+// Get Suspects
+app.get('/api/suspects', (req, res) => {
+  res.json(getDB().suspects || []);
+});
+
+// Register New Suspect
+app.post('/api/suspects', (req, res) => {
+  const { name, descriptor } = req.body;
+  const db = getDB();
+  const id = `S-${Date.now().toString().slice(-4)}`;
+  const newSuspect = { 
+    id, 
+    name, 
+    descriptors: [descriptor], // face-api descriptor
+    status: "Wanted", 
+    threat: "Medium",
+    created_at: new Date() 
+  };
+  
+  if (!db.suspects) db.suspects = [];
+  db.suspects.push(newSuspect);
+  saveDB(db);
+  res.json({ success: true, suspect: newSuspect });
+});
+
 // --- EXISTING AUTH ROUTES ---
 app.post('/api/signup', (req, res) => {
   const { name, email, unit, password } = req.body;
@@ -231,7 +290,7 @@ app.post('/api/login/officer', (req, res) => {
   }
 });
 
-const PORT = 5001;
+const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`✅ Guardian Net Neural Backend running on http://localhost:${PORT}`);
   console.log(`📂 JSON Database located at: ${DB_PATH}`);

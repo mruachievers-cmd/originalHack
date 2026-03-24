@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import DashboardPreview from "../components/DashboardPreview";
 import AIScannerSection from "../components/AIScannerSection";
 import SafetyMapSection from "../components/SafetyMapSection";
-import { getFIRs, getSOSAlerts, getEvidence, getTips, updateTipStatus } from "../lib/api";
+import { getFIRs, getSOSAlerts, getEvidence, getTips, updateTipStatus, updateFIRStatus } from "../lib/api";
 import { toast } from "sonner";
 import BackgroundAmbience from "../components/BackgroundAmbience";
 
@@ -84,6 +84,17 @@ const PoliceDashboard = () => {
       fetchData();
     } catch (err) {
       toast.error("Failed to update status");
+    }
+  };
+
+  const handleUpdateFIRStatus = async (id: string, status: string) => {
+    try {
+      await updateFIRStatus(id, status);
+      toast.success(`FIR ${id} updated to ${status}`);
+      setSelectedFIR(null);
+      fetchData();
+    } catch (err) {
+      toast.error("Failed to update FIR status");
     }
   };
 
@@ -502,11 +513,17 @@ const PoliceDashboard = () => {
                 </div>
 
                 <div className="pt-4 flex gap-4">
-                  <button className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-black uppercase tracking-widest py-3 rounded-xl transition-all shadow-xl shadow-cyan-100 text-xs text-center border-none">
+                  <button 
+                    onClick={() => handleUpdateFIRStatus(selectedFIR.id, "Investigating")}
+                    className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-black uppercase tracking-widest py-3 rounded-xl transition-all shadow-xl shadow-cyan-100 text-xs text-center border-none"
+                  >
                     Assign Officer
                   </button>
-                  <button className="flex-1 bg-secondary/20 hover:bg-secondary/30 text-foreground font-black uppercase tracking-widest py-3 rounded-xl transition-all border border-primary/10 text-xs text-center inline-block">
-                    Update Status
+                  <button 
+                    onClick={() => handleUpdateFIRStatus(selectedFIR.id, "Resolved")}
+                    className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-black uppercase tracking-widest py-3 rounded-xl transition-all shadow-xl shadow-emerald-100 text-xs text-center border-none"
+                  >
+                    Resolve Case
                   </button>
                 </div>
               </div>

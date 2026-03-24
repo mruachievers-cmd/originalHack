@@ -90,6 +90,33 @@
       "description": "Suspicious activity observed near the shopping complex. A group of individuals were seen loitering after hours and attempting to bypass security gates.",
       "status": "Active",
       "created_at": "2026-03-24T17:08:11.781Z"
+    },
+    {
+      "id": "FIR-1866",
+      "type": "General Report",
+      "location": "Lat: 17.6040, Lng: 78.4864 (Detected)",
+      "reporter": "xdgfhj",
+      "description": "wwxcdfvghnjkhnjewd snxceui",
+      "status": "Active",
+      "created_at": "2026-03-24T19:47:01.866Z"
+    },
+    {
+      "id": "FIR-2612",
+      "type": "General Report",
+      "location": "Lat: 17.6041, Lng: 78.4864 (Detected)",
+      "reporter": "gvc bhjxwsl",
+      "description": "DCFX GSHAZJKml̥",
+      "status": "Active",
+      "created_at": "2026-03-24T19:54:12.612Z"
+    },
+    {
+      "id": "FIR-5288",
+      "type": "General Report",
+      "location": "Lat: 17.6040, Lng: 78.4864 (Detected)",
+      "reporter": "wcedvqa",
+      "description": "edvgwqshjn",
+      "status": "Active",
+      "created_at": "2026-03-24T20:02:35.288Z"
     }
   ],
   "sos_alerts": [
@@ -321,15 +348,95 @@
       "created_at": "2026-03-24T19:02:46.989Z"
     },
     {
-      "id": "SOS-6324",
+      "id": "SOS-5522",
       "user": "Citizen Account",
       "location": "Hitech City, Hyderabad",
       "coordinates": {
         "lat": 17.385,
         "lng": 78.4867
       },
+      "alert_type": "Standard SOS",
+      "trigger_source": "Manual Trigger",
       "status": "Critical",
-      "created_at": "2026-03-24T19:50:16.324Z"
+      "created_at": "2026-03-24T19:40:35.523Z"
+    },
+    {
+      "id": "SOS-3616",
+      "user": "Citizen Account",
+      "location": "Hitech City, Hyderabad",
+      "coordinates": {
+        "lat": 17.385,
+        "lng": 78.4867
+      },
+      "alert_type": "Standard SOS",
+      "trigger_source": "Manual Trigger",
+      "status": "Critical",
+      "created_at": "2026-03-24T19:41:13.616Z"
+    },
+    {
+      "id": "SOS-8957",
+      "user": "Citizen Account",
+      "location": "Hitech City, Hyderabad",
+      "coordinates": {
+        "lat": 17.385,
+        "lng": 78.4867
+      },
+      "alert_type": "Standard SOS",
+      "trigger_source": "Manual Trigger",
+      "status": "Critical",
+      "created_at": "2026-03-24T19:41:28.957Z"
+    },
+    {
+      "id": "SOS-5434",
+      "user": "Citizen Account",
+      "location": "Hitech City, Hyderabad",
+      "coordinates": {
+        "lat": 17.385,
+        "lng": 78.4867
+      },
+      "alert_type": "Standard SOS",
+      "trigger_source": "Manual Trigger",
+      "status": "Critical",
+      "created_at": "2026-03-24T19:42:05.434Z"
+    },
+    {
+      "id": "SOS-5838",
+      "user": "Citizen Account",
+      "location": "Hitech City, Hyderabad",
+      "coordinates": {
+        "lat": 17.385,
+        "lng": 78.4867
+      },
+      "alert_type": "Standard SOS",
+      "trigger_source": "Manual Trigger",
+      "status": "Critical",
+      "created_at": "2026-03-24T19:42:25.838Z"
+    },
+    {
+      "id": "SOS-7432",
+      "user": "Citizen Account",
+      "location": "Hitech City, Hyderabad",
+      "coordinates": {
+        "lat": 17.385,
+        "lng": 78.4867
+      },
+      "alert_type": "Standard SOS",
+      "trigger_source": "Manual Trigger",
+      "status": "Critical",
+      "created_at": "2026-03-24T19:42:27.432Z"
+    },
+    {
+      "id": "SOS-8147",
+      "user": "Citizen Account",
+      "location": "Hitech City, Hyderabad",
+      "coordinates": {
+        "lat": 17.385,
+        "lng": 78.4867
+      },
+      "alert_type": "Standard SOS",
+      "trigger_source": "Manual Trigger",
+      "status": "Critical",
+      "created_at": "2026-03-24T19:42:28.147Z"
     }
   ],
   "evidence": [
