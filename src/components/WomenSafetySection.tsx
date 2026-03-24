@@ -14,6 +14,32 @@ const features = [
 const WomenSafetySection = () => {
   const [sosActive, setSosActive] = useState(false);
 
+  const handleSosToggle = async () => {
+    const newState = !sosActive;
+    setSosActive(newState);
+    
+    if (newState) {
+      try {
+        // Trigger n8n webhook (using GET to match your current n8n node configuration)
+        const params = new URLSearchParams({
+          event: "SOS_ACTIVATED",
+          timestamp: new Date().toISOString(),
+          source: "WomenSafetyModule"
+        }).toString();
+
+        await fetch(`https://uninstructed-sharan-uncorpulent.ngrok-free.dev/webhook-test/e036c541-c252-4eda-af88-6eeca706a184?${params}`, { 
+          method: 'GET',
+          headers: { 
+            'ngrok-skip-browser-warning': 'true'
+          }
+        });
+        console.log('SOS webhook triggered successfully');
+      } catch (error) {
+        console.error('Failed to trigger SOS webhook:', error);
+      }
+    }
+  };
+
   return (
     <section id="safety" className="section-padding relative overflow-hidden">
       {/* Background intensity glow */}
@@ -57,7 +83,7 @@ const WomenSafetySection = () => {
               <div className="absolute inset-0 -m-16 rounded-full border border-rose-500/5 animate-reverse-spin"></div>
               
               <button
-                onClick={() => setSosActive(!sosActive)}
+                onClick={handleSosToggle}
                 className={`relative w-56 h-56 md:w-64 md:h-64 rounded-full flex flex-col items-center justify-center transition-all duration-500 shadow-2xl ${
                   sosActive ? "bg-rose-600 scale-95" : "bg-rose-500/90 hover:bg-rose-600 group-hover:scale-105"
                 }`}
@@ -181,4 +207,3 @@ const WomenSafetySection = () => {
 };
 
 export default WomenSafetySection;
-
