@@ -20,29 +20,66 @@ const DeadManSwitch = () => {
   const [showCheckIn, setShowCheckIn] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [response, setResponse] = useState("");
-  const [nextCheckIn, setNextCheckIn] = useState(120); // 2 minutes in seconds
+  const [nextCheckIn, setNextCheckIn] = useState(180); // Default 3 mins
   const [countdown, setCountdown] = useState(30); 
+  const [step, setStep] = useState<'idle' | 'dest' | 'time' | 'active'>('idle');
+  const [destination, setDestination] = useState("");
+  const [journeyDuration, setJourneyDuration] = useState("");
+  const [timeLeft, setTimeLeft] = useState(0); 
+
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const journeyTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const startMonitoring = () => {
-    setIsActive(true);
-    setNextCheckIn(120);
-    toast.success("Guardian Safety Mode Activated", {
-      description: "Tactical check-ins will trigger every 2 minutes.",
-    });
-    
-    startNextCycle();
+  const startOnboarding = () => {
+    setStep('dest');
   };
 
-  const startNextCycle = () => {
+  const handleSetDestination = () => {
+    if (!destination.trim()) return;
+    setStep('time');
+  };
+
+  const handleSetTime = () => {
+    const mins = parseInt(journeyDuration);
+    if (isNaN(mins) || mins <= 0) return;
+    
+    setTimeLeft(mins * 60);
+    setStep('active');
+    setIsActive(true);
+    setNextCheckIn(180); 
+    
+    toast.success("Safe Journey Protocol Initiated", {
+      description: `Monitoring journey to ${destination}. Expected arrival in ${mins}m.`,
+    });
+
+    startMonitoringSequence();
+  };
+
+  const startMonitoringSequence = () => {
+    if (journeyTimerRef.current) clearInterval(journeyTimerRef.current);
+    
+    journeyTimerRef.current = setInterval(() => {
+        setTimeLeft((prev) => {
+            if (prev <= 1) {
+                if(journeyTimerRef.current) clearInterval(journeyTimerRef.current);
+                handleJourneyFinished();
+                return 0;
+            }
+            return prev - 1;
+        });
+    }, 1000);
+
+    startNextCycle(180); 
+  };
+
+  const startNextCycle = (seconds: number) => {
     if (timerRef.current) clearTimeout(timerRef.current);
     if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
 
-    setNextCheckIn(120);
+    setNextCheckIn(seconds);
     
-    // Progress countdown for UI
     progressIntervalRef.current = setInterval(() => {
         setNextCheckIn((prev) => {
             if (prev <= 1) {
@@ -55,15 +92,27 @@ const DeadManSwitch = () => {
 
     timerRef.current = setTimeout(() => {
       triggerCheckIn();
-    }, 120000); // 2 minutes
+    }, seconds * 1000);
+  };
+
+  const handleJourneyFinished = () => {
+    stopMonitoring();
+    toast.success("Destination Reached", {
+        description: "Safety protocol concluded. Stay safe!",
+        duration: 8000
+    });
   };
 
   const stopMonitoring = () => {
     setIsActive(false);
     setShowCheckIn(false);
+    setStep('idle');
+    setDestination("");
+    setJourneyDuration("");
     if (timerRef.current) clearTimeout(timerRef.current);
     if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
     if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    if (journeyTimerRef.current) clearInterval(journeyTimerRef.current);
     toast.info("Dead-Man Switch Deactivated");
   };
 
@@ -72,7 +121,7 @@ const DeadManSwitch = () => {
     setCurrentQuestion(QUESTIONS[randomIdx]);
     setShowCheckIn(true);
     setResponse("");
-    setCountdown(30); // 30 seconds to reply
+    setCountdown(30);
 
     countdownIntervalRef.current = setInterval(() => {
         setCountdown((prev) => {
@@ -92,18 +141,20 @@ const DeadManSwitch = () => {
     if(countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
 
     if (response.trim().toUpperCase().startsWith('D')) {
-        handleDistressDetected(`Keyword detected: ${response}`);
+        handleDistressDetected(`Emergency Trigger: ${response}`);
     } else {
         setShowCheckIn(false);
-        toast.success("Identity Verified. Current Sector Safe.");
-        startNextCycle();
+        toast.success("Neural Link Active. Status Green.");
+        startNextCycle(180); 
     }
   };
 
   const handleDistressDetected = async (reason: string) => {
     setShowCheckIn(false);
     setIsActive(false);
+    setStep('idle');
     if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    if (journeyTimerRef.current) clearInterval(journeyTimerRef.current);
     
     toast.warning("Neural Link Broken: Silent Distress Detected", {
       description: "Emergency units are being dispatched to your sector.",
@@ -112,7 +163,7 @@ const DeadManSwitch = () => {
     try {
         await submitSOS({
           user: "Citizen Account",
-          location: "Sector 4, Street 12",
+          location: `Dest: ${destination} | Status: ${reason}`,
           alert_type: "silent_distress",
           trigger_source: "dead_man_switch",
           last_response: response || reason,
@@ -143,65 +194,121 @@ const DeadManSwitch = () => {
                   <Shield size={14} />
                   Tactical Safety Unit 07
                 </div>
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-black uppercase tracking-widest">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></div>
-                  Neural Grid Online
-                </div>
+                {isActive && (
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-black uppercase tracking-widest tracking-tighter">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></div>
+                        Mission: {destination}
+                    </div>
+                )}
               </div>
 
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-black italic uppercase tracking-tighter leading-none">
                 Guardian <span className="text-primary">Dead-Man</span> <br/> 
-                <span className="text-white">Fun Check Mode</span>
+                <span className="text-white">Safety Mode</span>
               </h2>
               
               <p className="text-muted-foreground text-base lg:text-lg uppercase font-black tracking-[0.2em] leading-relaxed max-w-xl">
-                 Our advanced silent monitoring system that checks on you via casual polls, keeping your status hidden from any physical threat.
+                 Silent monitoring checks on you via casual polls, keeping your status hidden during your journey.
               </p>
 
               {isActive && (
-                <div className="space-y-3 pt-4 max-w-md">
-                   <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-primary">
-                      <span>Neural Heartbeat Sync</span>
-                      <span>{Math.floor(nextCheckIn / 60)}:{(nextCheckIn % 60).toString().padStart(2, '0')}</span>
+                <div className="grid md:grid-cols-2 gap-6 pt-4 max-w-xl">
+                   <div className="space-y-3">
+                      <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-primary">
+                         <span>Next Safety Probe</span>
+                         <span>{Math.floor(nextCheckIn / 60)}:{(nextCheckIn % 60).toString().padStart(2, '0')}</span>
+                      </div>
+                      <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden border border-white/10">
+                         <motion.div 
+                           initial={{ width: "100%" }}
+                           animate={{ width: `${(nextCheckIn / 180) * 100}%` }}
+                           transition={{ duration: 1, ease: "linear" }}
+                           className="h-full bg-primary"
+                         />
+                      </div>
                    </div>
-                   <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden border border-white/10">
-                      <motion.div 
-                        initial={{ width: "100%" }}
-                        animate={{ width: `${(nextCheckIn / 120) * 100}%` }}
-                        transition={{ duration: 1, ease: "linear" }}
-                        className="h-full bg-primary shadow-[0_0_10px_rgba(14,165,233,0.5)]"
-                      />
+                   
+                   <div className="space-y-3">
+                      <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-emerald-400">
+                         <span>Journey Progress</span>
+                         <span>{Math.floor(timeLeft / 60)}m left</span>
+                      </div>
+                      <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden border border-white/10">
+                         <motion.div 
+                           initial={{ width: "100%" }}
+                           animate={{ width: `${(timeLeft / (parseInt(journeyDuration) * 60)) * 100}%` }}
+                           transition={{ duration: 1, ease: "linear" }}
+                           className="h-full bg-emerald-500"
+                         />
+                      </div>
                    </div>
                 </div>
               )}
             </div>
 
-            <div className="flex flex-col items-center gap-6 p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md">
-                <button 
-                  onClick={() => isActive ? stopMonitoring() : startMonitoring()}
-                  className={`relative w-28 h-14 rounded-full transition-all duration-700 shadow-2xl scale-110 ${
-                    isActive ? 'bg-primary shadow-primary/30' : 'bg-white/10'
-                  }`}
-                >
-                  <div className={`absolute top-1.5 w-11 h-11 rounded-full bg-white transition-all duration-700 flex items-center justify-center shadow-lg ${
-                    isActive ? 'left-15 right-1.5' : 'left-1.5'
-                  }`}>
-                    {isActive ? <Shield className="text-primary" size={24} /> : <X className="text-muted-foreground" size={24} />}
-                  </div>
-                </button>
-                <div className="flex flex-col items-center">
-                    <span className={`text-[11px] font-black uppercase tracking-[0.3em] ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>
-                        {isActive ? 'SYSTEM ENGAGED' : 'SYSTEM DISARMED'}
-                    </span>
-                    <span className="text-[9px] text-white/30 font-black uppercase tracking-widest mt-1">
-                        Manual Neural Override Available
-                    </span>
-                </div>
+            <div className="flex flex-col items-center gap-6 p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md min-w-[320px]">
+                {step === 'idle' && (
+                    <>
+                        <button 
+                        onClick={startOnboarding}
+                        className="relative w-28 h-14 rounded-full transition-all duration-500 scale-110 bg-white/10 hover:bg-white/20"
+                        >
+                        <div className="absolute top-1.5 left-1.5 w-11 h-11 rounded-full bg-white flex items-center justify-center">
+                            <X className="text-muted-foreground" size={24} />
+                        </div>
+                        </button>
+                        <span className="text-[11px] font-black uppercase tracking-[0.3em] text-muted-foreground italic">START MISSION</span>
+                    </>
+                )}
+
+                {step === 'dest' && (
+                    <div className="w-full space-y-4">
+                        <div className="text-[10px] font-black uppercase tracking-widest text-primary text-center">Protocol: Destination</div>
+                        <input 
+                            type="text" 
+                            placeholder="Where are you going?" 
+                            value={destination}
+                            onChange={(e) => setDestination(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSetDestination()}
+                            className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-center text-sm font-bold focus:border-primary/50 transition-all outline-none"
+                        />
+                        <button onClick={handleSetDestination} className="w-full bg-primary py-3 rounded-xl font-black uppercase tracking-widest text-[10px]">Verify Route</button>
+                    </div>
+                )}
+
+                {step === 'time' && (
+                    <div className="w-full space-y-4">
+                        <div className="text-[10px] font-black uppercase tracking-widest text-primary text-center">Protocol: Duration</div>
+                        <input 
+                            type="number" 
+                            placeholder="Mins to reach?" 
+                            value={journeyDuration}
+                            onChange={(e) => setJourneyDuration(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSetTime()}
+                            className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-center text-sm font-bold focus:border-primary/50 transition-all outline-none"
+                        />
+                        <button onClick={handleSetTime} className="w-full bg-emerald-500 py-3 rounded-xl font-black uppercase tracking-widest text-[10px]">Secure Link</button>
+                    </div>
+                )}
+
+                {step === 'active' && (
+                    <>
+                        <button 
+                        onClick={stopMonitoring}
+                        className="relative w-28 h-14 rounded-full transition-all duration-700 bg-primary shadow-primary/30"
+                        >
+                        <div className="absolute top-1.5 right-1.5 w-11 h-11 rounded-full bg-white flex items-center justify-center">
+                            <Shield className="text-primary" size={24} />
+                        </div>
+                        </button>
+                        <span className="text-[11px] font-black uppercase tracking-[0.3em] text-primary">LINK ACTIVE</span>
+                        <button onClick={stopMonitoring} className="text-[9px] text-white/30 font-black uppercase tracking-widest mt-2 hover:text-rose-500 transition-colors">Abort</button>
+                    </>
+                )}
             </div>
           </div>
         </motion.div>
 
-        {/* Check-In Modal */}
         <AnimatePresence>
           {showCheckIn && (
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl">
@@ -209,47 +316,26 @@ const DeadManSwitch = () => {
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
-                className="glass-strong p-10 rounded-[3rem] border border-primary/30 max-w-lg w-full relative overflow-hidden"
+                className="glass-strong p-10 rounded-[3rem] border border-primary/30 max-w-lg w-full relative overflow-hidden text-center"
               >
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-white/50 to-primary"></div>
-                
-                <div className="space-y-8 text-center">
-                  <div className="flex justify-center mb-6">
-                    <div className="p-5 bg-primary/20 text-primary rounded-3xl animate-pulse">
-                      <MessageSquare size={32} />
-                    </div>
-                  </div>
-                  
+                <div className="space-y-6">
+                  <div className="flex justify-center"><div className="p-4 bg-primary/20 text-primary rounded-2xl animate-pulse"><MessageSquare size={32} /></div></div>
                   <div className="space-y-2">
-                    <h3 className="text-2xl font-black italic uppercase italic">Neural Check-In</h3>
-                    <div className="text-4xl font-black text-white">{currentQuestion}</div>
+                    <h3 className="text-xl font-black uppercase italic text-muted-foreground">Neural Probe</h3>
+                    <div className="text-3xl font-black text-white">{currentQuestion}</div>
                   </div>
-
-                  <div className="space-y-4">
-                     <input 
-                       type="text"
-                       autoFocus
-                       value={response}
+                  <input 
+                       type="text" autoFocus value={response}
                        onChange={(e) => setResponse(e.target.value)}
                        onKeyDown={(e) => e.key === 'Enter' && handleSubmitResponse()}
-                       placeholder="Enter your choice..."
-                       className="w-full bg-white/5 border border-white/10 p-5 rounded-2xl text-center text-xl font-bold focus:border-primary/50 transition-all outline-none"
-                     />
-                     
-                     <div className="flex items-center justify-between px-2">
-                        <div className="text-[10px] font-black uppercase tracking-widest opacity-50">Reply quickly</div>
-                        <div className="flex items-center gap-2 text-primary font-black text-lg">
-                           <Timer size={16} /> {countdown}s
-                        </div>
-                     </div>
+                       placeholder="Enter choice..."
+                       className="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-center text-xl font-bold focus:border-primary/50 outline-none"
+                  />
+                  <div className="flex items-center justify-between px-2 text-[10px] font-black uppercase tracking-widest text-primary">
+                    <span>Reply Now</span>
+                    <span className="flex items-center gap-1"><Timer size={12} /> {countdown}s</span>
                   </div>
-
-                  <button 
-                     onClick={handleSubmitResponse}
-                     className="w-full py-5 rounded-2xl bg-primary text-white font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-primary/20"
-                  >
-                     Confirm Choice
-                  </button>
+                  <button onClick={handleSubmitResponse} className="w-full py-4 rounded-xl bg-primary text-white font-black uppercase tracking-widest shadow-xl">Confirm</button>
                 </div>
               </motion.div>
             </div>
