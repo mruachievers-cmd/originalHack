@@ -42,7 +42,7 @@ const FooterSection = () => (
         {/* Links Columns */}
         {links.map((linkGroup) => (
           <div key={linkGroup.group}>
-            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-6">{linkGroup.group}</h4>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-6">{linkGroup.group}</h4>
             <ul className="space-y-4">
               {linkGroup.items.map((item) => (
                 <li key={item}>
@@ -58,11 +58,11 @@ const FooterSection = () => (
 
         {/* Team Column */}
         <div>
-          <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-6">Mission Control</h4>
+          <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-6">Mission Control</h4>
           <ul className="space-y-4">
             {team.map((t) => (
-              <li key={t} className="text-sm font-black text-white/80 flex items-center gap-2 hover:text-primary cursor-default transition-colors">
-                 <div className="w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-primary"></div>
+              <li key={t} className="text-sm font-black text-foreground/80 flex items-center gap-2 hover:text-primary cursor-default transition-colors">
+                 <div className="w-1.5 h-1.5 rounded-full bg-primary/20 group-hover:bg-primary"></div>
                  {t}
               </li>
             ))}

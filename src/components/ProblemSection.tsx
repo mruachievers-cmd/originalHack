@@ -8,7 +8,7 @@ const problems = [
     desc: "Traditional reporting methods cause critical delays in emergency response times, costing precious seconds.",
     color: "from-blue-500/20 to-cyan-500/20",
     iconColor: "text-blue-400",
-    illustration: "https://images.unsplash.com/photo-1501139083538-0139583c060f?q=80&w=600&auto=format&fit=crop"
+    illustration: "/illustrations/delay.png"
   },
   {
     icon: Radio,
@@ -16,7 +16,7 @@ const problems = [
     desc: "Lack of real-time communication channels between citizens and police leads to information gaps.",
     color: "from-purple-500/20 to-blue-500/20",
     iconColor: "text-purple-400",
-    illustration: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=600&auto=format&fit=crop"
+    illustration: "/illustrations/communication.png"
   },
   {
     icon: FileText,
@@ -24,7 +24,7 @@ const problems = [
     desc: "Paper-based FIR systems lead to inefficiency, record loss, and slow legal processes.",
     color: "from-emerald-500/20 to-teal-500/20",
     iconColor: "text-emerald-400",
-    illustration: "https://images.unsplash.com/photo-1586769852044-692d6e3703a0?q=80&w=600&auto=format&fit=crop"
+    illustration: "/illustrations/fir.png"
   },
   {
     icon: ShieldAlert,
@@ -32,7 +32,7 @@ const problems = [
     desc: "Insufficient tools for women to quickly and discreetly alert authorities in danger.",
     color: "from-rose-500/20 to-red-500/20",
     iconColor: "text-rose-400",
-    illustration: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=600&auto=format&fit=crop"
+    illustration: "/illustrations/sos.png"
   },
 ];
 
@@ -49,7 +49,7 @@ const ProblemSection = () => (
         transition={{ duration: 0.8 }}
         className="text-center max-w-2xl mx-auto mb-20"
       >
-        <span className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-primary text-xs font-bold tracking-[0.2em] uppercase mb-4">
+        <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold tracking-[0.2em] uppercase mb-4">
           Current Challenges
         </span>
         <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight">
@@ -73,18 +73,14 @@ const ProblemSection = () => (
           >
             <div className={`absolute inset-0 bg-gradient-to-br ${p.color} opacity-0 group-hover:opacity-10 shadow-2xl transition-all duration-500 rounded-2xl`}></div>
             
-            <div className="card-premium relative h-full flex flex-col p-8 z-10 overflow-hidden bg-white/80 border border-primary/20 hover:border-primary/40 shadow-sm backdrop-blur-md">
-              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity text-primary">
-                <p.icon size={80} />
-              </div>
-              
-              <div className="mb-8 relative overflow-hidden rounded-xl h-32 w-full border border-primary/10 shadow-inner">
+            <div className="card-premium relative h-full flex flex-col p-8 z-10 overflow-hidden bg-white/80 border border-primary/20 hover:border-primary/40 shadow-sm backdrop-blur-md group-hover:bg-white/90 transition-all">
+              <div className="mb-8 relative overflow-hidden rounded-xl h-40 border border-primary/10 shadow-inner -mx-8 -mt-8">
                 <img src={p.illustration} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" alt={p.title} />
-                <div className="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent" />
               </div>
 
-              <div className={`w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-6 group-hover:rotate-6 transition-all duration-300 ${p.iconColor}`}>
-                <p.icon size={28} />
+              <div className={`w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-6 group-hover:rotate-6 transition-all duration-300 ${p.iconColor} shadow-sm shadow-primary/5`}>
+                <p.icon size={24} />
               </div>
               
               <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors">{p.title}</h3>

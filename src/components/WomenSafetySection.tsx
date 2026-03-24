@@ -49,8 +49,8 @@ const WomenSafetySection = () => {
       try {
         await submitSOS({
           user: "Citizen Account",
-          location: "Sector 4, Street 12",
-          coordinates: { lat: 12.9716, lng: 77.5946 }
+          location: "Hitech City, Hyderabad",
+          coordinates: { lat: 17.3850, lng: 78.4867 }
         });
         toast.error("SOS ALERT BROADCASTED", {
           description: "Police units have been dispatched to your current coordinates.",

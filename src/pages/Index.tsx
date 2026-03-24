@@ -4,23 +4,15 @@ import HeroSection from "@/components/HeroSection";
 import ProblemSection from "@/components/ProblemSection";
 import AboutSection from "@/components/AboutSection";
 import ComplaintForm from "@/components/ComplaintForm";
-
 import WomenSafetySection from "@/components/WomenSafetySection";
 import SafetyMapSection from "@/components/SafetyMapSection";
 import ChatbotSection from "@/components/ChatbotSection";
-
-import TechStackSection from "@/components/TechStackSection";
-import FutureScopeSection from "@/components/FutureScopeSection";
+import BackgroundAmbience from "@/components/BackgroundAmbience";
 import FooterSection from "@/components/FooterSection";
-import EvidenceCollection from "@/components/EvidenceCollection";
+import AnonymousTip from "@/components/AnonymousTip";
 import EscortMode from "@/components/EscortMode";
 import { FeatureSphere } from "@/components/FeatureSphere";
-import AnonymousTip from "@/components/AnonymousTip";
-import DeadManSwitch from "@/components/DeadManSwitch";
-import SilentGestureSOS from "@/components/SilentGestureSOS";
-import ThemeToggle from "@/components/ThemeToggle";
-import BackgroundAmbience from "@/components/BackgroundAmbience";
-
+import EvidenceCollection from "@/components/EvidenceCollection";
 
 const Index = () => (
   <div className="min-h-screen bg-background text-foreground scroll-smooth relative overflow-x-hidden">
@@ -28,9 +20,7 @@ const Index = () => (
     <div id="home">
       <HeroSection />
     </div>
-    <div className="relative z-20">
-      <DeadManSwitch />
-    </div>
+    
     <div id="problem">
       <ProblemSection />
     </div>
@@ -65,14 +55,8 @@ const Index = () => (
     <BackgroundAmbience />
     <EscortMode />
     <ChatbotSection />
-    <SilentGestureSOS />
-    <ThemeToggle />
-    <div id="tech">
-      <TechStackSection />
-    </div>
     <FooterSection />
   </div>
 );
 
 export default Index;
-

@@ -38,22 +38,22 @@ const TechStackSection = () => (
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 max-w-7xl mx-auto">
         {techStack.map((t, i) => (
           <motion.div
             key={t.label}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.05 }}
-            className="group card-premium p-6 hover:border-white/20 transition-all flex items-center gap-5 cursor-default"
+            className="group card-premium p-3 hover:border-primary/20 transition-all flex items-center gap-3 cursor-default"
           >
-            <div className={`w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-white/10 transition-all duration-300`}>
-              <img src={t.logo} className="w-6 h-6 object-contain" alt={t.label} />
+            <div className={`w-8 h-8 rounded-xl bg-primary/5 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-primary/10 transition-all duration-300`}>
+              <img src={t.logo} className="w-4 h-4 object-contain" alt={t.label} />
             </div>
-            <div>
-              <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-50">{t.category}</div>
-              <div className="text-sm font-black tracking-tight group-hover:text-primary transition-colors">{t.label}</div>
+            <div className="min-w-0">
+              <div className="text-[7px] font-black text-muted-foreground uppercase tracking-widest mb-0.5 opacity-60 truncate">{t.category}</div>
+              <div className="text-[10px] font-black tracking-tight group-hover:text-primary transition-colors truncate">{t.label}</div>
             </div>
           </motion.div>
         ))}
