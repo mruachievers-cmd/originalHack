@@ -21,20 +21,14 @@ const SilentGestureSOS = () => {
       const diff = now - lastTapRef.current;
       
       if (diff < 500 && diff > 50) {
-        // Recognition of a double tap cycle
-        tapCycleRef.current += 1;
-        if (tapCycleRef.current >= 2) {
-            triggerSilentSOS("gesture_double_tap");
-            tapCycleRef.current = 0;
-        }
-      } else if (diff > 1000) {
-        tapCycleRef.current = 0;
+        triggerSilentSOS("gesture_double_tap");
+        lastTapRef.current = 0; // Reset
+      } else {
+        lastTapRef.current = now;
       }
-      
-      lastTapRef.current = now;
     };
 
-    // 2. Laptop / Device Motion Detection (Accelerometer Spikes)
+    // 2. Body Tap Detection (Accelerometer)
     const handleMotion = (e: DeviceMotionEvent) => {
       if (!isArmed || cooldown) return;
       
@@ -43,15 +37,16 @@ const SilentGestureSOS = () => {
 
       const totalForce = Math.sqrt((acc.x || 0)**2 + (acc.y || 0)**2 + (acc.z || 0)**2);
       
-      // Look for a sudden spike (physical tap on the body)
-      if (totalForce > 15) { // Force threshold
+      if (totalForce > 18) { // Increased threshold for "motherboard" tap
         const now = Date.now();
         const diff = now - lastTapRef.current;
         
-        if (diff < 1000 && diff > 100) {
+        if (diff < 800 && diff > 100) {
             triggerSilentSOS("device_tap_pattern");
+            lastTapRef.current = 0;
+        } else {
+            lastTapRef.current = now;
         }
-        lastTapRef.current = now;
       }
     };
 
@@ -69,37 +64,38 @@ const SilentGestureSOS = () => {
   const triggerSilentSOS = async (type: string) => {
     setCooldown(true);
     
-    // Hidden "Micro-Toast" for feedback only to user
-    toast("Grid Link Syncing...", {
-        icon: <Activity className="text-emerald-500 animate-pulse" size={14} />,
-        description: "Neural protocol established silently.",
-        duration: 3000,
+    // 🔊 Auditory Alarm Trigger
+    const audio = new Audio("https://actions.google.com/sounds/v1/emergency/ambulance_siren.ogg");
+    audio.play().catch(() => console.log("Audio blocked by browser policy"));
+
+    // 🚨 Visual Alarm Strobe
+    document.body.classList.add('animate-pulse-red');
+    setTimeout(() => document.body.classList.remove('animate-pulse-red'), 5000);
+
+    toast.error("🚨 ALARM TRIGGERED", {
+        description: "Emergency protocol active. Police notified.",
+        duration: 5000,
     });
 
     try {
       await submitSOS({
-        user: "G-241", // Mock User as per requirement
+        user: "G-241",
         location: "Detected Sector (GPS Active)",
         alert_type: "silent_sos",
         trigger_source: type,
-        status: "Hidden Emergency",
+        status: "Critical Alarm",
         meta: {
-            mode: "Hidden Emergency",
-            trigger: type === "gesture_double_tap" ? "Mobile Double Tap Gesture" : "Device Tap Pattern"
+            mode: "Audible Alarm Enabled",
+            trigger: type
         }
       });
-      
-      // Log for evidence logs
-      console.log(`[SILENT SOS] ${type} triggered mission capture.`);
-      
     } catch (err) {
-      console.error("Silent bridge failed.");
+      console.error("Bridge failure.");
     }
 
-    // Cooldown logic
     cooldownTimerRef.current = setTimeout(() => {
         setCooldown(false);
-    }, 30000); // 30s Cooldown
+    }, 30000);
   };
 
   return (
