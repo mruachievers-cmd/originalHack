@@ -55,6 +55,20 @@ export const submitFIR = async (data: any) => {
     return response.json();
 };
 
+export const getFIRById = async (id: string) => {
+    const response = await fetch(`${API_URL}/firs/${id}`);
+    return response.json();
+};
+
+export const updateFIRStatus = async (id: string, status: string, remarks?: string) => {
+    const response = await fetch(`${API_URL}/firs/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status, remarks }),
+    });
+    return response.json();
+};
+
 export const getSOSAlerts = async () => {
     const response = await fetch(`${API_URL}/sos`);
     return response.json();

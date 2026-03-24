@@ -73,6 +73,34 @@ app.get('/api/firs', (req, res) => {
   res.json(getDB().firs || []);
 });
 
+// Update FIR Status
+app.patch('/api/firs/:id', (req, res) => {
+  const { id } = req.params;
+  const { status, remarks } = req.body;
+  const db = getDB();
+  const fir = db.firs.find(f => f.id === id);
+  if (fir) {
+    fir.status = status;
+    if (remarks) fir.remarks = remarks;
+    saveDB(db);
+    res.json({ success: true, fir });
+  } else {
+    res.status(404).json({ error: "FIR not found" });
+  }
+});
+
+// Get Single FIR (for tracking)
+app.get('/api/firs/:id', (req, res) => {
+  const { id } = req.params;
+  const db = getDB();
+  const fir = db.firs.find(f => f.id === id);
+  if (fir) {
+    res.json(fir);
+  } else {
+    res.status(404).json({ error: "FIR not found" });
+  }
+});
+
 // Submit SOS
 app.post('/api/sos', (req, res) => {
   const { user, location, coordinates, alert_type, trigger_source, last_response } = req.body;

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, Upload, CheckCircle, MapPin, User, MessageSquare, ShieldCheck, Download, Printer, Share2, Info, Sparkles, Navigation, Send, Zap } from "lucide-react";
-import { submitFIR } from "../lib/api";
+import { FileText, Upload, CheckCircle, MapPin, User, MessageSquare, ShieldCheck, Download, Printer, Share2, Info, Sparkles, Navigation, Send, Zap, Clock } from "lucide-react";
+import { submitFIR, getFIRById } from "../lib/api";
 import { toast } from "sonner";
 
 const ComplaintForm = () => {
@@ -9,6 +9,9 @@ const ComplaintForm = () => {
   const [form, setForm] = useState({ name: "", telegram: "", location: "", description: "" });
   const [isTriggering, setIsTriggering] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [showTracking, setShowTracking] = useState(false);
+  const [lodgedFIRId, setLodgedFIRId] = useState<string | null>(null);
+  const [currentStatus, setCurrentStatus] = useState<string>("Active");
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   useEffect(() => {
@@ -24,6 +27,8 @@ const ComplaintForm = () => {
         type: "General Report"
       });
       if (response.success) {
+        setLodgedFIRId(response.fir.id);
+        setCurrentStatus(response.fir.status);
         setSubmitted(true);
         toast.success("E-FIR Generated Successfully");
       }
@@ -282,6 +287,14 @@ const ComplaintForm = () => {
                  <p className="text-muted-foreground">Digital record has been securely stored in the central database.</p>
               </div>
 
+              <FIRTrackingModal 
+                isOpen={showTracking} 
+                onClose={() => setShowTracking(false)} 
+                firId={lodgedFIRId} 
+                initialStatus={currentStatus}
+              />
+
+
               <div className="bg-white text-slate-900 rounded-3xl p-8 shadow-2xl relative overflow-hidden font-sans group">
                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, #000 0, #000 1px, transparent 0, transparent 50%)', backgroundSize: '10px 10px' }}></div>
                 
@@ -351,9 +364,15 @@ const ComplaintForm = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
                 <button
-                  className="px-8 py-3 rounded-2xl bg-white/5 border border-white/10 font-bold hover:bg-white/10 transition-all"
+                  className="px-8 py-3 rounded-2xl bg-white/5 border border-primary/10 font-bold hover:bg-white/10 transition-all text-slate-600"
                 >
                   DOWNLOAD AS PDF
+                </button>
+                <button
+                  onClick={() => setShowTracking(true)}
+                  className="px-8 py-3 rounded-2xl bg-slate-950 text-white font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-xl"
+                >
+                  <Navigation size={16} /> TRACK PROGRESS
                 </button>
                 <button
                   onClick={() => { setSubmitted(false); setForm({ name: "", telegram: "", location: "", description: "" }); }}
@@ -367,6 +386,117 @@ const ComplaintForm = () => {
         </AnimatePresence>
       </div>
     </section>
+  );
+};
+
+const FIRTrackingModal = ({ isOpen, onClose, firId, initialStatus }: any) => {
+  const [status, setStatus] = useState(initialStatus);
+
+  useEffect(() => {
+    if (!isOpen || !firId) return;
+
+    const pollStatus = async () => {
+      try {
+        const data = await getFIRById(firId);
+        if (data.status) setStatus(data.status);
+      } catch (err) {
+        console.error("Tracking error:", err);
+      }
+    };
+
+    pollStatus();
+    const interval = setInterval(pollStatus, 3000);
+    return () => clearInterval(interval);
+  }, [isOpen, firId]);
+
+  const steps = [
+    { title: "Complaint Lodged", key: "Active", time: "Instant", desc: "Digital FIR successfully encrypted." },
+    { title: "Neural Verification", key: "Active", time: "2m", desc: "Cross-referencing across national criminal registries." },
+    { title: "Officer Assigned", key: "Investigating", time: "Live", desc: "Official personnel assigned for ground action." },
+    { title: "Active Investigation", key: "Investigating", time: "Live", desc: "Units performing on-site forensic analysis." },
+    { title: "Case Resolution", key: "Resolved", time: "Pending", desc: "Final legal clearance and report filing." },
+  ];
+
+  const getStepStatus = (stepKey: string, index: number) => {
+    if (status === "Resolved") return "completed";
+    if (status === "Investigating") {
+        if (index < 2) return "completed";
+        if (index === 2 || index === 3) return "active";
+        return "pending";
+    }
+    if (status === "Active") {
+        if (index === 0) return "completed";
+        if (index === 1) return "active";
+        return "pending";
+    }
+    return "pending";
+  };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xl"
+        >
+          <motion.div
+            initial={{ scale: 0.9, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.9, y: 20 }}
+            className="bg-white rounded-[2.5rem] p-8 max-w-lg w-full shadow-2xl border border-primary/20 relative overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-400 via-primary to-cyan-500"></div>
+            
+            <div className="mb-8">
+               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black tracking-widest uppercase mb-3">
+                  <Navigation size={10} className="animate-pulse" />
+                  Live Tracking ID: {firId}
+               </div>
+               <h4 className="text-2xl font-black text-slate-900 tracking-tight">System Response Grid</h4>
+            </div>
+
+            <div className="space-y-8 relative">
+              <div className="absolute left-[19px] top-2 bottom-2 w-0.5 bg-slate-100"></div>
+
+              {steps.map((step, idx) => {
+                const stepStatus = getStepStatus(step.key, idx);
+                return (
+                  <div key={idx} className="flex gap-6 relative z-10">
+                    <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 border-2 transition-all ${
+                      stepStatus === 'completed' ? 'bg-emerald-500 border-emerald-500 text-white' :
+                      stepStatus === 'active' ? 'bg-white border-primary text-primary animate-bounce shadow-lg shadow-primary/20' :
+                      'bg-white border-slate-200 text-slate-300'
+                    }`}>
+                      {stepStatus === 'completed' ? <CheckCircle size={18} /> : 
+                       stepStatus === 'active' ? <Zap size={18} /> : 
+                       <Clock size={18} />}
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-3">
+                        <span className={`text-sm font-black uppercase tracking-tight ${stepStatus === 'pending' ? 'text-slate-400' : 'text-slate-900'}`}>{step.title}</span>
+                      </div>
+                      <p className={`text-xs mt-1 leading-relaxed ${stepStatus === 'pending' ? 'text-slate-300' : 'text-slate-500 font-medium'}`}>
+                        {stepStatus === 'active' && <span className="text-primary font-bold">CURRENT: </span>}
+                        {step.desc}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <button 
+              onClick={onClose}
+              className="w-full mt-10 py-4 rounded-xl bg-slate-950 text-white font-black text-xs uppercase tracking-[0.2em] hover:bg-slate-800 transition-all shadow-xl"
+            >
+              EXIT MONITOR
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
