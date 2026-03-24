@@ -77,7 +77,7 @@ const SafetyMapSection = () => (
               width="120%" 
               height="120%" 
               frameBorder="0" 
-              src="https://www.openstreetmap.org/export/embed.html?bbox=77.5346%2C12.9316%2C77.6546%2C13.0116&layer=mapnik" 
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-74.015,40.700,-73.990,40.715&layer=mapnik" 
               style={{ 
                 position: 'absolute', 
                 top: '-10%', 

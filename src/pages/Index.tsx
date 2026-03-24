@@ -55,9 +55,7 @@ const Index = () => (
       <SafetyMapSection />
     </div>
     <EscortMode />
-    <div id="support">
-      <ChatbotSection />
-    </div>
+    <ChatbotSection />
     <FooterSection />
   </div>
 );
