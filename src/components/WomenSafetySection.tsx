@@ -190,6 +190,16 @@ const WomenSafetySection = () => {
                       </div>
                     ))}
                   </div>
+
+                  {/* Helpline 200 Highlight */}
+                  <div className="mt-8 pt-6 border-t border-rose-500/20 text-center animate-bounce-slow">
+                     <p className="text-[10px] font-black text-rose-500/60 uppercase tracking-widest mb-1">DIRECT EMERGENCY LINE</p>
+                     <div className="inline-flex items-center gap-4 bg-rose-500 px-8 py-3 rounded-2xl shadow-lg shadow-rose-500/40 border border-white/20">
+                        <Phone size={24} className="text-white animate-pulse" />
+                        <span className="text-4xl font-black text-white italic tracking-tighter">200</span>
+                     </div>
+                     <p className="text-[9px] font-bold text-rose-500 mt-2 uppercase tracking-widest">DIAL IMMEDIATELY IF SAFE</p>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
