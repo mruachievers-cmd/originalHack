@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LogOut, Shield, MapPin, Search, AlertTriangle, FileText, Activity, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import DashboardPreview from "../components/DashboardPreview";
+import AIScannerSection from "../components/AIScannerSection";
+import SafetyMapSection from "../components/SafetyMapSection";
 import { toast } from "sonner";
 
 const mockFIRs = [
@@ -75,6 +77,20 @@ const PoliceDashboard = () => {
         <div className="relative">
            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[120%] bg-blue-600/5 blur-[100px] -z-10 pointer-events-none"></div>
            <DashboardPreview />
+        </div>
+
+        {/* AI Criminal Identification Scanner & Tactical Map */}
+        <div className="grid lg:grid-cols-2 gap-8">
+          <div className="rounded-[2.5rem] overflow-hidden border border-white/10 glass-strong shadow-2xl relative">
+             <div className="absolute top-0 right-0 p-8 opacity-5">
+                <Search size={150} />
+             </div>
+             <AIScannerSection />
+          </div>
+          
+          <div className="rounded-[2.5rem] overflow-hidden border border-white/10 glass-strong shadow-2xl relative p-8">
+             <SafetyMapSection />
+          </div>
         </div>
 
         {/* Live FIRs & SOS Action Grids */}
