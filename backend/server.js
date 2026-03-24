@@ -66,6 +66,40 @@ app.post('/api/suspects', async (req, res) => {
   }
 });
 
+// Signup for Citizens/Officers
+app.post('/api/signup', async (req, res) => {
+  const { name, unit, email, password } = req.body;
+  console.log('SIGNUP REQUEST:', { name, unit, email });
+  // For now, just a mock success response
+  if (name && email && password) {
+    res.status(201).json({ message: 'Registration successful', user: { name, email } });
+  } else {
+    res.status(400).json({ error: 'Missing required fields' });
+  }
+});
+
+// Login for Officers
+app.post('/api/login/officer', async (req, res) => {
+  const { badge_id, station } = req.body;
+  // Hardcoded check for the specific officer credentials requested by user
+  if (badge_id === 'GN-1234-5678' && station === 'CENTRAL PRECINCT 01') {
+    res.json({ success: true, user: { badge_id, station, role: 'officer' } });
+  } else {
+    res.status(401).json({ error: 'Invalid Badge ID or Station' });
+  }
+});
+
+// Login for Citizens (Mock implementation)
+app.post('/api/login/citizen', async (req, res) => {
+  const { email, password } = req.body;
+  // Simple mock check
+  if (email && password) {
+    res.json({ success: true, user: { email, role: 'citizen' } });
+  } else {
+    res.status(401).json({ error: 'Invalid Email or Password' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Backend server running on port ${PORT}`);
 });
