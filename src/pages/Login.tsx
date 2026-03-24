@@ -32,7 +32,11 @@ const Login = () => {
         localStorage.setItem("user_type", loginType);
         toast.success("Authentication Successful. Redirecting to Neural Grid...");
         setTimeout(() => {
-            navigate("/");
+            if (loginType === "officer") {
+                navigate("/police-dashboard");
+            } else {
+                navigate("/");
+            }
             window.location.reload(); 
         }, 1000);
     } catch (err: any) {

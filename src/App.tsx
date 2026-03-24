@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import Login from "./pages/Login.tsx";
 import Signup from "./pages/Signup.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import PoliceDashboard from "./pages/PoliceDashboard.tsx"; // ADDED
 import { useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
@@ -43,6 +44,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <Index />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/police-dashboard" 
+            element={
+              <ProtectedRoute>
+                <PoliceDashboard />
               </ProtectedRoute>
             } 
           />
