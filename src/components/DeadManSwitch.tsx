@@ -20,7 +20,7 @@ const DeadManSwitch = () => {
   const [showCheckIn, setShowCheckIn] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [response, setResponse] = useState("");
-  const [nextCheckIn, setNextCheckIn] = useState(180); // Default 3 mins
+  const [nextCheckIn, setNextCheckIn] = useState(60); // 1 minute
   const [countdown, setCountdown] = useState(30); 
   const [step, setStep] = useState<'idle' | 'dest' | 'time' | 'active'>('idle');
   const [destination, setDestination] = useState("");
@@ -48,10 +48,10 @@ const DeadManSwitch = () => {
     setTimeLeft(mins * 60);
     setStep('active');
     setIsActive(true);
-    setNextCheckIn(180); 
+    setNextCheckIn(60); 
     
     toast.success("Safe Journey Protocol Initiated", {
-      description: `Monitoring journey to ${destination}. Expected arrival in ${mins}m.`,
+      description: `Monitoring journey to ${destination}. Neural probes every 1 minute.`,
     });
 
     startMonitoringSequence();
@@ -71,7 +71,7 @@ const DeadManSwitch = () => {
         });
     }, 1000);
 
-    startNextCycle(180); 
+    startNextCycle(60); 
   };
 
   const startNextCycle = (seconds: number) => {
@@ -145,7 +145,7 @@ const DeadManSwitch = () => {
     } else {
         setShowCheckIn(false);
         toast.success("Neural Link Active. Status Green.");
-        startNextCycle(180); 
+        startNextCycle(60); 
     }
   };
 
@@ -221,7 +221,7 @@ const DeadManSwitch = () => {
                       <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden border border-white/10">
                          <motion.div 
                            initial={{ width: "100%" }}
-                           animate={{ width: `${(nextCheckIn / 180) * 100}%` }}
+                           animate={{ width: `${(nextCheckIn / 60) * 100}%` }}
                            transition={{ duration: 1, ease: "linear" }}
                            className="h-full bg-primary"
                          />
