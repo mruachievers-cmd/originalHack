@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { TiltCard } from "./TiltCard";
 
 const AIScannerSection = () => {
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(true);
   const [badgeId, setBadgeId] = useState("");
   const [stationId, setStationId] = useState("");
   
