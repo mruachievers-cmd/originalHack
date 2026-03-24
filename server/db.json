@@ -41,12 +41,20 @@
       "created_at": "2026-03-24T11:57:00.677Z"
     },
     {
-      "id": 1774360367023,
-      "name": "egash",
-      "email": "vulpalakavya@gmail.com",
-      "unit": "fj hd v.ues",
-      "password": "123",
-      "created_at": "2026-03-24T13:52:47.023Z"
+      "id": 1774362740646,
+      "name": "nani",
+      "email": "demo2malla@gmail.com",
+      "unit": "1",
+      "password": "123456",
+      "created_at": "2026-03-24T14:32:20.646Z"
+    },
+    {
+      "id": 1774363570083,
+      "name": "bandi",
+      "email": "mruachievers@gmail.com",
+      "unit": "1",
+      "password": "123456",
+      "created_at": "2026-03-24T14:46:10.083Z"
     }
   ],
   "officers": [
@@ -66,13 +74,22 @@
       "created_at": "2026-03-24T12:00:00.000Z"
     },
     {
-      "id": "FIR-1846",
+      "id": "FIR-7124",
       "type": "General Report",
-      "location": "Lat: 17.5630, Lng: 78.4448 (Detected)",
-      "reporter": "srdcfvgj",
-      "description": "rdybjtyb gvhf5ert ",
+      "location": "Lat: 17.5630, Lng: 78.4447 (Detected)",
+      "reporter": "bani",
+      "description": "Witnessed a hit and run incident involving a silver sedan. Vehicle headed North toward MG Road. No immediate injuries but property damage occurred.",
       "status": "Active",
-      "created_at": "2026-03-24T13:28:21.847Z"
+      "created_at": "2026-03-24T14:33:07.124Z"
+    },
+    {
+      "id": "FIR-1781",
+      "type": "General Report",
+      "location": "Lat: 17.5633, Lng: 78.4449 (Detected)",
+      "reporter": "bandi",
+      "description": "Suspicious activity observed near the shopping complex. A group of individuals were seen loitering after hours and attempting to bypass security gates.",
+      "status": "Active",
+      "created_at": "2026-03-24T17:08:11.781Z"
     }
   ],
   "sos_alerts": [
@@ -99,7 +116,7 @@
       "created_at": "2026-03-24T12:18:00.000Z"
     },
     {
-      "id": "SOS-8388",
+      "id": "SOS-8013",
       "user": "Citizen Account",
       "location": "Sector 4, Street 12",
       "coordinates": {
@@ -107,10 +124,10 @@
         "lng": 77.5946
       },
       "status": "Critical",
-      "created_at": "2026-03-24T13:26:58.391Z"
+      "created_at": "2026-03-24T17:07:38.013Z"
     },
     {
-      "id": "SOS-5763",
+      "id": "SOS-4792",
       "user": "Citizen Account",
       "location": "Sector 4, Street 12",
       "coordinates": {
@@ -118,10 +135,10 @@
         "lng": 77.5946
       },
       "status": "Critical",
-      "created_at": "2026-03-24T13:27:35.763Z"
+      "created_at": "2026-03-24T17:07:54.793Z"
     },
     {
-      "id": "SOS-8861",
+      "id": "SOS-0424",
       "user": "Citizen Account",
       "location": "Sector 4, Street 12",
       "coordinates": {
@@ -129,10 +146,10 @@
         "lng": 77.5946
       },
       "status": "Critical",
-      "created_at": "2026-03-24T13:27:48.862Z"
+      "created_at": "2026-03-24T17:14:30.424Z"
     },
     {
-      "id": "SOS-8771",
+      "id": "SOS-3648",
       "user": "Citizen Account",
       "location": "Sector 4, Street 12",
       "coordinates": {
@@ -140,45 +157,10 @@
         "lng": 77.5946
       },
       "status": "Critical",
-      "created_at": "2026-03-24T13:28:48.771Z"
+      "created_at": "2026-03-24T17:14:43.648Z"
     },
     {
-      "id": "SOS-9479",
-      "user": "Citizen Account",
-      "location": "Sector 4, Street 12",
-      "status": "Critical",
-      "created_at": "2026-03-24T16:43:39.481Z"
-    },
-    {
-      "id": "SOS-0416",
-      "user": "G-241",
-      "location": "Detected Sector (GPS Active)",
-      "status": "Critical",
-      "created_at": "2026-03-24T17:14:40.416Z"
-    },
-    {
-      "id": "SOS-2941",
-      "user": "G-241",
-      "location": "Detected Sector (GPS Active)",
-      "status": "Critical",
-      "created_at": "2026-03-24T17:15:12.941Z"
-    },
-    {
-      "id": "SOS-7435",
-      "user": "G-241",
-      "location": "Detected Sector (GPS Active)",
-      "status": "Critical",
-      "created_at": "2026-03-24T17:20:37.435Z"
-    },
-    {
-      "id": "SOS-6311",
-      "user": "G-241",
-      "location": "Detected Sector (GPS Active)",
-      "status": "Critical",
-      "created_at": "2026-03-24T17:21:26.311Z"
-    },
-    {
-      "id": "SOS-1288",
+      "id": "SOS-3389",
       "user": "Citizen Account",
       "location": "Sector 4, Street 12",
       "coordinates": {
@@ -186,10 +168,10 @@
         "lng": 77.5946
       },
       "status": "Critical",
-      "created_at": "2026-03-24T17:21:51.288Z"
+      "created_at": "2026-03-24T17:15:23.389Z"
     },
     {
-      "id": "SOS-8464",
+      "id": "SOS-3148",
       "user": "Citizen Account",
       "location": "Sector 4, Street 12",
       "coordinates": {
@@ -197,28 +179,139 @@
         "lng": 77.5946
       },
       "status": "Critical",
-      "created_at": "2026-03-24T17:22:08.464Z"
+      "created_at": "2026-03-24T17:35:23.148Z"
+    },
+    {
+      "id": "SOS-6564",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "coordinates": {
+        "lat": 12.9716,
+        "lng": 77.5946
+      },
+      "status": "Critical",
+      "created_at": "2026-03-24T17:35:36.564Z"
+    },
+    {
+      "id": "SOS-1833",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "coordinates": {
+        "lat": 12.9716,
+        "lng": 77.5946
+      },
+      "status": "Critical",
+      "created_at": "2026-03-24T17:35:51.833Z"
+    },
+    {
+      "id": "SOS-8149",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "coordinates": {
+        "lat": 12.9716,
+        "lng": 77.5946
+      },
+      "status": "Critical",
+      "created_at": "2026-03-24T17:36:58.149Z"
+    },
+    {
+      "id": "SOS-2556",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "coordinates": {
+        "lat": 12.9716,
+        "lng": 77.5946
+      },
+      "status": "Critical",
+      "created_at": "2026-03-24T17:47:52.556Z"
     },
     {
       "id": "SOS-2429",
-      "user": "G-241",
-      "location": "Detected Sector (GPS Active)",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "coordinates": {
+        "lat": 12.9716,
+        "lng": 77.5946
+      },
       "status": "Critical",
-      "created_at": "2026-03-24T17:37:22.431Z"
+      "created_at": "2026-03-24T17:48:12.429Z"
     },
     {
-      "id": "SOS-9912",
-      "user": "G-241",
-      "location": "Detected Sector (GPS Active)",
+      "id": "SOS-1432",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "coordinates": {
+        "lat": 12.9716,
+        "lng": 77.5946
+      },
       "status": "Critical",
-      "created_at": "2026-03-24T17:59:19.913Z"
+      "created_at": "2026-03-24T17:49:31.432Z"
     },
     {
-      "id": "SOS-9441",
-      "user": "G-241",
-      "location": "Detected Sector (GPS Active)",
+      "id": "SOS-9004",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "coordinates": {
+        "lat": 12.9716,
+        "lng": 77.5946
+      },
       "status": "Critical",
-      "created_at": "2026-03-24T18:15:09.442Z"
+      "created_at": "2026-03-24T17:49:49.004Z"
+    },
+    {
+      "id": "SOS-1452",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "coordinates": {
+        "lat": 12.9716,
+        "lng": 77.5946
+      },
+      "status": "Critical",
+      "created_at": "2026-03-24T17:50:01.452Z"
+    },
+    {
+      "id": "SOS-7164",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "coordinates": {
+        "lat": 12.9716,
+        "lng": 77.5946
+      },
+      "status": "Critical",
+      "created_at": "2026-03-24T17:50:17.164Z"
+    },
+    {
+      "id": "SOS-1003",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "coordinates": {
+        "lat": 12.9716,
+        "lng": 77.5946
+      },
+      "status": "Critical",
+      "created_at": "2026-03-24T17:55:21.003Z"
+    },
+    {
+      "id": "SOS-5833",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "coordinates": {
+        "lat": 12.9716,
+        "lng": 77.5946
+      },
+      "status": "Critical",
+      "created_at": "2026-03-24T17:55:45.833Z"
+    },
+    {
+      "id": "SOS-2816",
+      "user": "Citizen Account",
+      "location": "Sector 4, Street 12",
+      "coordinates": {
+        "lat": 12.9716,
+        "lng": 77.5946
+      },
+      "status": "Critical",
+      "created_at": "2026-03-24T17:58:22.816Z"
     }
   ],
   "evidence": [
@@ -229,25 +322,6 @@
       "location": "Dark Alley, East Side",
       "userId": "anonymous",
       "timestamp": "2026-03-24T12:10:00.000Z"
-    },
-    {
-      "id": 1774359214780,
-      "type": "photo",
-      "activityType": "Observer",
-      "location": "Sector 4",
-      "userId": "anonymous",
-      "evidenceUrl": "simulated_upload_url",
-      "timestamp": "2026-03-24T13:33:34.780Z"
-    }
-  ],
-  "tips": [
-    {
-      "id": "TIP-9921",
-      "category": "Suspect Vehicle",
-      "location": "Sector 4, Street 12",
-      "description": "A suspicious black sedan has been parked here for 3 days with no plates.",
-      "status": "Pending",
-      "timestamp": "2026-03-24T13:20:00.000Z"
     }
   ]
 }

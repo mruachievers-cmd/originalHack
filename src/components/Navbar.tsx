@@ -28,6 +28,22 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const triggerSOS = () => {
+    // Local trigger for UI feedback/scrolling
+    scrollTo("complaint");
+    
+    // n8n Webhook trigger via proxy
+    fetch("http://localhost:5000/api/sos-webhook", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user: "Citizen (Navbar Trigger)",
+        location: "Header Navigation Context",
+        status: "NAVBAR_EMERGENCY_CLICK"
+      })
+    }).catch(err => console.error('Navbar SOS Webhook failed:', err));
+  };
+
   const scrollTo = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -100,7 +116,7 @@ const Navbar = () => {
             </button>
 
             <button 
-              onClick={() => scrollTo("complaint")} 
+              onClick={triggerSOS} 
               className="relative overflow-hidden group px-5 py-2.5 rounded-full bg-danger text-white text-sm font-bold shadow-lg shadow-danger/20 hover:shadow-danger/40 transition-all duration-300 active:scale-95 flex items-center gap-2"
             >
               <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 linear"></div>
@@ -114,7 +130,7 @@ const Navbar = () => {
         {/* Mobile Toggle */}
         <div className="flex items-center gap-4 md:hidden">
            <button 
-              onClick={() => scrollTo("complaint")} 
+              onClick={triggerSOS} 
               className="p-2 rounded-full bg-danger text-white animate-pulse"
             >
               <Phone className="w-5 h-5" />
@@ -178,7 +194,7 @@ const Navbar = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                onClick={() => scrollTo("complaint")} 
+                onClick={triggerSOS} 
                 className="mt-4 p-6 rounded-[2rem] bg-danger text-white font-black text-center flex items-center justify-center gap-3 text-lg animate-pulse-red shadow-[0_0_30px_rgba(255,0,0,0.2)]"
               >
                 <Phone size={24} /> REPORT EMERGENCY

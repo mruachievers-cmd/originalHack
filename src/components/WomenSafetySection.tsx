@@ -47,11 +47,25 @@ const WomenSafetySection = () => {
     
     if (newState) {
       try {
+        // Local DB submission
         await submitSOS({
           user: "Citizen Account",
           location: "Sector 4, Street 12",
           coordinates: { lat: 12.9716, lng: 77.5946 }
         });
+
+        // n8n Webhook trigger via proxy
+        fetch("http://localhost:5000/api/sos-webhook", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user: "Citizen Account",
+            location: "Sector 4, Street 12",
+            coordinates: { lat: 12.9716, lng: 77.5946 },
+            status: "EMERGENCY_ACTIVE"
+          })
+        }).catch(err => console.error('SOS Webhook proxy failed:', err));
+
         toast.error("SOS ALERT BROADCASTED", {
           description: "Police units have been dispatched to your current coordinates.",
           duration: 5000,
