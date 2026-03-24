@@ -180,23 +180,37 @@ const SafetyMapSection = () => (
           </div>
         </div>
 
-        {/* Legend */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
-          {[
-            { icon: Shield, label: "POLICE COMMAND", color: "text-cyan-500", desc: "Active precinct units" },
-            { icon: Siren, label: "EMERGENCY RESPONSE", color: "text-amber-500", desc: "Medical and fire support" },
-            { icon: AlertTriangle, label: "CRITICAL ZONES", color: "text-rose-500", desc: "High probability areas" },
-          ].map((l) => (
-            <div key={l.label} className="flex items-center gap-4 bg-secondary/10 p-4 rounded-3xl border border-primary/5 group hover:bg-white hover:shadow-xl transition-all">
-              <div className={`w-12 h-12 rounded-2xl bg-background flex items-center justify-center shrink-0 ${l.color} group-hover:scale-110 transition-transform shadow-md`}>
-                <l.icon size={24} />
+        {/* Legend & Stats Overlay */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-10">
+          <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              { icon: Shield, label: "Precinct Command", color: "text-emerald-600", bg: "bg-emerald-50", desc: "Active Law Units" },
+              { icon: Siren, label: "Emergency Response", color: "text-amber-600", bg: "bg-amber-50", desc: "Medical/Fire Grid" },
+              { icon: AlertTriangle, label: "Critical Hotspots", color: "text-rose-600", bg: "bg-rose-50", desc: "Incident Vectors" },
+            ].map((l) => (
+              <div key={l.label} className="flex items-center gap-4 bg-white p-5 rounded-3xl border border-primary/10 group hover:border-primary/30 hover:shadow-xl transition-all shadow-sm">
+                <div className={`w-12 h-12 rounded-2xl ${l.bg} flex items-center justify-center shrink-0 ${l.color} group-hover:scale-110 transition-transform`}>
+                  <l.icon size={24} />
+                </div>
+                <div>
+                  <div className="text-[10px] font-black uppercase tracking-widest mb-0.5 text-slate-900">{l.label}</div>
+                  <div className="text-[10px] text-slate-500 font-bold">{l.desc}</div>
+                </div>
               </div>
-              <div>
-                <div className="text-[10px] font-black uppercase tracking-widest mb-0.5 text-foreground">{l.label}</div>
-                <div className="text-[10px] text-muted-foreground font-medium">{l.desc}</div>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          
+          <div className="bg-slate-900 rounded-3xl p-5 flex flex-col justify-center border border-white/10 shadow-xl relative overflow-hidden group">
+             <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:rotate-12 transition-transform">
+                <Shield size={60} className="text-white" />
+             </div>
+             <div className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1">Grid Status</div>
+             <div className="text-2xl font-black text-white italic">OPERATIONAL</div>
+             <div className="text-[10px] text-white/40 font-bold mt-2 flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                NERAL RELAY SECURE
+             </div>
+          </div>
         </div>
         </div>
       </TiltCard>
