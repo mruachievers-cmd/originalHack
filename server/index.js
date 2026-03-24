@@ -28,7 +28,8 @@ const initDB = () => {
             ],
             firs: [],
             sos_alerts: [],
-            evidence: []
+            evidence: [],
+            tips: []
         };
         fs.writeFileSync(DB_PATH, JSON.stringify(initialState, null, 2));
     }
@@ -86,6 +87,40 @@ app.post('/api/evidence', (req, res) => {
 // Get Evidence
 app.get('/api/evidence', (req, res) => {
   res.json(getDB().evidence || []);
+});
+
+// --- ANONYMOUS TIP ROUTES ---
+
+// Submit Tip
+app.post('/api/tips', (req, res) => {
+  const { category, location, description } = req.body;
+  const db = getDB();
+  const id = `TIP-${Date.now().toString().slice(-4)}`;
+  const newTip = { id, category, location, description, status: "Pending", timestamp: new Date() };
+  if (!db.tips) db.tips = [];
+  db.tips.push(newTip);
+  saveDB(db);
+  res.json({ success: true, tip: newTip });
+});
+
+// Get Tips
+app.get('/api/tips', (req, res) => {
+  res.json(getDB().tips || []);
+});
+
+// Update Tip Status
+app.patch('/api/tips/:id', (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const db = getDB();
+  const tip = db.tips.find(t => t.id === id);
+  if (tip) {
+    tip.status = status;
+    saveDB(db);
+    res.json({ success: true, tip });
+  } else {
+    res.status(404).json({ error: "Tip not found" });
+  }
 });
 
 // --- EXISTING AUTH ROUTES ---

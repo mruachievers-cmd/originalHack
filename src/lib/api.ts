@@ -82,3 +82,26 @@ export const submitEvidence = async (data: any) => {
     });
     return response.json();
 };
+
+export const getTips = async () => {
+    const response = await fetch(`${API_URL}/tips`);
+    return response.json();
+};
+
+export const submitTip = async (data: any) => {
+    const response = await fetch(`${API_URL}/tips`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+    return response.json();
+};
+
+export const updateTipStatus = async (id: string, status: string) => {
+    const response = await fetch(`${API_URL}/tips/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+    });
+    return response.json();
+};

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogOut, Shield, MapPin, Search, AlertTriangle, FileText, Activity, X } from "lucide-react";
+import { LogOut, Shield, MapPin, Search, AlertTriangle, FileText, Activity, X, EyeOff, CheckCircle, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import DashboardPreview from "../components/DashboardPreview";
 import AIScannerSection from "../components/AIScannerSection";
 import SafetyMapSection from "../components/SafetyMapSection";
-import { getFIRs, getSOSAlerts, getEvidence } from "../lib/api";
+import { getFIRs, getSOSAlerts, getEvidence, getTips, updateTipStatus } from "../lib/api";
 import { toast } from "sonner";
 
 const PoliceDashboard = () => {
@@ -18,18 +18,21 @@ const PoliceDashboard = () => {
   const [firs, setFirs] = useState<any[]>([]);
   const [sosAlerts, setSosAlerts] = useState<any[]>([]);
   const [evidence, setEvidence] = useState<any[]>([]);
+  const [tips, setTips] = useState<any[]>([]);
   const [prevSosCount, setPrevSosCount] = useState(0);
 
   const fetchData = async () => {
     try {
-      const [firRes, sosRes, evidenceRes] = await Promise.all([
+      const [firRes, sosRes, evidenceRes, tipRes] = await Promise.all([
         getFIRs(),
         getSOSAlerts(),
-        getEvidence()
+        getEvidence(),
+        getTips()
       ]);
       setFirs(firRes);
       setSosAlerts(sosRes);
       setEvidence(evidenceRes);
+      setTips(tipRes);
 
       // Notification for new SOS
       if (sosRes.length > prevSosCount) {
@@ -64,6 +67,16 @@ const PoliceDashboard = () => {
     localStorage.removeItem("user_type");
     toast.success("Officer Logged Out Successfully");
     navigate("/login");
+  };
+
+  const handleUpdateTipStatus = async (id: string, status: string) => {
+    try {
+      await updateTipStatus(id, status);
+      toast.success(`Tip ${id} marked as ${status}`);
+      fetchData();
+    } catch (err) {
+      toast.error("Failed to update status");
+    }
   };
 
   if (loading) return <div className="min-h-screen bg-[#020617] text-white flex items-center justify-center font-black tracking-widest uppercase italic">Loading Command Center...</div>;
@@ -272,6 +285,61 @@ const PoliceDashboard = () => {
                      <MapPin size={10} /> {ev.location}
                    </div>
                    <div className="text-[10px] font-black text-emerald-400 uppercase tracking-widest group-hover/ev:underline cursor-pointer">View Encrypted Asset →</div>
+                </div>
+              ))
+            )}
+          </div>
+        </motion.div>
+        {/* Anonymous Tips Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-strong rounded-3xl p-8 border border-white/10 relative overflow-hidden group mt-12"
+        >
+          <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-700">
+             <EyeOff size={100} className="text-amber-500" />
+          </div>
+          
+          <div className="flex items-center justify-between mb-8 relative z-10">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-amber-500/20 text-amber-500 rounded-xl">
+                <EyeOff size={20} />
+              </div>
+              <h3 className="text-xl font-black uppercase tracking-widest text-[#FFB000]">Neural Grid <span className="text-white">Anonymous Tips</span></h3>
+            </div>
+            <span className="text-xs font-bold text-muted-foreground bg-white/5 py-1 px-3 rounded-full border border-white/10">{tips.length} PENDING REVIEW</span>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+            {tips.length === 0 ? (
+               <div className="col-span-full text-center py-10 opacity-30 font-black uppercase tracking-widest text-xs font-mono">No incoming tips from citizen grid</div>
+            ) : (
+                tips.map((tip) => (
+                <div key={tip.id} className={`p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all border-l-4 ${tip.status === 'Verified' ? 'border-l-emerald-500' : tip.status === 'Investigating' ? 'border-l-amber-500' : 'border-l-white/20'}`}>
+                   <div className="flex items-center justify-between mb-4">
+                      <div className="text-[10px] font-black text-amber-400 uppercase tracking-widest">{tip.id}</div>
+                      <span className="text-[10px] font-black text-white/30">{new Date(tip.timestamp).toLocaleTimeString()}</span>
+                   </div>
+                   <div className="font-bold text-sm mb-1 uppercase tracking-tight">{tip.category}</div>
+                   <div className="text-[10px] text-muted-foreground flex items-center gap-2 mb-4">
+                     <MapPin size={10} /> {tip.location}
+                   </div>
+                   <p className="text-[11px] text-white/70 italic line-clamp-2 mb-6">"{tip.description}"</p>
+                   
+                   <div className="flex items-center gap-2 pt-4 border-t border-white/5">
+                        <button 
+                            onClick={() => handleUpdateTipStatus(tip.id, "Verified")}
+                            className="flex-1 py-2 rounded-lg bg-emerald-500/10 text-emerald-400 text-[9px] font-black uppercase tracking-tighter hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center gap-1"
+                        >
+                            <CheckCircle size={10} /> Verified
+                        </button>
+                        <button 
+                             onClick={() => handleUpdateTipStatus(tip.id, "Investigating")}
+                            className="flex-1 py-2 rounded-lg bg-amber-500/10 text-amber-400 text-[9px] font-black uppercase tracking-tighter hover:bg-amber-500 hover:text-white transition-all flex items-center justify-center gap-1"
+                        >
+                            <Search size={10} /> Inspecting
+                        </button>
+                   </div>
                 </div>
               ))
             )}

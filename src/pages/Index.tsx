@@ -3,17 +3,19 @@ import HeroSection from "@/components/HeroSection";
 import ProblemSection from "@/components/ProblemSection";
 import AboutSection from "@/components/AboutSection";
 import ComplaintForm from "@/components/ComplaintForm";
-import AIScannerSection from "@/components/AIScannerSection";
+
 import WomenSafetySection from "@/components/WomenSafetySection";
 import SafetyMapSection from "@/components/SafetyMapSection";
 import ChatbotSection from "@/components/ChatbotSection";
-import DashboardPreview from "@/components/DashboardPreview";
+
 import TechStackSection from "@/components/TechStackSection";
 import FutureScopeSection from "@/components/FutureScopeSection";
 import FooterSection from "@/components/FooterSection";
 import EvidenceCollection from "@/components/EvidenceCollection";
 import EscortMode from "@/components/EscortMode";
 import { FeatureSphere } from "@/components/FeatureSphere";
+import AnonymousTip from "@/components/AnonymousTip";
+
 
 const Index = () => (
   <div className="min-h-screen bg-background text-foreground scroll-smooth relative overflow-x-hidden">
@@ -38,19 +40,17 @@ const Index = () => (
       </div>
       <FeatureSphere />
     </div>
-    <div id="dashboard">
-      <DashboardPreview />
-    </div>
     <div id="complaint">
       <ComplaintForm />
-    </div>
-    <div id="scanner">
-      <AIScannerSection />
     </div>
     <div id="safety">
       <WomenSafetySection />
     </div>
+    <div id="witness">
+      <AnonymousTip />
+    </div>
     <EvidenceCollection />
+
     <div id="map">
       <SafetyMapSection />
     </div>

@@ -8,6 +8,13 @@ const EscortMode = () => {
   const [progress, setProgress] = useState(0);
   const [hasDeviated, setHasDeviated] = useState(false);
   const [status, setStatus] = useState<"connecting" | "tracking" | "alert">("connecting");
+  const [isNight, setIsNight] = useState(false);
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    // Setting to 18:00 (6 PM) so the user can see it active NOW at 18:52
+    setIsNight(hour >= 18 || hour < 6);
+  }, []);
 
   // Path coordinates for SVG animation (normalized 0-100)
   const path = "M 10 10 L 40 10 L 40 40 L 70 40 L 70 80 L 90 80";
@@ -227,6 +234,53 @@ const EscortMode = () => {
                 </div>
               )}
             </div>
+
+            <AnimatePresence>
+              {isNight && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-6 rounded-[2rem] bg-indigo-500/10 border border-indigo-500/30 relative overflow-hidden group shadow-2xl"
+                >
+                  <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform">
+                    <Clock size={60} />
+                  </div>
+                  
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white">
+                       <Shield size={16} />
+                    </div>
+                    <div>
+                        <h4 className="text-xs font-black uppercase tracking-widest text-indigo-400">Smart Night Safety Mode</h4>
+                        <p className="text-[10px] text-white/50 uppercase font-bold tracking-tight">Active: Low-light situational response protocol</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                        <span className="text-[11px] font-bold text-white/80">Safe Route Highlight</span>
+                        <div className="w-3 h-3 rounded-full bg-indigo-500 animate-pulse" />
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                        <span className="text-[11px] font-bold text-white/80">Nearby High-Patrol Zones</span>
+                        <span className="text-[10px] font-black text-indigo-400">DETECTIONS: 03</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <button className="py-3 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white text-[10px] font-black uppercase tracking-widest transition-all">
+                        Route Sync
+                    </button>
+                    <button 
+                        onClick={() => toast.error("ONE-TAP SOS ENGAGED", { description: "Dispatching Sector 4 Night Patrol units... ETA < 2min" })}
+                        className="py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-[10px] font-black uppercase tracking-widest transition-all animate-pulse"
+                    >
+                        One-Tap SOS
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <AnimatePresence>
               {hasDeviated && (
