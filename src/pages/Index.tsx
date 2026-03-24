@@ -8,6 +8,8 @@ import WomenSafetySection from "@/components/WomenSafetySection";
 import SafetyMapSection from "@/components/SafetyMapSection";
 import ChatbotSection from "@/components/ChatbotSection";
 import DashboardPreview from "@/components/DashboardPreview";
+import TechStackSection from "@/components/TechStackSection";
+import FutureScopeSection from "@/components/FutureScopeSection";
 import FooterSection from "@/components/FooterSection";
 import EvidenceCollection from "@/components/EvidenceCollection";
 import EscortMode from "@/components/EscortMode";
