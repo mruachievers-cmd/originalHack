@@ -78,17 +78,16 @@ const Navbar = () => {
           <div className="h-4 w-px bg-white/10 mx-2"></div>
 
           <div className="flex items-center gap-4">
-            <Link to="/login" className="text-sm font-bold text-foreground/70 hover:text-primary transition-colors flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-white/5 uppercase tracking-widest">
-                <LogIn size={16} /> Login
-            </Link>
-
-            <Link 
-              to="/signup" 
-              className="px-5 py-2.5 rounded-full bg-primary text-white text-sm font-black hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(0,168,232,0.3)] flex items-center gap-2 group"
+            <button 
+              onClick={() => {
+                localStorage.removeItem("gn_auth");
+                localStorage.removeItem("user_type");
+                window.location.href = "/login";
+              }}
+              className="text-sm font-bold text-foreground/70 hover:text-rose-500 transition-colors flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-white/5 uppercase tracking-widest"
             >
-              <UserPlus size={16} className="group-hover:scale-110 transition-transform" />
-              REQUEST ACCESS
-            </Link>
+                <LogIn size={16} className="rotate-180" /> Logout
+            </button>
 
             <button 
               onClick={() => setDialerOpen(true)} 
@@ -161,21 +160,17 @@ const Navbar = () => {
                 <Phone className="w-6 h-6" /> CALL SUPPORT
               </button>
               
-              <Link 
-                to="/login"
-                onClick={() => setOpen(false)}
-                className="text-2xl font-black text-left hover:text-primary transition-colors flex items-center gap-4 tracking-tight uppercase italic"
+              <button 
+                onClick={() => {
+                  setOpen(false);
+                  localStorage.removeItem("gn_auth");
+                  localStorage.removeItem("user_type");
+                  window.location.href = "/login";
+                }}
+                className="p-6 rounded-[2rem] bg-rose-500/10 text-rose-500 font-black flex items-center justify-center gap-3 text-lg border border-rose-500/20"
               >
-                <LogIn size={28} className="text-primary" /> LOGIN
-              </Link>
-              
-              <Link 
-                to="/signup"
-                onClick={() => setOpen(false)}
-                className="p-6 rounded-[2rem] bg-primary text-white font-black text-center flex items-center justify-center gap-3 text-lg shadow-[0_0_30px_rgba(0,168,232,0.2)]"
-              >
-                <UserPlus size={24} /> REQUEST ACCESS
-              </Link>
+                <LogIn size={24} className="rotate-180" /> SECURE LOGOUT
+              </button>
 
               <motion.button 
                 initial={{ opacity: 0, y: 20 }}
