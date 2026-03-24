@@ -44,7 +44,11 @@ const initDB = () => {
             firs: [],
             sos_alerts: [],
             evidence: [],
-            tips: []
+            tips: [],
+            suspects: [
+                { id: "S-001", name: "Vikram Malhotra", descriptors: [], status: "Wanted", threat: "High" },
+                { id: "S-002", name: "Rajesh Kumar", descriptors: [], status: "Under Observation", threat: "Low" }
+            ]
         };
         fs.writeFileSync(DB_PATH, JSON.stringify(initialState, null, 2));
     }
@@ -216,6 +220,33 @@ app.patch('/api/tips/:id', (req, res) => {
   } else {
     res.status(404).json({ error: "Tip not found" });
   }
+});
+
+// --- SUSPECTS & AI SCANNER ---
+
+// Get Suspects
+app.get('/api/suspects', (req, res) => {
+  res.json(getDB().suspects || []);
+});
+
+// Register New Suspect
+app.post('/api/suspects', (req, res) => {
+  const { name, descriptor } = req.body;
+  const db = getDB();
+  const id = `S-${Date.now().toString().slice(-4)}`;
+  const newSuspect = { 
+    id, 
+    name, 
+    descriptors: [descriptor], // face-api descriptor
+    status: "Wanted", 
+    threat: "Medium",
+    created_at: new Date() 
+  };
+  
+  if (!db.suspects) db.suspects = [];
+  db.suspects.push(newSuspect);
+  saveDB(db);
+  res.json({ success: true, suspect: newSuspect });
 });
 
 // --- EXISTING AUTH ROUTES ---
