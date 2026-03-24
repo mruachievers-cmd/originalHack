@@ -194,13 +194,13 @@ const WomenSafetySection = () => {
                   {/* Helpline 200 Highlight */}
                   <div className="mt-8 pt-6 border-t border-rose-500/20 text-center animate-bounce-slow">
                      <p className="text-[10px] font-black text-rose-500/60 uppercase tracking-widest mb-1">DIRECT EMERGENCY LINE</p>
-                     <a 
-                       href="tel:200" 
+                     <button 
+                       onClick={() => window.dispatchEvent(new CustomEvent('open-dialer'))}
                        className="inline-flex items-center gap-4 bg-rose-500 px-8 py-3 rounded-2xl shadow-lg shadow-rose-500/40 border border-white/20 hover:bg-rose-600 hover:scale-105 transition-all cursor-pointer group"
                      >
                         <Phone size={24} className="text-white animate-pulse group-hover:rotate-12" />
                         <span className="text-4xl font-black text-white italic tracking-tighter">200</span>
-                     </a>
+                     </button>
                      <p className="text-[9px] font-bold text-rose-500 mt-2 uppercase tracking-widest">DIAL IMMEDIATELY IF SAFE</p>
                   </div>
                 </motion.div>

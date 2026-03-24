@@ -204,12 +204,22 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-      {/* Web Dialer Panel */}
+// Web Dialer Panel
       <AnimatePresence>
         {dialerOpen && <WebDialer onClose={() => setDialerOpen(false)} />}
       </AnimatePresence>
+      <OpenDialerListener setDialerOpen={setDialerOpen} />
     </nav>
   );
+};
+
+const OpenDialerListener = ({ setDialerOpen }: { setDialerOpen: (open: boolean) => void }) => {
+  useEffect(() => {
+    const handleOpenDialer = () => setDialerOpen(true);
+    window.addEventListener("open-dialer", handleOpenDialer);
+    return () => window.removeEventListener("open-dialer", handleOpenDialer);
+  }, [setDialerOpen]);
+  return null;
 };
 
 export default Navbar;
