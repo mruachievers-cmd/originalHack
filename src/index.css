@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 216 60% 7%;
+    --foreground: 0 0% 100%;
+
+    --card: 216 55% 10%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 216 55% 10%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 197 100% 45%;
+    --primary-foreground: 216 60% 7%;
+
+    --secondary: 216 50% 15%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 216 40% 14%;
+    --muted-foreground: 210 20% 60%;
+
+    --accent: 197 100% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 216 40% 18%;
+    --input: 216 40% 18%;
+    --ring: 197 100% 45%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 216 55% 8%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 197 100% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 216 40% 14%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 216 40% 18%;
+    --sidebar-ring: 197 100% 45%;
+
+    /* Custom tokens */
+    --navy: 216 60% 7%;
+    --navy-light: 216 50% 15%;
+    --cyan: 197 100% 45%;
+    --cyan-glow: 197 100% 55%;
+    --danger: 0 72% 51%;
+    --danger-glow: 0 80% 60%;
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
+
+    --glass-bg: 216 55% 10% / 0.6;
+    --glass-border: 216 40% 25% / 0.3;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+  }
+
+  code, pre {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-card/60 backdrop-blur-xl border border-border/30;
+  }
+
+  .glass-strong {
+    @apply bg-card/80 backdrop-blur-2xl border border-border/40;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--cyan))] to-[hsl(var(--cyan-glow))];
+  }
+
+  .glow-cyan {
+    box-shadow: 0 0 20px hsl(var(--cyan) / 0.3), 0 0 60px hsl(var(--cyan) / 0.1);
+  }
+
+  .glow-red {
+    box-shadow: 0 0 20px hsl(var(--danger) / 0.4), 0 0 60px hsl(var(--danger) / 0.2);
+  }
+
+  .glow-border {
+    box-shadow: inset 0 0 0 1px hsl(var(--cyan) / 0.2), 0 0 20px hsl(var(--cyan) / 0.1);
+  }
+
+  .section-padding {
+    @apply py-20 md:py-28 px-4 md:px-8;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-scan {
+    animation: scan-line 2s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(var(--danger) / 0.4), 0 0 60px hsl(var(--danger) / 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px hsl(var(--danger) / 0.6), 0 0 100px hsl(var(--danger) / 0.3);
+  }
+}
+
+@keyframes scan-line {
+  0% { top: 0%; }
+  50% { top: 90%; }
+  100% { top: 0%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--navy));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--cyan) / 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--cyan) / 0.5);
+}
