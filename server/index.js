@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
+import multer from 'multer';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -12,6 +13,20 @@ app.use(cors());
 app.use(express.json());
 
 const DB_PATH = path.join(__dirname, 'db.json');
+const UPLOADS_PATH = path.join(__dirname, 'uploads');
+
+if (!fs.existsSync(UPLOADS_PATH)) fs.mkdirSync(UPLOADS_PATH);
+app.use('/uploads', express.static(UPLOADS_PATH));
+
+// Multer Config
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, UPLOADS_PATH),
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage });
 
 // Root Health Check Route
 app.get('/', (req, res) => {
@@ -74,11 +89,27 @@ app.get('/api/sos', (req, res) => {
   res.json(getDB().sos_alerts || []);
 });
 
-// Submit Evidence
-app.post('/api/evidence', (req, res) => {
-  const { type, activityType, location, coordinates, userId, evidenceUrl } = req.body;
+// Submit Evidence (Multipart)
+app.post('/api/evidence', upload.single('file'), (req, res) => {
+  const { type, activityType, location, coordinates, userId } = req.body;
   const db = getDB();
-  const newEvidence = { id: Date.now(), type, activityType, location, coordinates, userId, evidenceUrl, timestamp: new Date() };
+  
+  let evidenceUrl = req.body.evidenceUrl;
+  if (req.file) {
+    evidenceUrl = `http://localhost:5001/uploads/${req.file.filename}`;
+  }
+
+  const newEvidence = { 
+    id: Date.now(), 
+    type, 
+    activityType, 
+    location, 
+    coordinates: coordinates ? JSON.parse(coordinates) : null, 
+    userId, 
+    evidenceUrl, 
+    timestamp: new Date() 
+  };
+  
   db.evidence.push(newEvidence);
   saveDB(db);
   res.json({ success: true, evidence: newEvidence });

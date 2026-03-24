@@ -143,6 +143,15 @@
       "location": "Dark Alley, East Side",
       "userId": "anonymous",
       "timestamp": "2026-03-24T12:10:00.000Z"
+    },
+    {
+      "id": 1774359214780,
+      "type": "photo",
+      "activityType": "Observer",
+      "location": "Sector 4",
+      "userId": "anonymous",
+      "evidenceUrl": "simulated_upload_url",
+      "timestamp": "2026-03-24T13:33:34.780Z"
     }
   ],
   "tips": [

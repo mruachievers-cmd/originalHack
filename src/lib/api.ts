@@ -75,6 +75,23 @@ export const getEvidence = async () => {
 };
 
 export const submitEvidence = async (data: any) => {
+    // If it's a file upload, use FormData
+    if (data.file) {
+      const formData = new FormData();
+      Object.keys(data).forEach(key => {
+        if (key === 'coordinates') {
+           formData.append(key, JSON.stringify(data[key]));
+        } else {
+           formData.append(key, data[key]);
+        }
+      });
+      const response = await fetch(`${API_URL}/evidence`, {
+        method: "POST",
+        body: formData,
+      });
+      return response.json();
+    }
+
     const response = await fetch(`${API_URL}/evidence`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

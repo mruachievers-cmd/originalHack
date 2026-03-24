@@ -18,6 +18,8 @@ const EvidenceCollection = () => {
   const [isSusconfirmed, setIsSusconfirmed] = useState(false);
   const [evidenceList, setEvidenceList] = useState<EvidenceItem[]>([]);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const [selectedType, setSelectedType] = useState<EvidenceItem["type"] | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const simulateAlert = () => {
     setIsAlertActive(true);
@@ -27,49 +29,60 @@ const EvidenceCollection = () => {
     });
   };
 
-  const handleUpload = async (type: EvidenceItem["type"]) => {
+  const triggerUpload = (type: EvidenceItem["type"]) => {
     if (!isAlertActive) {
       toast.error("No active incident requests nearby.");
       return;
     }
+    setSelectedType(type);
+    fileInputRef.current?.click();
+  };
 
-    setUploadProgress(0);
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !selectedType) return;
+
+    setUploadProgress(10);
     const interval = setInterval(() => {
       setUploadProgress((prev) => {
-        if (prev === null || prev >= 100) {
+        if (prev === null || prev >= 90) {
           clearInterval(interval);
-          return 100;
+          return 90;
         }
-        return prev + 10;
+        return prev + 5;
       });
     }, 100);
 
     try {
-        const newItem: EvidenceItem = {
-          id: Math.random().toString(36).substr(2, 9),
-          type,
-          user: "Anonymous Witness",
-          time: "Just now",
-          status: "verified",
-          preview: type === "photo" ? "Image preview..." : type === "video" ? "Video snippet..." : "Audio wave...",
-        };
-        
-        await submitEvidence({
-            type,
+        const res = await submitEvidence({
+            type: selectedType,
             activityType: isSusconfirmed ? "Suspicious" : "Observer",
             location: "Sector 4",
             userId: "anonymous",
-            evidenceUrl: "simulated_upload_url"
+            file: file
         });
 
-        setEvidenceList([newItem, ...evidenceList]);
-        setUploadProgress(null);
-        toast.success(`${type.toUpperCase()} Evidence Uploaded Securely`, {
-          description: "Your data is encrypted and your identity remains anonymous.",
-        });
+        if (res.success) {
+            const newItem: EvidenceItem = {
+              id: res.evidence.id.toString(),
+              type: selectedType,
+              user: "Anonymous Witness",
+              time: "Just now",
+              status: "verified",
+              preview: file.name,
+            };
+            
+            setEvidenceList([newItem, ...evidenceList]);
+            toast.success(`${selectedType.toUpperCase()} Evidence Uploaded Securely`, {
+              description: "Your data is encrypted and saved on the neural grid.",
+            });
+        }
     } catch (err) {
-        toast.error("Upload failed. Database connection error.");
+        toast.error("Upload failed. External grid error.");
+    } finally {
         setUploadProgress(null);
+        setSelectedType(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -126,22 +139,29 @@ const EvidenceCollection = () => {
               <div className="space-y-4 pt-4 border-t border-white/5">
                 <h4 className="text-xs font-black uppercase tracking-[0.2em] text-white/60">Contribute Evidence</h4>
                 <div className="grid grid-cols-3 gap-3">
+                  <input 
+                    type="file" 
+                    ref={fileInputRef} 
+                    className="hidden" 
+                    onChange={handleFileChange}
+                    accept={selectedType === 'photo' ? 'image/*' : selectedType === 'video' ? 'video/*' : 'audio/*'}
+                  />
                   <button 
-                    onClick={() => handleUpload("photo")}
+                    onClick={() => triggerUpload("photo")}
                     className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all group/btn"
                   >
                     <Camera size={20} className="text-primary group-hover/btn:scale-110 transition-transform" />
                     <span className="text-[10px] font-bold uppercase">Photo</span>
                   </button>
                   <button 
-                    onClick={() => handleUpload("video")}
+                    onClick={() => triggerUpload("video")}
                     className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all group/btn"
                   >
                     <Video size={20} className="text-cyan-400 group-hover/btn:scale-110 transition-transform" />
                     <span className="text-[10px] font-bold uppercase">Video</span>
                   </button>
                   <button 
-                    onClick={() => handleUpload("audio")}
+                    onClick={() => triggerUpload("audio")}
                     className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all group/btn"
                   >
                     <Mic size={20} className="text-emerald-400 group-hover/btn:scale-110 transition-transform" />
