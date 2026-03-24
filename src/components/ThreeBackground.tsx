@@ -47,8 +47,17 @@ const SubtleSphere = ({ position, color, distort, size }: { position: [number, n
     
     useFrame((state) => {
         if (!mesh.current) return;
+        const time = state.clock.getElapsedTime();
         const scroll = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-        mesh.current.position.y = position[1] - scroll * 40;
+        
+        // Combine scroll position with subtle auto-floating
+        mesh.current.position.y = position[1] - (scroll * 40) + Math.sin(time + position[0]) * 0.5;
+        mesh.current.rotation.x = time * 0.2;
+        mesh.current.rotation.y = time * 0.3;
+        
+        // Subtle pulsing scale
+        const scale = 1 + Math.sin(time * 0.5) * 0.05;
+        mesh.current.scale.set(scale, scale, scale);
     });
 
     return (
