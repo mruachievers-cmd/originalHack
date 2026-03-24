@@ -9,6 +9,7 @@ const AIScannerSection = () => {
   const [isAuthorized, setIsAuthorized] = useState(true);
   const [badgeId, setBadgeId] = useState("");
   const [stationId, setStationId] = useState("");
+  const [userType] = useState<string | null>(localStorage.getItem("user_type"));
   
   const [scanning, setScanning] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -275,6 +276,10 @@ const AIScannerSection = () => {
       toast.error("Error processing image.");
     }
   };
+
+  if (userType !== "police") {
+    return null;
+  }
 
   if (!isAuthorized) {
     return (

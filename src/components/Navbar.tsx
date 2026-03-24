@@ -17,8 +17,10 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [dialerOpen, setDialerOpen] = useState(false);
+  const [userType, setUserType] = useState<string | null>(null);
 
   useEffect(() => {
+    setUserType(localStorage.getItem("user_type"));
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
@@ -63,7 +65,7 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
           <div className="flex items-center gap-6">
-            {links.map((l) => (
+            {links.filter(l => l.id !== 'scanner' || userType === 'police').map((l) => (
               <button 
                 key={l.id} 
                 onClick={() => scrollTo(l.id)} 
@@ -138,7 +140,7 @@ const Navbar = () => {
             </button>
 
             <div className="flex flex-col gap-6">
-              {links.map((l, i) => (
+              {links.filter(l => l.id !== 'scanner' || userType === 'police').map((l, i) => (
                 <motion.button 
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
