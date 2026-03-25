@@ -59,6 +59,25 @@ const saveDB = (data) => fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2)
 
 initDB();
 
+// Central Webhook Dispatcher
+const dispatchWebhook = async (payload) => {
+  const targetUrl = "https://uninstructed-sharan-uncorpulent.ngrok-free.dev/webhook-test/476a8980-a1ec-4e11-8f7d-b4bb4a51d2dd";
+  console.log(`📡 DISPATCHING NEURAL WEBHOOK:`, payload.id || "manual-trigger");
+  
+  try {
+    await fetch(targetUrl, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true" 
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.error("External Webhook Forward Error:", err.message);
+  }
+};
+
 // --- NEW DATA ROUTES ---
 
 // Submit FIR
@@ -91,6 +110,10 @@ app.post('/api/firs', (req, res) => {
   
   db.firs.push(newFIR);
   saveDB(db);
+  
+  // Auto-trigger external analytics/automation
+  dispatchWebhook({ ...newFIR, event_source: "FIR_REGISTRY" });
+  
   res.json({ success: true, fir: newFIR });
 });
 
@@ -145,6 +168,10 @@ app.post('/api/sos', (req, res) => {
   };
   db.sos_alerts.push(newSOS);
   saveDB(db);
+
+  // Immediate global trigger
+  dispatchWebhook({ ...newSOS, event_source: "SOS_PROTOCOL_ACTIVE" });
+
   res.json({ success: true, sos: newSOS });
 });
 
@@ -179,20 +206,9 @@ app.get('/api/sos', (req, res) => {
   res.json(getDB().sos_alerts || []);
 });
 
-// Neural Webhook Proxy (for external triggers)
+// Neural Webhook Proxy (for direct external triggers)
 app.post('/api/sos-webhook', (req, res) => {
-  const payload = req.body;
-  console.log(`📡 NEURAL WEBHOOK TRIGGERED:`, JSON.stringify(payload, null, 2));
-  
-  // Custom External Target
-  const targetUrl = "https://uninstructed-sharan-uncorpulent.ngrok-free.dev/webhook-test/476a8980-a1ec-4e11-8f7d-b4bb4a51d2dd";
-  
-  fetch(targetUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  }).catch(err => console.error("External Webhook Forward Error:", err.message));
-  
+  dispatchWebhook({ ...req.body, event_source: "MANUAL_WEBHOOK_PROXY" });
   res.json({ success: true, message: "WEBHOOK FORWARDED TO EXTERNAL NEURAL HUB" });
 });
 
