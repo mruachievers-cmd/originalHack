@@ -204,7 +204,7 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-// Web Dialer Panel
+      {/* Web Dialer Panel */}
       <AnimatePresence>
         {dialerOpen && <WebDialer onClose={() => setDialerOpen(false)} />}
       </AnimatePresence>
