@@ -179,22 +179,21 @@ app.get('/api/sos', (req, res) => {
   res.json(getDB().sos_alerts || []);
 });
 
-// Neural Webhook Proxy (for n8n/external triggers)
+// Neural Webhook Proxy (for external triggers)
 app.post('/api/sos-webhook', (req, res) => {
   const payload = req.body;
   console.log(`📡 NEURAL WEBHOOK TRIGGERED:`, JSON.stringify(payload, null, 2));
   
-  // Potential forwarding logic here if N8N_WEBHOOK_URL is set in environment
-  const n8nUrl = process.env.N8N_WEBHOOK_URL;
-  if (n8nUrl) {
-    fetch(n8nUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    }).catch(err => console.error("External Webhook Forward Error:", err.message));
-  }
+  // Custom External Target
+  const targetUrl = "https://uninstructed-sharan-uncorpulent.ngrok-free.dev/webhook-test/476a8980-a1ec-4e11-8f7d-b4bb4a51d2dd";
   
-  res.json({ success: true, message: "WEBHOOK SUCCESSFULLY HANDLED BY NEURAL PROXY" });
+  fetch(targetUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  }).catch(err => console.error("External Webhook Forward Error:", err.message));
+  
+  res.json({ success: true, message: "WEBHOOK FORWARDED TO EXTERNAL NEURAL HUB" });
 });
 
 // Submit Evidence (Multipart)

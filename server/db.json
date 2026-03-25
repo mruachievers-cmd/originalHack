@@ -525,6 +525,58 @@
       "trigger_source": "Manual Trigger",
       "status": "Critical",
       "created_at": "2026-03-25T03:22:16.258Z"
+    },
+    {
+      "id": "SOS-1267",
+      "user": "Citizen Account",
+      "location": "Hitech City, Hyderabad",
+      "coordinates": {
+        "lat": 17.385,
+        "lng": 78.4867
+      },
+      "alert_type": "Standard SOS",
+      "trigger_source": "Manual Trigger",
+      "status": "Critical",
+      "created_at": "2026-03-25T03:29:21.268Z"
+    },
+    {
+      "id": "SOS-0369",
+      "user": "Citizen Account",
+      "location": "Hitech City, Hyderabad",
+      "coordinates": {
+        "lat": 17.385,
+        "lng": 78.4867
+      },
+      "alert_type": "Standard SOS",
+      "trigger_source": "Manual Trigger",
+      "status": "Critical",
+      "created_at": "2026-03-25T03:29:50.369Z"
+    },
+    {
+      "id": "SOS-1874",
+      "user": "Citizen Account",
+      "location": "Hitech City, Hyderabad",
+      "coordinates": {
+        "lat": 17.385,
+        "lng": 78.4867
+      },
+      "alert_type": "Standard SOS",
+      "trigger_source": "Manual Trigger",
+      "status": "Critical",
+      "created_at": "2026-03-25T03:30:31.874Z"
+    },
+    {
+      "id": "SOS-6452",
+      "user": "Citizen Account",
+      "location": "Hitech City, Hyderabad",
+      "coordinates": {
+        "lat": 17.385,
+        "lng": 78.4867
+      },
+      "alert_type": "Standard SOS",
+      "trigger_source": "Manual Trigger",
+      "status": "Critical",
+      "created_at": "2026-03-25T03:32:56.452Z"
     }
   ],
   "evidence": [
