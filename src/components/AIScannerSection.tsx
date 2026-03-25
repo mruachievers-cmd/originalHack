@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScanFace, AlertTriangle, User, FileWarning, Camera, UserPlus, UserCheck, Shield, Cpu, Zap, Search, Fingerprint, MapPin } from "lucide-react";
 import * as faceapi from 'face-api.js';
@@ -113,6 +113,13 @@ const AIScannerSection = () => {
 
   const [stream, setStream] = useState<MediaStream | null>(null);
 
+  const faceMatcher = useMemo(() => {
+    if (suspects.length > 0) {
+      return new faceapi.FaceMatcher(suspects, 0.6);
+    }
+    return null;
+  }, [suspects]);
+
   useEffect(() => {
     if (isCameraActive && stream && videoRef.current) {
       videoRef.current.srcObject = stream;
@@ -139,7 +146,7 @@ const AIScannerSection = () => {
         if (video.readyState >= 2) {
           const detections = await faceapi.detectAllFaces(
             video, 
-            new faceapi.TinyFaceDetectorOptions({ inputSize: 256, scoreThreshold: 0.2 })
+            new faceapi.TinyFaceDetectorOptions({ inputSize: 160, scoreThreshold: 0.3 })
           ).withFaceLandmarks().withFaceDescriptors();
 
           const resizedDetections = faceapi.resizeResults(detections, displaySize);
@@ -153,8 +160,7 @@ const AIScannerSection = () => {
               let name = "Unknown";
               let color = '#22c55e';
               
-              if (suspects.length > 0) {
-                const faceMatcher = new faceapi.FaceMatcher(suspects, 0.6);
+              if (faceMatcher) {
                 const bestMatch = faceMatcher.findBestMatch(descriptor);
                 name = bestMatch.label;
                 if (name !== 'unknown') {
