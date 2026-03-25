@@ -179,6 +179,24 @@ app.get('/api/sos', (req, res) => {
   res.json(getDB().sos_alerts || []);
 });
 
+// Neural Webhook Proxy (for n8n/external triggers)
+app.post('/api/sos-webhook', (req, res) => {
+  const payload = req.body;
+  console.log(`📡 NEURAL WEBHOOK TRIGGERED:`, JSON.stringify(payload, null, 2));
+  
+  // Potential forwarding logic here if N8N_WEBHOOK_URL is set in environment
+  const n8nUrl = process.env.N8N_WEBHOOK_URL;
+  if (n8nUrl) {
+    fetch(n8nUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).catch(err => console.error("External Webhook Forward Error:", err.message));
+  }
+  
+  res.json({ success: true, message: "WEBHOOK SUCCESSFULLY HANDLED BY NEURAL PROXY" });
+});
+
 // Submit Evidence (Multipart)
 app.post('/api/evidence', upload.single('file'), (req, res) => {
   const { type, activityType, location, coordinates, userId } = req.body;
