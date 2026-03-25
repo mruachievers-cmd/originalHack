@@ -65,7 +65,7 @@ const dispatchWebhook = async (payload) => {
   console.log(`📡 DISPATCHING NEURAL WEBHOOK:`, payload.id || "manual-trigger");
   
   try {
-    await fetch(targetUrl, {
+    const response = await fetch(targetUrl, {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
@@ -73,8 +73,9 @@ const dispatchWebhook = async (payload) => {
       },
       body: JSON.stringify(payload)
     });
+    console.log(`✅ WEBHOOK RESPONSE [${response.status}]`);
   } catch (err) {
-    console.error("External Webhook Forward Error:", err.message);
+    console.error("❌ WEBHOOK ERROR:", err.message);
   }
 };
 

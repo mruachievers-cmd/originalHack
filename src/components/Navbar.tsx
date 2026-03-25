@@ -32,16 +32,7 @@ const Navbar = () => {
     // Local trigger for UI feedback/scrolling
     scrollTo("complaint");
     
-    // n8n Webhook trigger via proxy
-    fetch("http://localhost:5000/api/sos-webhook", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user: "Citizen (Navbar Trigger)",
-        location: "Header Navigation Context",
-        status: "NAVBAR_EMERGENCY_CLICK"
-      })
-    }).catch(err => console.error('Navbar SOS Webhook failed:', err));
+    // n8n Webhook trigger via proxy - Handled by Backend /api/sos or /api/firs
   };
 
   const scrollTo = (id: string) => {

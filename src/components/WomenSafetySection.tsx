@@ -43,6 +43,7 @@ const WomenSafetySection = () => {
 
   const handleSosToggle = async () => {
     const newState = !sosActive;
+    // n8n Webhook trigger via proxy - Handled by Backend /api/sos or /api/firs
     setSosActive(newState);
     
     if (newState) {
@@ -53,18 +54,6 @@ const WomenSafetySection = () => {
           location: "Hitech City, Hyderabad",
           coordinates: { lat: 17.3850, lng: 78.4867 }
         });
-
-        // n8n Webhook trigger via proxy
-        fetch("http://localhost:5000/api/sos-webhook", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            user: "Citizen Account",
-            location: "Sector 4, Street 12",
-            coordinates: { lat: 12.9716, lng: 77.5946 },
-            status: "EMERGENCY_ACTIVE"
-          })
-        }).catch(err => console.error('SOS Webhook proxy failed:', err));
 
         toast.error("SOS ALERT BROADCASTED", {
           description: "Police units have been dispatched to your current coordinates.",
@@ -195,7 +184,18 @@ const WomenSafetySection = () => {
                   <div className="mt-8 pt-6 border-t border-rose-500/20 text-center animate-bounce-slow">
                      <p className="text-[10px] font-black text-rose-500/60 uppercase tracking-widest mb-1">DIRECT EMERGENCY LINE</p>
                      <button 
-                       onClick={() => window.dispatchEvent(new CustomEvent('open-dialer'))}
+                       onClick={() => {
+                         fetch("http://localhost:5000/api/sos-webhook", {
+                           method: "POST",
+                           headers: { "Content-Type": "application/json" },
+                           body: JSON.stringify({
+                             user: "Citizen Emergency Portal",
+                             location: "Helpline 200 Bridge",
+                             status: "DIRECT_CALL_INITIATED"
+                           })
+                         }).catch(() => {});
+                         window.dispatchEvent(new CustomEvent('open-dialer'));
+                       }}
                        className="inline-flex items-center gap-4 bg-rose-500 px-8 py-3 rounded-2xl shadow-lg shadow-rose-500/40 border border-white/20 hover:bg-rose-600 hover:scale-105 transition-all cursor-pointer group"
                      >
                         <Phone size={24} className="text-white animate-pulse group-hover:rotate-12" />
