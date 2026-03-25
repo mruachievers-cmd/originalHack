@@ -603,6 +603,19 @@
       "trigger_source": "Manual Trigger",
       "status": "Critical",
       "created_at": "2026-03-25T03:34:54.722Z"
+    },
+    {
+      "id": "SOS-0278",
+      "user": "Citizen Account",
+      "location": "Hitech City, Hyderabad",
+      "coordinates": {
+        "lat": 17.385,
+        "lng": 78.4867
+      },
+      "alert_type": "Standard SOS",
+      "trigger_source": "Manual Trigger",
+      "status": "Critical",
+      "created_at": "2026-03-25T03:43:40.278Z"
     }
   ],
   "evidence": [
